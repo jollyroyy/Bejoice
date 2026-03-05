@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
+import QuickQuoteSection from './QuickQuote.jsx';
 import './index.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -247,7 +248,7 @@ function BJSLogo() {
 // ============================================
 // HEADER — frosted glass on scroll
 // ============================================
-function Header({ onToolsClick }) {
+function Header({ onToolsClick, onQuoteClick }) {
   const headerRef = useRef(null);
 
   useEffect(() => {
@@ -281,6 +282,27 @@ function Header({ onToolsClick }) {
 
         {/* Nav */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+          <button
+            onClick={onQuoteClick}
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '0.65rem',
+              fontWeight: 500,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'rgba(200,168,78,0.85)',
+              background: 'rgba(200,168,78,0.08)',
+              border: '1px solid rgba(200,168,78,0.25)',
+              borderRadius: '2rem',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              padding: '0.35rem 1rem',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(200,168,78,0.15)'; e.currentTarget.style.borderColor = 'rgba(200,168,78,0.5)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(200,168,78,0.08)'; e.currentTarget.style.borderColor = 'rgba(200,168,78,0.25)'; }}
+          >
+            Quick Quote
+          </button>
           <button
             onClick={onToolsClick}
             style={{
@@ -495,9 +517,9 @@ function ChapterSection({ chapter }) {
             <button
               id="cta-start-journey"
               className="cta-button"
-              onClick={() => document.getElementById('tools-section')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('quick-quote-section')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              Explore Our Tools
+              Get a Quick Quote
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
@@ -509,7 +531,7 @@ function ChapterSection({ chapter }) {
               textTransform: 'uppercase',
               color: 'rgba(255,255,255,0.22)',
             }}>
-              CBM · Air Weight · Container Guide
+              Sea · Air · Land · Customs · Project Cargo
             </span>
           </div>
         )}
@@ -902,10 +924,11 @@ function ActIndicator({ currentAct }) {
 // MAIN APP
 // ============================================
 export default function App() {
-  const canvasRef       = useRef(null);
-  const imagesRef       = useRef([]);
-  const frameObjRef     = useRef({ frame: 0 });
-  const toolsSectionRef = useRef(null);
+  const canvasRef          = useRef(null);
+  const imagesRef          = useRef([]);
+  const frameObjRef        = useRef({ frame: 0 });
+  const toolsSectionRef    = useRef(null);
+  const quoteSectionRef    = useRef(null);
   const [loadProgress, setLoadProgress] = useState(0);
   const [isLoaded, setIsLoaded]         = useState(false);
   const [currentAct, setCurrentAct]     = useState(1);
@@ -913,6 +936,9 @@ export default function App() {
 
   const scrollToTools = useCallback(() => {
     toolsSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
+  const scrollToQuote = useCallback(() => {
+    quoteSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
   // ── DRAW FRAME ──────────────────────────────────────────────────────────────
@@ -1130,7 +1156,7 @@ export default function App() {
         <canvas ref={canvasRef} />
       </div>
 
-      <Header onToolsClick={scrollToTools} />
+      <Header onToolsClick={scrollToTools} onQuoteClick={scrollToQuote} />
       <ActIndicator currentAct={currentAct} />
 
       <div id="scroll-container" className="relative z-10">
@@ -1156,6 +1182,9 @@ export default function App() {
         {/* Closing spacer */}
         <div style={{ height: '40vh' }} />
       </div>
+
+      {/* Quick Quote section */}
+      <QuickQuoteSection sectionRef={quoteSectionRef} />
 
       {/* Tools section — below scroll, normal page flow */}
       <ToolsSection sectionRef={toolsSectionRef} />
