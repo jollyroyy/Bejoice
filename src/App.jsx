@@ -29,18 +29,19 @@ const CHAPTERS = [
   {
     id: 'world',
     label: 'Act I — The World Awaits',
-    titleLines: ['Unleash', 'the Global', 'Trade.'],
-    titleAccentLine: 2, // index of line to gold-accent
-    body: "From a bird\u2019s-eye view of our interconnected planet, Bejoice maps the fastest, safest corridor between your cargo and its destination \u2014 anywhere on Earth.",
+    titleLines: ['Unleash', 'Global', 'Trade'],
+    titleAccentLine: 2,
+    body: "Every continent. Every corridor. Every deadline. Bejoice charts the most intelligent route between your cargo and the world \u2014 before the tide even turns.",
     frameStart: 0,
     frameEnd: 44,
     align: 'left',
+    isHero: true,
   },
   {
     id: 'routes',
     label: 'Act I — Charting Your Course',
-    titleLines: ['Beyond', 'Horizons.'],
-    body: 'Our network engineers plot the optimal multi-modal path in real time \u2014 sea, air, or land \u2014 before a single crate leaves your warehouse.',
+    titleLines: ['Chart the Course.', 'Own the Ocean.'],
+    body: 'Thousands of nautical miles, calculated to the hour. Our sea freight specialists engineer the optimal route \u2014 so your cargo rides the current, never fights it.',
     frameStart: 45,
     frameEnd: 89,
     align: 'right',
@@ -48,8 +49,8 @@ const CHAPTERS = [
   {
     id: 'horizon',
     label: 'Act I — The Open Horizon',
-    titleLines: ['Command', 'The Tide.'],
-    body: "Saudi Arabia\u2019s ports are the gateway to three continents. Bejoice leverages every nautical mile to deliver speed, capacity, and certainty.",
+    titleLines: ['Where the Sea', 'Becomes Strategy.'],
+    body: "Saudi Arabia sits at the crossroads of the world\u2019s busiest trade lanes. Bejoice turns that geography into your competitive advantage \u2014 port to port, without compromise.",
     frameStart: 90,
     frameEnd: 144,
     align: 'left',
@@ -57,8 +58,8 @@ const CHAPTERS = [
   {
     id: 'maritime',
     label: 'Act I — Maritime Mastery',
-    titleLines: ['Colossal', 'Capacity.'],
-    body: 'Our maritime fleet cuts through the deep blue \u2014 FCL, LCL, reefer, breakbulk \u2014 with unparalleled reliability from port to port.',
+    titleLines: ['Deep Water.', 'Deeper Trust.'],
+    body: 'FCL or LCL, reefer or breakbulk \u2014 our vessels move with the precision of a tide chart and the muscle of an entire fleet. The sea is not an obstacle. It is our highway.',
     frameStart: 145,
     frameEnd: 199,
     align: 'right',
@@ -72,8 +73,8 @@ const CHAPTERS = [
   {
     id: 'liftoff',
     label: 'Act II — The Ascent',
-    titleLines: ['From Ocean', 'To Open Sky.'],
-    body: 'When time is the currency, we shift seamlessly from sea to air \u2014 our premium cargo network launches your shipment above every delay.',
+    titleLines: ['Leave the Waves.', 'Rule the Sky.'],
+    body: 'When the ocean is too slow, we lift off. Bejoice bridges sea and air in a single, seamless handoff \u2014 your shipment ascends without missing a beat.',
     frameStart: 200,
     frameEnd: 254,
     align: 'left',
@@ -81,8 +82,8 @@ const CHAPTERS = [
   {
     id: 'airways',
     label: 'Act II — Commanding the Airways',
-    titleLines: ['Omniscient', 'Control.'],
-    body: 'Connecting 150+ destinations across Asia, Europe, and the Americas, our air freight solutions deliver critical cargo when every hour counts.',
+    titleLines: ['Airborne.', 'On Time.', 'Every Time.'],
+    body: '150+ destinations. Priority lanes. Same-day uplift where it matters. When every hour carries a price tag, Bejoice air freight is the answer that never blinks.',
     frameStart: 255,
     frameEnd: 319,
     align: 'right',
@@ -94,8 +95,8 @@ const CHAPTERS = [
   {
     id: 'promise',
     label: 'Act II — The Bejoice Promise',
-    titleLines: ['Safe.', 'Seamless.', 'Delivered.'],
-    body: 'Globe, sea, sky \u2014 one seamless journey, zero friction. Bejoice closes the loop from origin to destination with precision, care, and complete visibility.',
+    titleLines: ['One Partner.', 'Every Mile.'],
+    body: 'Sea or sky, port or runway \u2014 Bejoice is the single thread that connects your supply chain from origin to delivery. No gaps. No excuses. Just results.',
     frameStart: 320,
     frameEnd: 399,
     align: 'center',
@@ -308,17 +309,25 @@ function ChapterSection({ chapter }) {
     const block   = blockRef.current;
     if (!section || !block) return;
 
-    const children = Array.from(block.children);
-
-    const enter = gsap.timeline({
-      scrollTrigger: { trigger: section, start: 'top 75%', end: 'top 25%', scrub: 1.2 },
-    });
-    // Staggered entry — each child staggers in
-    enter.fromTo(
-      children,
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, ease: 'power3.out', stagger: 0.08 }
-    );
+    let enter = null;
+    if (chapter.isHero) {
+      // Hero: visible immediately, no scroll entry
+      block.style.opacity = '1';
+      gsap.fromTo(
+        Array.from(block.children),
+        { opacity: 0, y: 28 },
+        { opacity: 1, y: 0, ease: 'power3.out', stagger: 0.1, duration: 1, delay: 1.6 }
+      );
+    } else {
+      enter = gsap.timeline({
+        scrollTrigger: { trigger: section, start: 'top 75%', end: 'top 25%', scrub: 1.2 },
+      });
+      enter.fromTo(
+        block,
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, ease: 'power3.out' }
+      );
+    }
 
     const exit = gsap.timeline({
       scrollTrigger: { trigger: section, start: 'bottom 65%', end: 'bottom 15%', scrub: 1.2 },
@@ -326,10 +335,10 @@ function ChapterSection({ chapter }) {
     exit.to(block, { opacity: 0, y: -24, ease: 'power2.in' });
 
     return () => {
-      enter.scrollTrigger?.kill(); enter.kill();
+      enter?.scrollTrigger?.kill(); enter?.kill();
       exit.scrollTrigger?.kill();  exit.kill();
     };
-  }, []);
+  }, [chapter.isHero]);
 
   const isRight  = chapter.align === 'right';
   const isCenter = chapter.align === 'center';
@@ -340,7 +349,7 @@ function ChapterSection({ chapter }) {
       id={`section-${chapter.id}`}
       className={`chapter-section chapter-section-${chapter.align} relative z-10`}
     >
-      <div ref={blockRef} className="chapter-block" style={{ opacity: 0 }}>
+      <div ref={blockRef} className={`chapter-block${chapter.isHero ? ' chapter-block-hero' : ''}`} style={{ opacity: 0 }}>
 
         {/* Label with decorative line */}
         <div className="chapter-label">{chapter.label}</div>
@@ -700,8 +709,8 @@ export default function App() {
       <ActIndicator currentAct={currentAct} />
 
       <div id="scroll-container" className="relative z-10">
-        {/* Opening spacer — gives breathing room before first chapter */}
-        <div style={{ height: '60vh' }} />
+        {/* Opening spacer — minimal so hero text is visible from the start */}
+        <div style={{ height: '5vh' }} />
 
         {/* Act 1 chapters */}
         {CHAPTERS.filter(c => c.frameStart < GLOBE_SEA_FRAMES).map(chapter => (
