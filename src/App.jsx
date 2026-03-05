@@ -29,8 +29,8 @@ const CHAPTERS = [
   {
     id: 'world',
     label: 'Act I — The World Awaits',
-    titleLines: ['Unleash', 'Global Trade.'],
-    titleAccentLine: 1, // index of line to gold-accent
+    titleLines: ['Unleash', 'the Global', 'Trade.'],
+    titleAccentLine: 2, // index of line to gold-accent
     body: "From a bird\u2019s-eye view of our interconnected planet, Bejoice maps the fastest, safest corridor between your cargo and its destination \u2014 anywhere on Earth.",
     frameStart: 0,
     frameEnd: 44,
