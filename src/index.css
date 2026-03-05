@@ -53,20 +53,7 @@ body {
   image-rendering: auto;
 }
 
-/* Cinematic vignette */
-.canvas-container::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 100% 90% at 50% 50%,
-    transparent 38%,
-    rgba(5, 5, 8, 0.45) 70%,
-    rgba(5, 5, 8, 0.78) 100%
-  );
-  z-index: 1;
-}
+/* Vignette handled entirely by canvas drawFrame — no CSS overlay needed */
 
 /* ============================================
    HEADER — Apple frosted glass style
@@ -478,16 +465,6 @@ html, body {
   /* Canvas background */
   .canvas-container {
     background-color: #050508;
-  }
-
-  /* Vignette for portrait */
-  .canvas-container::after {
-    background: radial-gradient(
-      ellipse 90% 75% at 50% 50%,
-      transparent 30%,
-      rgba(5, 5, 8, 0.35) 65%,
-      rgba(5, 5, 8, 0.72) 100%
-    );
   }
 
   /* Position text at bottom on portrait so image shows above */
@@ -1131,12 +1108,4 @@ html, body {
     padding: 1.5rem 0;
   }
 
-  .canvas-container::after {
-    background: radial-gradient(
-      ellipse 100% 90% at 50% 50%,
-      transparent 38%,
-      rgba(5, 5, 8, 0.45) 70%,
-      rgba(5, 5, 8, 0.78) 100%
-    );
-  }
 }
