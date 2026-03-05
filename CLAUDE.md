@@ -150,8 +150,37 @@ Both zips are in `C:/Users/ASUS/Desktop/Interactive Websit for Bejoice/`.
 
 ---
 
+## Chapter Copy (current)
+
+### Act 1 — Maritime
+| ID | Title | Body summary |
+|----|-------|--------------|
+| world | "Unleash Global Trade" (hero) | Every continent, corridor, deadline |
+| routes | "Chart the Course. Own the Ocean." | Sea freight, optimal routing |
+| horizon | "Where the Sea Becomes Strategy." | Saudi Arabia trade lane advantage |
+| maritime | "Deep Water. Deeper Trust." | FCL/LCL, reefer, breakbulk |
+
+### Act 2 — Air Cargo
+| ID | Title | Body summary |
+|----|-------|--------------|
+| liftoff | "Leave the Waves. Rule the Sky." | Sea-to-air seamless handoff |
+| airways | "Airborne. On Time. Every Time." | 150+ destinations, priority uplift |
+| promise | "One Partner. Every Mile." | CTA section — sea + air unified |
+
+---
+
+## GSAP Opacity Pattern (critical)
+
+- `ChapterSection` block starts with `style={{ opacity: 0 }}` inline
+- **Hero**: `block.style.opacity = '1'` immediately, then `gsap.fromTo(children, ...)` time-based
+- **Non-hero**: `gsap.fromTo(block, { opacity:0, y:40 }, { opacity:1, y:0 })` via ScrollTrigger scrub
+- **Bug to avoid**: Never animate only `children` — parent block stays at `opacity:0` and hides everything
+
+---
+
 ## Known Gotchas
 
 - Body strings in CHAPTERS array must use **double quotes or template literals** — never single quotes with apostrophes (parser error)
 - `ActIndicator` uses React state `currentAct` (1 or 2) — this is the only state that triggers re-render on scroll (single setState call per act boundary crossing, not per frame)
 - Loading completes when all 400 images fire `onload` or `onerror` — errors are silently counted so a missing frame never blocks the site
+- `.chapter-block` has **no background** — text visibility relies on `text-shadow` alone (strong black glow layers)
