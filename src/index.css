@@ -215,18 +215,103 @@ body {
 }
 
 /* ============================================
+   CHAPTER SECTION ALIGNMENT CLASSES
+   ============================================ */
+.chapter-section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 4rem;
+}
+
+.chapter-section-left {
+  align-items: flex-start;
+  padding-left: clamp(1.5rem, 8vw, 7rem);
+  padding-right: 2rem;
+}
+
+.chapter-section-right {
+  align-items: flex-end;
+  padding-right: clamp(1.5rem, 8vw, 7rem);
+  padding-left: 2rem;
+  text-align: right;
+}
+
+.chapter-section-right .section-body {
+  margin-left: auto;
+}
+
+.chapter-section-center {
+  align-items: center;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  text-align: center;
+}
+
+.chapter-section-center .section-body {
+  margin: 0 auto;
+}
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 @media (max-width: 768px) {
   .chapter-block {
-    max-width: 88vw;
+    max-width: 90vw;
   }
 
   .section-title {
-    font-size: 1.75rem;
+    font-size: clamp(1.55rem, 7.5vw, 2.2rem);
+    line-height: 1.1;
   }
 
   .section-body {
-    font-size: 0.875rem;
+    font-size: 0.9rem;
+    max-width: 100%;
+    line-height: 1.65;
+  }
+
+  /* All chapters left-aligned on small screens */
+  .chapter-section-left,
+  .chapter-section-right,
+  .chapter-section-center {
+    align-items: flex-start;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    text-align: left;
+  }
+
+  .chapter-section-right .section-body,
+  .chapter-section-center .section-body {
+    margin-left: 0;
+  }
+
+  /* CTA button full-width on mobile */
+  .cta-button {
+    width: 100%;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+  }
+
+  /* Loading bar wider on mobile */
+  .loading-bar-track {
+    width: 220px;
+  }
+
+  /* Act indicator closer to bottom edge */
+  .act-indicator {
+    bottom: 1.5rem !important;
+    font-size: 0.58rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: clamp(1.35rem, 8vw, 1.9rem);
+  }
+
+  .chapter-label {
+    font-size: 0.58rem;
   }
 }

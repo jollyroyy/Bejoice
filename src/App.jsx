@@ -245,18 +245,11 @@ function ChapterSection({ chapter }) {
     };
   }, []);
 
-  const alignStyle = {
-    left:   { alignItems: 'flex-start', paddingLeft:  'clamp(1.5rem, 8vw, 7rem)', paddingRight: '2rem' },
-    right:  { alignItems: 'flex-end',   paddingRight: 'clamp(1.5rem, 8vw, 7rem)', paddingLeft:  '2rem', textAlign: 'right' },
-    center: { alignItems: 'center',     paddingLeft:  '2rem',                      paddingRight: '2rem', textAlign: 'center' },
-  };
-
   return (
     <section
       ref={sectionRef}
       id={`section-${chapter.id}`}
-      className="relative z-10"
-      style={{ height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: '4rem', ...alignStyle[chapter.align] }}
+      className={`chapter-section chapter-section-${chapter.align} relative z-10`}
     >
       <div ref={blockRef} className="chapter-block" style={{ opacity: 0 }}>
         <div className="chapter-label">{chapter.label}</div>
@@ -326,6 +319,7 @@ function ActIndicator({ currentAct }) {
   return (
     <div
       ref={ref}
+      className="act-indicator"
       style={{
         position: 'fixed',
         bottom: '2.8rem',
