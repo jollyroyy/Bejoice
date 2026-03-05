@@ -362,7 +362,7 @@ export default function App() {
   const drawFrame = useCallback((frameIndex) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
     const img = imagesRef.current[frameIndex];
     if (!img || !img.complete || !img.naturalWidth) return;
 
@@ -384,18 +384,23 @@ export default function App() {
     const driftX = (Math.sin(t * 0.17) * 4 + Math.sin(t * 0.08) * 2) * dpr;
     const driftY = (Math.cos(t * 0.13) * 3 + Math.cos(t * 0.09) * 1) * dpr;
 
-    ctx.clearRect(0, 0, cw, ch);
+    // On portrait mobile use contain (full image visible); on landscape use cover
+    const isPortrait = ch > cw;
+    // alpha:false context — fill background for portrait pillarbox, draw covers landscape
+    ctx.fillStyle = '#050508';
+    ctx.fillRect(0, 0, cw, ch);
 
-    // Cover-scale
-    const scale  = Math.max(cw / iw, ch / ih);
+    const scale  = isPortrait
+      ? Math.min(cw / iw, ch / ih)   // contain — full globe always visible
+      : Math.max(cw / iw, ch / ih);  // cover   — fills edge-to-edge on landscape
     const dw     = iw * scale;
     const dh     = ih * scale;
 
-    // Clamp parallax to bleed margin
+    // Clamp parallax to bleed margin (zero on contain/portrait — no bleed)
     const bleedX = Math.max((dw - cw) / 2, 0);
     const bleedY = Math.max((dh - ch) / 2, 0);
-    const rawPx  = mouseRef.current.x * 12 * dpr + driftX;
-    const rawPy  = mouseRef.current.y *  8 * dpr + driftY;
+    const rawPx  = isPortrait ? 0 : mouseRef.current.x * 12 * dpr + driftX;
+    const rawPy  = isPortrait ? 0 : mouseRef.current.y *  8 * dpr + driftY;
     const px     = Math.max(-bleedX, Math.min(bleedX, rawPx));
     const py     = Math.max(-bleedY, Math.min(bleedY, rawPy));
 
@@ -408,10 +413,12 @@ export default function App() {
     ctx.drawImage(img, dx, dy, ddw, ddh);
 
     // ── PASS 2: vignette overlay — no re-draw, just gradient fill ─────────
-    const vig = ctx.createRadialGradient(
-      cw / 2, ch * 0.5, ch * 0.10,
-      cw / 2, ch * 0.5, Math.max(cw, ch) * 0.82
-    );
+    // On portrait contain, the image is pillarboxed — vignette relative to image bounds
+    const vigCx = cw / 2;
+    const vigCy = ch / 2;
+    const vigInner = isPortrait ? Math.min(dw, dh) * 0.08 : ch * 0.10;
+    const vigOuter = isPortrait ? Math.max(dw, dh) * 0.72 : Math.max(cw, ch) * 0.82;
+    const vig = ctx.createRadialGradient(vigCx, vigCy, vigInner, vigCx, vigCy, vigOuter);
     vig.addColorStop(0,    'rgba(0,0,0,0)');
     vig.addColorStop(0.45, 'rgba(0,0,0,0)');
     vig.addColorStop(0.74, 'rgba(0,0,0,0.18)');
@@ -475,7 +482,7 @@ export default function App() {
     canvas.height       = h;
     canvas.style.width  = `${window.innerWidth}px`;
     canvas.style.height = `${window.innerHeight}px`;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
     drawFrame(Math.round(frameObjRef.current.frame));
