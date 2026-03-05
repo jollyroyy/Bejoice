@@ -18,25 +18,25 @@ const AIRPORTS = [
 ];
 
 const sharedInputCls = {
-  background: 'rgba(255,255,255,0.04)',
-  border: '1px solid rgba(255,255,255,0.09)',
+  background: 'rgba(255,255,255,0.05)',
+  border: '1px solid rgba(255,255,255,0.12)',
   borderRadius: '0.5rem',
-  padding: '0.65rem 0.85rem',
-  color: '#fff',
+  padding: '0.7rem 0.9rem',
+  color: 'rgba(255,255,255,0.92)',
   fontFamily: "'Inter', sans-serif",
-  fontSize: '0.82rem',
+  fontSize: '0.9rem',
   width: '100%',
   outline: 'none',
   transition: 'border-color 0.2s',
 };
 const labelCls = {
   fontFamily: "'Inter', sans-serif",
-  fontSize: '0.6rem',
-  fontWeight: 500,
-  letterSpacing: '0.18em',
+  fontSize: '0.68rem',
+  fontWeight: 600,
+  letterSpacing: '0.14em',
   textTransform: 'uppercase',
-  color: 'rgba(255,255,255,0.32)',
-  marginBottom: '0.35rem',
+  color: 'rgba(255,255,255,0.52)',
+  marginBottom: '0.4rem',
   display: 'block',
 };
 
@@ -116,8 +116,8 @@ function CheckToggle({ label, checked, onChange }) {
       gap: '0.65rem',
       cursor: 'pointer',
       fontFamily: "'Inter', sans-serif",
-      fontSize: '0.78rem',
-      color: 'rgba(255,255,255,0.55)',
+      fontSize: '0.88rem',
+      color: 'rgba(255,255,255,0.72)',
       userSelect: 'none',
     }}>
       <div
@@ -183,10 +183,11 @@ function StepIndicator({ steps, current }) {
             </div>
             <span style={{
               fontFamily: "'Inter', sans-serif",
-              fontSize: '0.54rem',
-              letterSpacing: '0.12em',
+              fontSize: '0.62rem',
+              fontWeight: i === current ? 600 : 400,
+              letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              color: i === current ? 'rgba(200,168,78,0.85)' : 'rgba(255,255,255,0.22)',
+              color: i === current ? 'rgba(200,168,78,0.95)' : 'rgba(255,255,255,0.38)',
               whiteSpace: 'nowrap',
             }}>{s}</span>
           </div>
@@ -229,7 +230,7 @@ function NavButtons({ step, totalSteps, onBack, onNext, onSubmit, loading }) {
       >
         ← Back
       </button>
-      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.6rem', color: 'rgba(255,255,255,0.18)', letterSpacing: '0.1em' }}>
+      <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.74rem', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em' }}>
         {step + 1} / {totalSteps}
       </span>
       {step < totalSteps - 1 ? (
@@ -867,7 +868,7 @@ function ContactStep({ d, up }) {
           <Textarea placeholder="Special instructions, preferred carriers, delivery timeline…" value={d.notes} onChange={e => up('notes', e.target.value)} />
         </Field>
       </div>
-      <p style={{ marginTop: '1rem', fontFamily: "'Inter', sans-serif", fontSize: '0.62rem', color: 'rgba(255,255,255,0.2)', lineHeight: 1.6 }}>
+      <p style={{ marginTop: '1rem', fontFamily: "'Inter', sans-serif", fontSize: '0.76rem', color: 'rgba(255,255,255,0.38)', lineHeight: 1.7 }}>
         Your details are used solely to prepare your quote. We respond within 4 business hours.
       </p>
     </div>
@@ -895,7 +896,7 @@ function SuccessState({ type, onReset }) {
       <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.8rem', letterSpacing: '0.06em', color: '#fff' }}>
         Quote Requested
       </h3>
-      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.7, maxWidth: '22rem' }}>
+      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.75, maxWidth: '22rem' }}>
         Your <strong style={{ color: 'rgba(200,168,78,0.85)' }}>{SUCCESS_LABELS[type]}</strong> quote request has been received.
         Our team will respond within <strong style={{ color: 'rgba(200,168,78,0.85)' }}>4 business hours</strong>.
       </p>
