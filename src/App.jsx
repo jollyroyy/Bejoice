@@ -9,11 +9,10 @@ gsap.registerPlugin(ScrollTrigger);
 // ============================================
 // CONSTANTS
 // ============================================
-const GLOBE_SEA_FRAMES  = 200;   // act 1
-const SEA_FLIGHT_FRAMES = 200;   // act 2
+const GLOBE_SEA_FRAMES  = 200;
+const SEA_FLIGHT_FRAMES = 200;
 const TOTAL_FRAMES = GLOBE_SEA_FRAMES + SEA_FLIGHT_FRAMES; // 400
 
-// Frame URL — act 1 uses /globe-sea/, act 2 uses /sea-flight/
 const FRAME_URL = (globalIndex) => {
   if (globalIndex < GLOBE_SEA_FRAMES) {
     const n = (globalIndex + 1).toString().padStart(3, '0');
@@ -25,14 +24,13 @@ const FRAME_URL = (globalIndex) => {
 };
 
 // ── Narrative chapters ────────────────────────────────────────────────────────
-// Act 1 — Globe to Sea  (global frames 0-199)
-// Act 2 — Sea to Flight (global frames 200-399)
 const CHAPTERS = [
   // ── ACT 1: Globe → Sea ──────────────────────────────────────────────────
   {
     id: 'world',
     label: 'Act I — The World Awaits',
-    title: 'Every Journey\nBegins Here.',
+    titleLines: ['Unleash', 'Global Trade.'],
+    titleAccentLine: 1, // index of line to gold-accent
     body: "From a bird\u2019s-eye view of our interconnected planet, Bejoice maps the fastest, safest corridor between your cargo and its destination \u2014 anywhere on Earth.",
     frameStart: 0,
     frameEnd: 44,
@@ -41,8 +39,8 @@ const CHAPTERS = [
   {
     id: 'routes',
     label: 'Act I — Charting Your Course',
-    title: 'Precision Routes.\nGlobal Reach.',
-    body: 'Our network engineers plot the optimal multi-modal path in real time — sea, air, or land — before a single crate leaves your warehouse.',
+    titleLines: ['Beyond', 'Horizons.'],
+    body: 'Our network engineers plot the optimal multi-modal path in real time \u2014 sea, air, or land \u2014 before a single crate leaves your warehouse.',
     frameStart: 45,
     frameEnd: 89,
     align: 'right',
@@ -50,7 +48,7 @@ const CHAPTERS = [
   {
     id: 'horizon',
     label: 'Act I — The Open Horizon',
-    title: 'Where Continents\nMeet the Sea.',
+    titleLines: ['Command', 'The Tide.'],
     body: "Saudi Arabia\u2019s ports are the gateway to three continents. Bejoice leverages every nautical mile to deliver speed, capacity, and certainty.",
     frameStart: 90,
     frameEnd: 144,
@@ -59,19 +57,23 @@ const CHAPTERS = [
   {
     id: 'maritime',
     label: 'Act I — Maritime Mastery',
-    title: 'Colossal Capacity.\nDeep-Sea Expertise.',
-    body: 'Our maritime fleet cuts through the deep blue — FCL, LCL, reefer, breakbulk — with unparalleled reliability from port to port.',
+    titleLines: ['Colossal', 'Capacity.'],
+    body: 'Our maritime fleet cuts through the deep blue \u2014 FCL, LCL, reefer, breakbulk \u2014 with unparalleled reliability from port to port.',
     frameStart: 145,
     frameEnd: 199,
     align: 'right',
+    stats: [
+      { value: '45+', label: 'Global Ports' },
+      { value: '12M', label: 'TEUs Handled' },
+    ],
   },
 
   // ── ACT 2: Sea → Flight ──────────────────────────────────────────────────
   {
     id: 'liftoff',
     label: 'Act II — The Ascent',
-    title: 'From Ocean\nto Open Sky.',
-    body: 'When time is the currency, we shift seamlessly from sea to air — our premium cargo network launches your shipment above every delay.',
+    titleLines: ['From Ocean', 'To Open Sky.'],
+    body: 'When time is the currency, we shift seamlessly from sea to air \u2014 our premium cargo network launches your shipment above every delay.',
     frameStart: 200,
     frameEnd: 254,
     align: 'left',
@@ -79,17 +81,21 @@ const CHAPTERS = [
   {
     id: 'airways',
     label: 'Act II — Commanding the Airways',
-    title: 'Speed Is\nOur Standard.',
+    titleLines: ['Omniscient', 'Control.'],
     body: 'Connecting 150+ destinations across Asia, Europe, and the Americas, our air freight solutions deliver critical cargo when every hour counts.',
     frameStart: 255,
     frameEnd: 319,
     align: 'right',
+    stats: [
+      { value: '150+', label: 'Destinations' },
+      { value: '24/7', label: 'Live Tracking' },
+    ],
   },
   {
     id: 'promise',
     label: 'Act II — The Bejoice Promise',
-    title: 'Safe. Seamless.\nDelivered.',
-    body: 'Globe, sea, sky — one seamless journey, zero friction. Bejoice closes the loop from origin to destination with precision, care, and complete visibility.',
+    titleLines: ['Safe.', 'Seamless.', 'Delivered.'],
+    body: 'Globe, sea, sky \u2014 one seamless journey, zero friction. Bejoice closes the loop from origin to destination with precision, care, and complete visibility.',
     frameStart: 320,
     frameEnd: 399,
     align: 'center',
@@ -98,7 +104,7 @@ const CHAPTERS = [
 ];
 
 // ============================================
-// LOADING SCREEN
+// LOADING SCREEN — Apple minimal
 // ============================================
 function LoadingScreen({ progress, isLoaded }) {
   const screenRef = useRef(null);
@@ -107,9 +113,9 @@ function LoadingScreen({ progress, isLoaded }) {
     if (isLoaded && screenRef.current) {
       gsap.to(screenRef.current, {
         opacity: 0,
-        duration: 1.2,
+        duration: 1.4,
         ease: 'power3.inOut',
-        delay: 0.4,
+        delay: 0.5,
         onComplete: () => {
           if (screenRef.current) screenRef.current.style.display = 'none';
         },
@@ -119,28 +125,44 @@ function LoadingScreen({ progress, isLoaded }) {
 
   return (
     <div ref={screenRef} className="loading-screen">
-      <div className="loading-logo">Bejoice Group</div>
+      <div className="loading-logo">
+        Bejoice <span>Group</span>
+      </div>
       <div className="loading-bar-track">
         <div className="loading-bar-fill" style={{ width: `${progress}%` }} />
       </div>
-      <div className="loading-percentage">{Math.round(progress)}</div>
+      <div className="loading-percentage">{Math.round(progress)} %</div>
     </div>
   );
 }
 
 // ============================================
-// HEADER
+// HEADER — frosted glass on scroll
 // ============================================
 function Header() {
   const headerRef = useRef(null);
 
   useEffect(() => {
     if (!headerRef.current) return;
+
+    // Fade in after load
     gsap.fromTo(
       headerRef.current,
       { opacity: 0 },
-      { opacity: 1, duration: 1.4, ease: 'power2.out', delay: 1.6 }
+      { opacity: 1, duration: 1.4, ease: 'power2.out', delay: 1.8 }
     );
+
+    // Frosted glass on scroll
+    const onScroll = () => {
+      if (!headerRef.current) return;
+      if (window.scrollY > 40) {
+        headerRef.current.classList.add('scrolled');
+      } else {
+        headerRef.current.classList.remove('scrolled');
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   return (
@@ -149,27 +171,49 @@ function Header() {
       className="header-glass fixed top-0 left-0 w-full z-50 opacity-0"
     >
       <div className="flex items-center justify-between px-8 md:px-14 py-5">
-        <div style={{ fontFamily: "'Syne', sans-serif", fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.92)' }}>
+        {/* Wordmark */}
+        <div
+          style={{
+            fontFamily: "'Bebas Neue', sans-serif",
+            fontSize: '1.25rem',
+            fontWeight: 400,
+            letterSpacing: '0.35em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.92)',
+            textIndent: '0.35em',
+          }}
+        >
           Bejoice
-          <span style={{ color: 'rgba(200,168,78,0.75)', marginLeft: '0.4em', fontSize: '0.75rem', fontWeight: 400, letterSpacing: '0.4em' }}>Group</span>
+          <span
+            style={{
+              color: 'rgba(200,168,78,0.8)',
+              marginLeft: '0.5em',
+              fontSize: '1rem',
+              letterSpacing: '0.45em',
+            }}
+          >
+            Group
+          </span>
         </div>
+
+        {/* Nav — Contact */}
         <button
           id="contact-btn"
           style={{
             fontFamily: "'Inter', sans-serif",
-            fontSize: '0.7rem',
+            fontSize: '0.68rem',
             fontWeight: 400,
-            letterSpacing: '0.18em',
+            letterSpacing: '0.2em',
             textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.45)',
+            color: 'rgba(255,255,255,0.4)',
             background: 'none',
             border: 'none',
             cursor: 'pointer',
-            transition: 'color 0.25s ease',
+            transition: 'color 0.3s ease',
             padding: '0.25rem 0',
           }}
-          onMouseEnter={e => e.target.style.color = 'rgba(255,255,255,0.9)'}
-          onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.45)'}
+          onMouseEnter={e => (e.target.style.color = 'rgba(255,255,255,0.85)')}
+          onMouseLeave={e => (e.target.style.color = 'rgba(255,255,255,0.4)')}
         >
           Contact
         </button>
@@ -179,22 +223,31 @@ function Header() {
 }
 
 // ============================================
-// ACT DIVIDER — subtle fullscreen title card between acts
+// ACT DIVIDER — cinematic title between acts
 // ============================================
 function ActDivider({ label, title }) {
-  const ref = useRef(null);
+  const ref      = useRef(null);
+  const labelRef = useRef(null);
+  const titleRef = useRef(null);
 
   useEffect(() => {
     if (!ref.current) return;
+
     const enter = gsap.timeline({
       scrollTrigger: { trigger: ref.current, start: 'top 75%', end: 'top 25%', scrub: 1.2 },
     });
-    enter.fromTo(ref.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, ease: 'power3.out' });
+    enter.fromTo(labelRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, ease: 'power3.out' }, 0);
+    enter.fromTo(titleRef.current, { opacity: 0, y: 40 }, { opacity: 1, y: 0, ease: 'power3.out' }, 0.1);
+
     const exit = gsap.timeline({
       scrollTrigger: { trigger: ref.current, start: 'bottom 65%', end: 'bottom 15%', scrub: 1.2 },
     });
     exit.to(ref.current, { opacity: 0, y: -20, ease: 'power2.in' });
-    return () => { enter.scrollTrigger?.kill(); enter.kill(); exit.scrollTrigger?.kill(); exit.kill(); };
+
+    return () => {
+      enter.scrollTrigger?.kill(); enter.kill();
+      exit.scrollTrigger?.kill();  exit.kill();
+    };
   }, []);
 
   return (
@@ -206,13 +259,39 @@ function ActDivider({ label, title }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        opacity: 0,
+        opacity: 1,
         textAlign: 'center',
         padding: '0 2rem',
       }}
     >
-      <div className="chapter-label" style={{ marginBottom: '1rem' }}>{label}</div>
-      <h2 className="section-title" style={{ whiteSpace: 'pre-line', fontSize: 'clamp(2.4rem, 6vw, 5rem)' }}>{title}</h2>
+      {/* Decorative line above */}
+      <div
+        ref={labelRef}
+        style={{ opacity: 0, display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}
+      >
+        <div style={{ width: '3rem', height: '1px', background: 'rgba(200,168,78,0.5)' }} />
+        <span
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: '0.6rem',
+            fontWeight: 500,
+            letterSpacing: '0.3em',
+            textTransform: 'uppercase',
+            color: 'rgba(200,168,78,0.65)',
+          }}
+        >
+          {label}
+        </span>
+        <div style={{ width: '3rem', height: '1px', background: 'rgba(200,168,78,0.5)' }} />
+      </div>
+
+      <h2
+        ref={titleRef}
+        className="act-divider-title"
+        style={{ opacity: 0, whiteSpace: 'pre-line' }}
+      >
+        {title}
+      </h2>
     </div>
   );
 }
@@ -229,10 +308,17 @@ function ChapterSection({ chapter }) {
     const block   = blockRef.current;
     if (!section || !block) return;
 
+    const children = Array.from(block.children);
+
     const enter = gsap.timeline({
       scrollTrigger: { trigger: section, start: 'top 75%', end: 'top 25%', scrub: 1.2 },
     });
-    enter.fromTo(block, { opacity: 0, y: 36 }, { opacity: 1, y: 0, ease: 'power3.out' });
+    // Staggered entry — each child staggers in
+    enter.fromTo(
+      children,
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, ease: 'power3.out', stagger: 0.08 }
+    );
 
     const exit = gsap.timeline({
       scrollTrigger: { trigger: section, start: 'bottom 65%', end: 'bottom 15%', scrub: 1.2 },
@@ -245,6 +331,9 @@ function ChapterSection({ chapter }) {
     };
   }, []);
 
+  const isRight  = chapter.align === 'right';
+  const isCenter = chapter.align === 'center';
+
   return (
     <section
       ref={sectionRef}
@@ -252,12 +341,44 @@ function ChapterSection({ chapter }) {
       className={`chapter-section chapter-section-${chapter.align} relative z-10`}
     >
       <div ref={blockRef} className="chapter-block" style={{ opacity: 0 }}>
+
+        {/* Label with decorative line */}
         <div className="chapter-label">{chapter.label}</div>
-        <h2 className="section-title" style={{ whiteSpace: 'pre-line' }}>{chapter.title}</h2>
+
+        {/* Title — Bebas Neue display, with optional gold accent on first line */}
+        <h2
+          className="section-title"
+          style={{ whiteSpace: 'pre-line' }}
+        >
+          {chapter.titleLines.map((line, i) => (
+            <span key={i} style={{ display: 'block' }}>
+              {i === (chapter.titleAccentLine ?? -1) ? (
+                <span className="title-accent">{line}</span>
+              ) : line}
+            </span>
+          ))}
+        </h2>
+
+        {/* Body copy */}
         <p className="section-body">{chapter.body}</p>
 
+        {/* Optional stats row */}
+        {chapter.stats && (
+          <div className={`stats-row${isRight ? ' stats-right' : ''}`}
+            style={isRight ? { justifyContent: 'flex-end' } : {}}
+          >
+            {chapter.stats.map(s => (
+              <div key={s.label} className="stat-item">
+                <div className="stat-value">{s.value}</div>
+                <div className="stat-label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* CTA */}
         {chapter.hasCTA && (
-          <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: chapter.align === 'center' ? 'center' : 'flex-start' }}>
+          <div style={{ marginTop: '2.8rem', display: 'flex', justifyContent: isCenter ? 'center' : 'flex-start' }}>
             <button id="cta-start-journey" className="cta-button">
               Start Your Journey
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -297,22 +418,23 @@ function ProgressBar() {
 }
 
 // ============================================
-// ACT INDICATOR — subtle floating pill
+// ACT INDICATOR — floating pill
 // ============================================
 function ActIndicator({ currentAct }) {
-  const ref = useRef(null);
+  const ref     = useRef(null);
   const prevAct = useRef(currentAct);
 
   useEffect(() => {
     if (!ref.current || prevAct.current === currentAct) return;
     prevAct.current = currentAct;
-    gsap.fromTo(ref.current,
-      { opacity: 0, y: 8 },
-      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
+    gsap.fromTo(
+      ref.current,
+      { opacity: 0, y: 10, scale: 0.9 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: 'back.out(1.7)' }
     );
     const hide = setTimeout(() => {
-      gsap.to(ref.current, { opacity: 0, duration: 0.4 });
-    }, 2200);
+      gsap.to(ref.current, { opacity: 0, y: -6, duration: 0.4, ease: 'power2.in' });
+    }, 2400);
     return () => clearTimeout(hide);
   }, [currentAct]);
 
@@ -329,15 +451,17 @@ function ActIndicator({ currentAct }) {
         opacity: 0,
         pointerEvents: 'none',
         fontFamily: "'Inter', sans-serif",
-        fontSize: '0.62rem',
-        letterSpacing: '0.22em',
+        fontSize: '0.6rem',
+        letterSpacing: '0.24em',
         textTransform: 'uppercase',
-        color: 'rgba(200,168,78,0.8)',
-        background: 'rgba(0,0,0,0.45)',
-        border: '1px solid rgba(200,168,78,0.2)',
+        color: 'rgba(200,168,78,0.85)',
+        background: 'rgba(5,5,8,0.55)',
+        border: '1px solid rgba(200,168,78,0.18)',
         borderRadius: '2rem',
-        padding: '0.35rem 1rem',
-        backdropFilter: 'blur(12px)',
+        padding: '0.38rem 1.1rem',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        whiteSpace: 'nowrap',
       }}
     >
       {currentAct === 1 ? 'Act I — Globe to Sea' : 'Act II — Sea to Flight'}
@@ -350,7 +474,7 @@ function ActIndicator({ currentAct }) {
 // ============================================
 export default function App() {
   const canvasRef    = useRef(null);
-  const imagesRef    = useRef([]);    // length = TOTAL_FRAMES (400)
+  const imagesRef    = useRef([]);
   const frameObjRef  = useRef({ frame: 0 });
   const [loadProgress, setLoadProgress] = useState(0);
   const [isLoaded, setIsLoaded]         = useState(false);
@@ -358,7 +482,6 @@ export default function App() {
   const mouseRef     = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
 
   // ── DRAW FRAME ──────────────────────────────────────────────────────────────
-  // Operates in true physical pixels. No ctx.filter, no ctx.scale.
   const drawFrame = useCallback((frameIndex) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -378,25 +501,23 @@ export default function App() {
     mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.04;
     mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.04;
 
-    // Gentle ambient drift in physical pixels
+    // Gentle ambient drift
     const dpr    = window.devicePixelRatio || 1;
     const t      = performance.now() / 1000;
     const driftX = (Math.sin(t * 0.17) * 4 + Math.sin(t * 0.08) * 2) * dpr;
     const driftY = (Math.cos(t * 0.13) * 3 + Math.cos(t * 0.09) * 1) * dpr;
 
-    // On portrait mobile use contain (full image visible); on landscape use cover
+    // Portrait → contain; landscape → cover
     const isPortrait = ch > cw;
-    // alpha:false context — fill background for portrait pillarbox, draw covers landscape
     ctx.fillStyle = '#050508';
     ctx.fillRect(0, 0, cw, ch);
 
-    const scale  = isPortrait
-      ? Math.min(cw / iw, ch / ih)   // contain — full globe always visible
-      : Math.max(cw / iw, ch / ih);  // cover   — fills edge-to-edge on landscape
-    const dw     = iw * scale;
-    const dh     = ih * scale;
+    const scale = isPortrait
+      ? Math.min(cw / iw, ch / ih)
+      : Math.max(cw / iw, ch / ih);
+    const dw = iw * scale;
+    const dh = ih * scale;
 
-    // Clamp parallax to bleed margin (zero on contain/portrait — no bleed)
     const bleedX = Math.max((dw - cw) / 2, 0);
     const bleedY = Math.max((dh - ch) / 2, 0);
     const rawPx  = isPortrait ? 0 : mouseRef.current.x * 12 * dpr + driftX;
@@ -409,20 +530,18 @@ export default function App() {
     const ddw = Math.round(dw);
     const ddh = Math.round(dh);
 
-    // ── PASS 1: sharp frame draw ───────────────────────────────────────────
     ctx.drawImage(img, dx, dy, ddw, ddh);
 
-    // ── PASS 2: vignette overlay — no re-draw, just gradient fill ─────────
-    // On portrait contain, the image is pillarboxed — vignette relative to image bounds
-    const vigCx = cw / 2;
-    const vigCy = ch / 2;
+    // Vignette overlay
+    const vigCx    = cw / 2;
+    const vigCy    = ch / 2;
     const vigInner = isPortrait ? Math.min(dw, dh) * 0.08 : ch * 0.10;
     const vigOuter = isPortrait ? Math.max(dw, dh) * 0.72 : Math.max(cw, ch) * 0.82;
     const vig = ctx.createRadialGradient(vigCx, vigCy, vigInner, vigCx, vigCy, vigOuter);
     vig.addColorStop(0,    'rgba(0,0,0,0)');
     vig.addColorStop(0.45, 'rgba(0,0,0,0)');
     vig.addColorStop(0.74, 'rgba(0,0,0,0.18)');
-    vig.addColorStop(1,    'rgba(0,0,0,0.52)');
+    vig.addColorStop(1,    'rgba(0,0,0,0.55)');
     ctx.fillStyle = vig;
     ctx.fillRect(0, 0, cw, ch);
   }, []);
@@ -455,7 +574,7 @@ export default function App() {
       }
     }
 
-    // RAF loop for drift animation
+    // RAF loop for ambient drift
     let active = true;
     const loop = () => {
       if (!active) return;
@@ -495,8 +614,6 @@ export default function App() {
   }, [handleResize]);
 
   // ── PRELOAD ALL 400 FRAMES ──────────────────────────────────────────────────
-  // Prioritised: first 8 frames load immediately so user sees content fast.
-  // Remaining frames load in the background.
   useEffect(() => {
     let cancelled = false;
     const images = new Array(TOTAL_FRAMES).fill(null);
@@ -509,7 +626,6 @@ export default function App() {
       if (loaded === TOTAL_FRAMES) setIsLoaded(true);
     };
 
-    // Load first 8 immediately, rest deferred slightly
     for (let i = 0; i < TOTAL_FRAMES; i++) {
       const img = new Image();
       img.src = FRAME_URL(i);
@@ -537,7 +653,6 @@ export default function App() {
         if (newFrame !== Math.round(frameObjRef.current.frame)) {
           frameObjRef.current.frame = newFrame;
           drawFrame(newFrame);
-          // Update act indicator
           setCurrentAct(newFrame < GLOBE_SEA_FRAMES ? 1 : 2);
         }
       },
@@ -546,7 +661,7 @@ export default function App() {
     return () => trigger.kill();
   }, [isLoaded, drawFrame]);
 
-  // ── DRAW INITIAL FRAME AFTER MOUNT ──────────────────────────────────────────
+  // ── DRAW INITIAL FRAME ──────────────────────────────────────────────────────
   useEffect(() => {
     if (isLoaded && canvasRef.current) {
       const timer = setTimeout(() => { handleResize(); drawFrame(0); }, 100);
@@ -571,12 +686,12 @@ export default function App() {
     return () => lenis.destroy();
   }, []);
 
-  // ─────────────────────────────────────────────────────────────────────────────
+  // ── RENDER ───────────────────────────────────────────────────────────────────
   return (
     <>
       <LoadingScreen progress={loadProgress} isLoaded={isLoaded} />
 
-      {/* Fixed full-viewport canvas — all frames paint here */}
+      {/* Fixed canvas — all frames paint here */}
       <div className="canvas-container">
         <canvas ref={canvasRef} />
       </div>
@@ -585,7 +700,7 @@ export default function App() {
       <ActIndicator currentAct={currentAct} />
 
       <div id="scroll-container" className="relative z-10">
-        {/* Opening spacer */}
+        {/* Opening spacer — gives breathing room before first chapter */}
         <div style={{ height: '60vh' }} />
 
         {/* Act 1 chapters */}
