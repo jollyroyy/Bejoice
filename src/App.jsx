@@ -46,6 +46,7 @@ const CHAPTERS = [
     frameStart: 45,
     frameEnd: 89,
     align: 'right',
+    hasMiniCTA: true,
   },
   {
     id: 'horizon',
@@ -68,6 +69,7 @@ const CHAPTERS = [
       { value: '45+', label: 'Global Ports' },
       { value: '12M', label: 'TEUs Handled' },
     ],
+    hasMiniCTA: true,
   },
 
   // ── ACT 2: Sea → Flight ──────────────────────────────────────────────────
@@ -92,6 +94,7 @@ const CHAPTERS = [
       { value: '150+', label: 'Destinations' },
       { value: '24/7', label: 'Live Tracking' },
     ],
+    hasMiniCTA: true,
   },
   {
     id: 'promise',
@@ -728,6 +731,49 @@ function HeroQuoteForm({ lang = 'en' }) {
 }
 
 // ============================================
+// FLOATING STICKY CTA — slides up after hero scroll
+// ============================================
+function FloatingCTA({ onQuoteClick }) {
+  const [visible, setVisible] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+
+  useEffect(() => {
+    const HERO_HEIGHT = window.innerHeight * 0.9;
+    const handleScroll = () => {
+      if (!dismissed) {
+        setVisible(window.scrollY > HERO_HEIGHT);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [dismissed]);
+
+  if (dismissed) return null;
+
+  return (
+    <div className={`floating-cta${visible ? ' floating-cta--visible' : ''}`} role="complementary" aria-label="Get a quote">
+      <div className="floating-cta-inner">
+        <div className="floating-cta-text">
+          <span className="floating-cta-headline">Move Cargo Smarter.</span>
+          <span className="floating-cta-sub">Sea · Air · Land · KSA Specialists</span>
+        </div>
+        <div className="floating-cta-actions">
+          <button className="floating-cta-btn" onClick={onQuoteClick}>
+            Free Quote
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <button
+            className="floating-cta-dismiss"
+            onClick={() => { setVisible(false); setTimeout(() => setDismissed(true), 400); }}
+            aria-label="Dismiss"
+          >×</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================
 // CHAPTER SECTION
 // ============================================
 function ChapterSection({ chapter, lang = 'en' }) {
@@ -846,6 +892,21 @@ function ChapterSection({ chapter, lang = 'en' }) {
                 <div className="stat-label">{s.label}</div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Mini CTA pill — appears on chapters with hasMiniCTA flag */}
+        {chapter.hasMiniCTA && (
+          <div className={`mini-cta-wrap${isRight ? ' mini-cta-wrap--right' : ''}`}>
+            <button
+              className="mini-cta-pill"
+              onClick={() => document.getElementById('quick-quote-section')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              <span className="mini-cta-dot" />
+              Get a Free Quote
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <span className="mini-cta-hint">30-min response · No commitment</span>
           </div>
         )}
 
@@ -1435,6 +1496,261 @@ function CaseStudies({ lang = 'en' }) {
 }
 
 // ============================================
+// TESTIMONIALS
+// ============================================
+function Testimonials({ lang = 'en' }) {
+  const data = {
+    en: {
+      label: 'Client Voices',
+      title: 'They Trust Us.',
+      titleAccent: 'For Good Reason.',
+      items: [
+        {
+          quote: "Bejoice handled our automotive parts shipment from Germany to Jeddah with exceptional precision. Port clearance, documentation — everything seamless.",
+          author: "Mohammed Al-Rashid",
+          role: "Head of Supply Chain · Saudi Auto Industries",
+          stars: 5,
+          tag: "Sea Freight",
+        },
+        {
+          quote: "When we needed urgent pharma cargo on cold chain from Amsterdam to Riyadh, Bejoice delivered in under 14 hours uplift. Reliability that never blinks.",
+          author: "Sarah Chen",
+          role: "Logistics Director · PharmaGulf FZCO",
+          stars: 5,
+          tag: "Air Freight",
+        },
+        {
+          quote: "ZATCA compliance used to be our biggest pain. Bejoice handles HS codes, duty estimates, pre-clearance — everything. A genuine game-changer for our operation.",
+          author: "Ahmed Bin Zayed",
+          role: "Operations Manager · GCC Industrial Corp",
+          stars: 5,
+          tag: "Customs Clearance",
+        },
+      ],
+    },
+    ar: {
+      label: 'آراء العملاء',
+      title: 'يثقون بنا.',
+      titleAccent: 'ولسبب وجيه.',
+      items: [
+        {
+          quote: "تولّت بيجويس شحن قطع غيار السيارات من ألمانيا إلى جدة بدقة استثنائية. التخليص الجمركي، الوثائق — كل شيء كان سلسًا.",
+          author: "محمد الراشد",
+          role: "رئيس سلسلة التوريد · الصناعات السعودية للسيارات",
+          stars: 5,
+          tag: "شحن بحري",
+        },
+        {
+          quote: "حين احتجنا لنقل بضائع دوائية عاجلة بسلسلة التبريد من أمستردام إلى الرياض، أنجزت بيجويس المهمة في أقل من 14 ساعة. موثوقية لا مثيل لها.",
+          author: "سارة تشن",
+          role: "مديرة اللوجستيات · فارما جلف",
+          stars: 5,
+          tag: "شحن جوي",
+        },
+        {
+          quote: "كان الامتثال لهيئة الزكاة والضريبة مرهقًا. بيجويس تتولى رموز النظام المنسق وحسابات الجمارك والتخليص المسبق — كل شيء. تحوّل حقيقي.",
+          author: "أحمد بن زايد",
+          role: "مدير العمليات · الشركة الخليجية الصناعية",
+          stars: 5,
+          tag: "تخليص جمركي",
+        },
+      ],
+    },
+  };
+
+  const t = data[lang] || data.en;
+
+  return (
+    <section className="testimonials-section">
+      <div className="testimonials-inner">
+        <div className="chapter-label" style={{ justifyContent: 'center' }}>{t.label}</div>
+        <h2 className="testimonials-title">
+          {t.title}<br /><span className="title-accent">{t.titleAccent}</span>
+        </h2>
+        <div className="testimonials-grid">
+          {t.items.map((item, i) => (
+            <div key={i} className="testimonial-card">
+              <div className="testimonial-top">
+                <div className="testimonial-stars">
+                  {Array.from({ length: item.stars }).map((_, j) => (
+                    <svg key={j} width="13" height="13" viewBox="0 0 24 24" fill="rgba(200,168,78,0.9)">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                  ))}
+                </div>
+                <span className="testimonial-tag">{item.tag}</span>
+              </div>
+              <blockquote className="testimonial-quote">"{item.quote}"</blockquote>
+              <div className="testimonial-author">
+                <div className="testimonial-avatar">{item.author.charAt(0)}</div>
+                <div>
+                  <div className="testimonial-name">{item.author}</div>
+                  <div className="testimonial-role">{item.role}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================
+// PRICING ESTIMATOR
+// ============================================
+function PricingEstimator({ lang = 'en' }) {
+  const [mode, setMode] = useState('sea');
+  const [route, setRoute] = useState('eu-sa');
+  const [size, setSize] = useState('medium');
+
+  const modes = [
+    { id: 'sea',  icon: '🚢', label: lang === 'ar' ? 'بحري'  : 'Sea Freight',  sub: 'FCL / LCL' },
+    { id: 'air',  icon: '✈️', label: lang === 'ar' ? 'جوي'   : 'Air Freight',  sub: lang === 'ar' ? 'عاجل / اقتصادي' : 'Express / Economy' },
+    { id: 'land', icon: '🚛', label: lang === 'ar' ? 'بري'   : 'Land Freight', sub: 'FTL / LTL' },
+  ];
+
+  const routes = {
+    sea:  [
+      { id: 'eu-sa', label: lang === 'ar' ? 'أوروبا → السعودية'  : 'Europe → KSA',  days: '18–22' },
+      { id: 'cn-sa', label: lang === 'ar' ? 'الصين → السعودية'   : 'China → KSA',   days: '22–28' },
+      { id: 'us-sa', label: lang === 'ar' ? 'أمريكا → السعودية'  : 'USA → KSA',     days: '26–34' },
+    ],
+    air:  [
+      { id: 'eu-sa', label: lang === 'ar' ? 'أوروبا → السعودية'  : 'Europe → KSA',  days: '2–4' },
+      { id: 'cn-sa', label: lang === 'ar' ? 'الصين → السعودية'   : 'China → KSA',   days: '3–5' },
+      { id: 'us-sa', label: lang === 'ar' ? 'أمريكا → السعودية'  : 'USA → KSA',     days: '4–6' },
+    ],
+    land: [
+      { id: 'ae-sa', label: lang === 'ar' ? 'الإمارات → السعودية' : 'UAE → KSA',    days: '1–2' },
+      { id: 'kw-sa', label: lang === 'ar' ? 'الكويت → السعودية'   : 'Kuwait → KSA', days: '1–2' },
+      { id: 'jo-sa', label: lang === 'ar' ? 'الأردن → السعودية'   : 'Jordan → KSA', days: '2–3' },
+    ],
+  };
+
+  const sizes = {
+    sea:  [
+      { id: 'small',  label: 'LCL / 20ft', sub: lang === 'ar' ? 'شحن مشترك' : 'Shared load',  range: '$900 – $1,800' },
+      { id: 'medium', label: '40ft Std',    sub: lang === 'ar' ? 'حاوية كاملة' : 'Full container', range: '$1,400 – $2,600' },
+      { id: 'large',  label: '40ft HC',     sub: lang === 'ar' ? 'مرتفعة' : 'High cube',       range: '$1,600 – $3,000' },
+    ],
+    air:  [
+      { id: 'small',  label: '< 100 kg',   sub: lang === 'ar' ? 'طرد صغير' : 'Small parcel',   range: '$4 – $8 /kg' },
+      { id: 'medium', label: '100–500 kg', sub: lang === 'ar' ? 'بضاعة عامة' : 'General cargo',  range: '$3 – $6 /kg' },
+      { id: 'large',  label: '500 kg+',    sub: lang === 'ar' ? 'شحن ضخم' : 'Bulk cargo',       range: '$2 – $5 /kg' },
+    ],
+    land: [
+      { id: 'small',  label: 'LTL',        sub: lang === 'ar' ? 'حمولة جزئية' : 'Partial load',  range: '$350 – $700' },
+      { id: 'medium', label: 'FTL',        sub: lang === 'ar' ? 'شاحنة كاملة' : 'Full truck',    range: '$700 – $1,400' },
+      { id: 'large',  label: 'Multi-truck',sub: lang === 'ar' ? 'أسطول' : '2+ trucks',           range: lang === 'ar' ? 'عرض مخصص' : 'Custom quote' },
+    ],
+  };
+
+  const currentRoute = routes[mode].find(r => r.id === route) || routes[mode][0];
+  const currentSize  = sizes[mode].find(s => s.id === size)   || sizes[mode][1];
+
+  const handleModeChange = (m) => {
+    setMode(m);
+    setRoute(routes[m][0].id);
+    setSize('medium');
+  };
+
+  return (
+    <section className="pricing-section">
+      <div className="pricing-inner">
+        <div className="chapter-label" style={{ justifyContent: 'center' }}>
+          {lang === 'ar' ? 'أسعار تقديرية' : 'Rate Estimates'}
+        </div>
+        <h2 className="pricing-title">
+          {lang === 'ar' ? 'تعرّف على' : 'Know Your'}<br />
+          <span className="title-accent">{lang === 'ar' ? 'تكلفة الشحن.' : 'Freight Cost.'}</span>
+        </h2>
+        <p className="pricing-subtitle">
+          {lang === 'ar'
+            ? 'تقديرات سريعة بناءً على المسار والحجم. الأسعار النهائية تُؤكَّد عند الحجز.'
+            : 'Indicative ranges based on route and shipment size. Final rates confirmed at booking.'}
+        </p>
+
+        {/* Mode selector */}
+        <div className="pricing-modes">
+          {modes.map(m => (
+            <button
+              key={m.id}
+              className={`pricing-mode-btn${mode === m.id ? ' active' : ''}`}
+              onClick={() => handleModeChange(m.id)}
+            >
+              <span className="pricing-mode-icon">{m.icon}</span>
+              <span className="pricing-mode-label">{m.label}</span>
+              <span className="pricing-mode-sub">{m.sub}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="pricing-body">
+          {/* Route list */}
+          <div className="pricing-col">
+            <div className="pricing-col-title">{lang === 'ar' ? 'المسار' : 'Route'}</div>
+            <div className="pricing-route-list">
+              {routes[mode].map(r => (
+                <button
+                  key={r.id}
+                  className={`pricing-route-btn${route === r.id ? ' active' : ''}`}
+                  onClick={() => setRoute(r.id)}
+                >
+                  <span>{r.label}</span>
+                  <span className="pricing-route-days">{r.days} {lang === 'ar' ? 'يوم' : 'days'}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Size selector */}
+          <div className="pricing-col">
+            <div className="pricing-col-title">{lang === 'ar' ? 'الحجم' : 'Size / Volume'}</div>
+            <div className="pricing-size-list">
+              {sizes[mode].map(s => (
+                <button
+                  key={s.id}
+                  className={`pricing-size-btn${size === s.id ? ' active' : ''}`}
+                  onClick={() => setSize(s.id)}
+                >
+                  <span className="pricing-size-label">{s.label}</span>
+                  <span className="pricing-size-sub">{s.sub}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Result */}
+          <div className="pricing-result-card">
+            <div className="pricing-result-eyebrow">{lang === 'ar' ? 'التقدير' : 'Estimate'}</div>
+            <div className="pricing-result-range">{currentSize.range}</div>
+            <div className="pricing-result-meta">
+              <div className="pricing-result-route">{currentRoute.label}</div>
+              <div className="pricing-result-days">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="rgba(200,168,78,0.7)" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                {currentRoute.days} {lang === 'ar' ? 'يوم' : 'days transit'}
+              </div>
+            </div>
+            <div className="pricing-result-divider" />
+            <button
+              className="pricing-cta-btn"
+              onClick={() => document.getElementById('quick-quote-section')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              {lang === 'ar' ? 'احصل على عرض رسمي' : 'Get Exact Quote'}
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <p className="pricing-disclaimer">
+              {lang === 'ar' ? '* تقديرات إرشادية. الأسعار النهائية حسب تفاصيل الشحن.' : '* Indicative only. Final rates depend on cargo details.'}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================
 // CLIENT LOGOS
 // ============================================
 function ClientLogos({ lang = 'en' }) {
@@ -1463,10 +1779,19 @@ function SiteFooter({ lang = 'en' }) {
   const t = TRANSLATIONS[lang];
   return (
     <footer className="site-footer">
+      {/* Gold accent top bar */}
+      <div className="footer-gold-bar" />
+
       <div className="footer-inner">
         <div className="footer-brand">
           <BJSLogo />
           <p className="footer-tagline" style={{ whiteSpace: 'pre-line' }}>{t.footerTagline}</p>
+          {/* Certifications row */}
+          <div className="footer-certs">
+            {['ZATCA', 'ISO 9001', 'FIATA', 'IATA'].map(cert => (
+              <span key={cert} className="footer-cert-badge">{cert}</span>
+            ))}
+          </div>
         </div>
         <div className="footer-contact">
           <h4 className="footer-col-title">{t.footerContactTitle}</h4>
@@ -1474,9 +1799,18 @@ function SiteFooter({ lang = 'en' }) {
             Bejoice Group{'\n'}{t.footerAddress}
           </address>
           <div className="footer-links-list">
-            <a href="tel:+966550000000" className="footer-link">+966 55 000 0000</a>
-            <a href="https://wa.me/966550000000?text=Hello%2C+I+need+a+freight+quote" target="_blank" rel="noopener noreferrer" className="footer-link footer-link-wa">{t.footerWhatsapp}</a>
-            <a href="mailto:info@bejoice.com" className="footer-link">info@bejoice.com</a>
+            <a href="tel:+966550000000" className="footer-link footer-link-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3-8.69A2 2 0 0 1 3.82 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.61 5.61l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.28 16z"/></svg>
+              +966 55 000 0000
+            </a>
+            <a href="https://wa.me/966550000000?text=Hello%2C+I+need+a+freight+quote" target="_blank" rel="noopener noreferrer" className="footer-link footer-link-wa footer-link-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+              {t.footerWhatsapp}
+            </a>
+            <a href="mailto:info@bejoice.com" className="footer-link footer-link-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              info@bejoice.com
+            </a>
           </div>
         </div>
         <div className="footer-nav">
@@ -1498,7 +1832,7 @@ function SiteFooter({ lang = 'en' }) {
       </div>
       <div className="footer-bottom">
         <span>{t.footerCopyright}</span>
-        <span>{t.footerCompliance}</span>
+        <span className="footer-compliance-row">{t.footerCompliance}</span>
       </div>
     </footer>
   );
@@ -1901,11 +2235,13 @@ export default function App() {
       <SaudiSection lang={lang} />
       <RouteMap lang={lang} />
       <HowItWorks lang={lang} />
+      <PricingEstimator lang={lang} />
 
       {/* Quick Quote section */}
       <QuickQuoteSection sectionRef={quoteSectionRef} />
 
       <CaseStudies lang={lang} />
+      <Testimonials lang={lang} />
       <ClientLogos lang={lang} />
 
       {/* Tools section — below scroll, normal page flow */}
@@ -1914,6 +2250,12 @@ export default function App() {
       <SiteFooter lang={lang} />
       <WhatsAppButton />
       <ProgressBar />
+
+      {/* Floating sticky CTA bar — slides in after hero */}
+      <FloatingCTA onQuoteClick={scrollToQuote} />
+
+      {/* Veo watermark cover — masks AI video branding bottom-right of canvas */}
+      <div className="veo-cover" aria-hidden="true" />
     </>
   );
 }
