@@ -10,7 +10,7 @@
   --color-bejoice-gold:       #c8a84e;
   --color-bejoice-gold-light: #e8d48a;
   --font-sans:    'Inter',      system-ui, -apple-system, sans-serif;
-  --font-display: 'Bebas Neue', 'Syne',    system-ui, sans-serif;
+  --font-display: 'Bebas Neue', system-ui, sans-serif;
 }
 
 /* --- Base --- */
@@ -43,17 +43,40 @@ body {
   inset: 0;
   z-index: 0;
   background-color: #050508;
-  filter: contrast(1.08) saturate(1.12) brightness(1.02);
+  /* NO CSS filter — any CSS filter forces a softening compositing pass */
+  pointer-events: none;
 }
 
 .canvas-container canvas {
   display: block;
   width: 100%;
   height: 100%;
+  /* 2× buffer downscaled to CSS size → browser applies high-quality bicubic */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
   image-rendering: auto;
+  /* Pin to own GPU layer — no sub-pixel compositor blur */
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Vignette handled entirely by canvas drawFrame — no CSS overlay needed */
+
+/* ============================================
+   GLASSMORPHISM
+   ============================================ */
+.glass-panel,
+.tracking-widget,
+.hero-quote-form,
+.hero-cta-tray,
+.calc-card,
+.qq-panel {
+  background: rgba(255, 255, 255, 0.07) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 20px !important;
+}
 
 /* ============================================
    HEADER — Apple frosted glass style
@@ -61,14 +84,25 @@ body {
 .header-glass {
   background: transparent;
   border-bottom: none;
-  transition: background 0.5s ease, backdrop-filter 0.5s ease;
+  /* full-width positioning kept — but inner pill carries the bg */
 }
 
-.header-glass.scrolled {
-  background: rgba(5, 5, 8, 0.55);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+/* The pill inside the header — hugs its content */
+.header-inner-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(8,8,12,0.55);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 2rem;
+  padding: 0.45rem 0.55rem 0.45rem 1rem;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition: background 0.4s, border-color 0.4s;
+}
+.header-glass.scrolled .header-inner-pill {
+  background: rgba(8,8,12,0.82);
+  border-color: rgba(255,255,255,0.13);
 }
 
 /* ============================================
@@ -100,7 +134,7 @@ body {
    SECTION TITLE — Bebas Neue display style
    ============================================ */
 .section-title {
-  font-family: 'Bebas Neue', 'Syne', sans-serif;
+  font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(3.5rem, 8vw, 7.5rem);
   font-weight: 400; /* Bebas Neue is inherently heavy */
   line-height: 0.92;
@@ -347,34 +381,29 @@ body {
 .chapter-hero-left {
   flex: 1 1 45%;
   max-width: 44rem;
-  /* Dark backdrop so title text always reads against the globe */
-  background: linear-gradient(
-    120deg,
-    rgba(5, 5, 8, 0.72) 0%,
-    rgba(5, 5, 8, 0.48) 70%,
-    rgba(5, 5, 8, 0.0) 100%
-  );
-  padding: 2rem 2.5rem 2rem 0;
-  border-radius: 0.5rem;
+  background: none;
+  padding: 2.2rem 2.8rem 2.2rem 0.2rem;
 }
 
 .chapter-hero-left .section-title {
   color: #ffffff;
-  text-shadow:
-    0 0 60px rgba(0, 0, 0, 1),
-    0 2px 10px rgba(0, 0, 0, 0.95),
-    0 4px 40px rgba(0, 0, 0, 0.85);
+  text-shadow: none;
 }
 
-
 .chapter-hero-left .section-body {
-  color: rgba(255, 255, 255, 0.88);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 0, 0, 0.7);
+  font-size: clamp(1rem, 2.2vw, 1.25rem) !important;
+  font-weight: 500 !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0.01em !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: none !important;
+  max-width: 34rem;
 }
 
 .chapter-hero-left .chapter-label {
   color: rgba(200, 168, 78, 0.9);
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+  text-shadow: none;
+  letter-spacing: 0.22em;
 }
 
 .chapter-hero-right {
@@ -405,14 +434,8 @@ body {
 /* Hero block — strong contrast backdrop so title is always readable over the globe */
 .chapter-block-hero {
   max-width: 36rem;
-  background: linear-gradient(
-    135deg,
-    rgba(5, 5, 8, 0.55) 0%,
-    rgba(5, 5, 8, 0.30) 70%,
-    rgba(5, 5, 8, 0.0) 100%
-  );
+  background: none;
   padding: 2rem 2.5rem 2rem 0;
-  border-radius: 0.5rem;
 }
 
 .chapter-block-hero .section-title {
@@ -1204,159 +1227,209 @@ html, body {
 /* ============================================
    HERO CTA TRAY — compact white card
    ============================================ */
-.hero-cta-tray {
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 1rem;
-  padding: 1.4rem 1.5rem 1.2rem;
-  box-shadow:
-    0 8px 40px rgba(0, 0, 0, 0.45),
-    0 2px 12px rgba(0, 0, 0, 0.25),
-    inset 0 1px 0 rgba(255,255,255,0.9);
-  width: 100%;
-  max-width: 380px;
-}
-
-.hero-cta-tray-header {
-  display: flex;
+/* ============================================
+   HEADER — book btn + hamburger
+   ============================================ */
+.header-book-btn {
+  display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
-  margin-bottom: 1rem;
-}
-
-.hero-cta-tray-badge {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.6rem;
-  font-weight: 700;
+  gap: 0.45rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.95rem;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #fff;
-  background: linear-gradient(135deg, #c8a84e, #e8d48a);
-  border-radius: 9999px;
-  padding: 0.2rem 0.65rem;
+  color: #0a0a0f;
+  background: linear-gradient(135deg, #c8a84e, #a8843e);
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.5rem 1.2rem;
+  cursor: pointer;
+  transition: background 0.22s, transform 0.18s, box-shadow 0.22s;
+  white-space: nowrap;
+  box-shadow: 0 2px 12px rgba(200,168,78,0.25);
+}
+.header-book-btn:hover {
+  background: linear-gradient(135deg, #e8d48a, #c8a84e);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(200,168,78,0.4);
 }
 
-.hero-cta-tray-tagline {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.68rem;
-  font-weight: 400;
-  color: rgba(10, 10, 15, 0.45);
+.header-lang-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.18em;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem 0.3rem;
+  transition: opacity 0.2s;
 }
+.header-lang-btn:hover { opacity: 0.8; }
+.header-lang-btn .lang-active { color: #c8a84e; }
+.header-lang-btn span:not(.lang-active):not(.lang-sep) { color: rgba(255,255,255,0.4); }
+.header-lang-btn .lang-sep { color: rgba(255,255,255,0.15); }
 
-.hero-cta-tray-route {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.5rem;
-  margin-bottom: 0.9rem;
-}
-
-.hero-cta-tray-field {
-  flex: 1;
+.header-burger {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 0.4rem;
+  cursor: pointer;
+  padding: 0 9px;
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.header-burger:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(200,168,78,0.3);
+}
+.header-burger span {
+  display: block;
+  height: 1.5px;
+  background: rgba(255,255,255,0.75);
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+.header-burger:hover span { background: #c8a84e; }
+
+
+/* ============================================
+   HERO MINI CARD — minimal left-anchored
+   ============================================ */
+.hero-mini-card {
+  width: 100%;
+  max-width: 310px;
+  background: rgba(8, 8, 12, 0.72);
+  border: 1px solid rgba(200,168,78,0.18);
+  border-radius: 0.9rem;
+  padding: 1.2rem 1.3rem 1rem;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.55);
 }
 
-.hero-cta-tray-label {
+.hero-mini-card__eyebrow {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.45rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(10, 10, 15, 0.45);
+  color: rgba(200,168,78,0.7);
+  margin-bottom: 0.9rem;
+}
+.hero-mini-card__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #c8a84e;
+  animation: dotPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
 }
 
-.hero-cta-tray-input {
+.hero-mini-card__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 0.9rem;
+}
+.hero-mini-card__input {
   font-family: 'Inter', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: #0a0a0f;
-  background: rgba(10, 10, 15, 0.04);
-  border: 1.5px solid rgba(10, 10, 15, 0.12);
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.88);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 0.5rem;
-  padding: 0.55rem 0.75rem;
+  padding: 0.6rem 0.75rem;
   outline: none;
   width: 100%;
   transition: border-color 0.2s;
 }
-
-.hero-cta-tray-input::placeholder {
-  color: rgba(10, 10, 15, 0.3);
+.hero-mini-card__input::placeholder { color: rgba(255,255,255,0.28); }
+.hero-mini-card__input:focus { border-color: rgba(200,168,78,0.5); }
+.hero-mini-card__fields .hero-mini-card__input:first-child {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: none;
+}
+.hero-mini-card__fields .hero-mini-card__input:last-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
-.hero-cta-tray-input:focus {
-  border-color: #c8a84e;
+.hero-mini-card__arrow {
+  text-align: center;
+  font-size: 0.75rem;
+  color: rgba(200,168,78,0.4);
+  background: rgba(255,255,255,0.03);
+  border-left: 1px solid rgba(255,255,255,0.1);
+  border-right: 1px solid rgba(255,255,255,0.1);
+  padding: 0.25rem 0;
+  line-height: 1;
 }
 
-.hero-cta-tray-arrow {
-  font-size: 1rem;
-  color: rgba(10, 10, 15, 0.3);
-  padding-bottom: 0.55rem;
-  flex-shrink: 0;
-}
-
-.hero-cta-tray-btn {
+.hero-mini-card__btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
   width: 100%;
-  padding: 0.85rem 1.5rem;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #0a0a0f;
-  background: linear-gradient(135deg, #c8a84e 0%, #e8d48a 50%, #a8843e 100%);
-  border: none;
-  border-radius: 0.6rem;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 16px rgba(200, 168, 78, 0.4);
-}
-
-.hero-cta-tray-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(200, 168, 78, 0.55);
-}
-
-.hero-cta-tray-sub {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  margin-top: 0.85rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(10, 10, 15, 0.08);
-}
-
-.hero-cta-tray-phone,
-.hero-cta-tray-wa {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
+  padding: 0.78rem 1rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0a0a0f;
+  background: #c8a84e;
+  border: none;
+  border-radius: 0.55rem;
+  cursor: pointer;
+  transition: background 0.22s, transform 0.18s, box-shadow 0.22s;
+  box-shadow: 0 4px 18px rgba(200,168,78,0.35);
+}
+.hero-mini-card__btn:hover {
+  background: #e8d48a;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 26px rgba(200,168,78,0.5);
+}
+
+.hero-mini-card__sub {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.hero-mini-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
   font-weight: 500;
+  color: rgba(255,255,255,0.4);
   text-decoration: none;
-  transition: opacity 0.2s;
+  transition: color 0.2s;
 }
-
-.hero-cta-tray-phone { color: rgba(10, 10, 15, 0.5); }
-.hero-cta-tray-wa    { color: #1a9e4a; }
-
-.hero-cta-tray-phone:hover,
-.hero-cta-tray-wa:hover { opacity: 0.75; }
-
-.hero-cta-tray-divider {
-  width: 1px;
-  height: 12px;
-  background: rgba(10, 10, 15, 0.12);
-}
+.hero-mini-card__link:hover { color: rgba(255,255,255,0.75); }
+.hero-mini-card__link--wa { color: rgba(37,200,100,0.7); }
+.hero-mini-card__link--wa:hover { color: rgba(37,200,100,1); }
 
 /* ============================================
    TRUST STRIP
@@ -2791,30 +2864,6 @@ html, body {
 }
 
 
-/* ============================================
-   HERO BACKDROP — strengthened for readability
-   ============================================ */
-.chapter-hero-left {
-  background: linear-gradient(
-    120deg,
-    rgba(5, 5, 8, 0.88) 0%,
-    rgba(5, 5, 8, 0.66) 60%,
-    rgba(5, 5, 8, 0.0) 100%
-  ) !important;
-  padding: 2.2rem 3rem 2.2rem 0 !important;
-}
-
-.chapter-hero-left .section-title {
-  text-shadow:
-    0 0 80px rgba(0, 0, 0, 1),
-    0 2px 12px rgba(0, 0, 0, 1),
-    0 4px 60px rgba(0, 0, 0, 0.95) !important;
-}
-
-.chapter-hero-left .section-body {
-  color: rgba(255, 255, 255, 0.93) !important;
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.95), 0 0 40px rgba(0, 0, 0, 0.85) !important;
-}
 
 
 /* ============================================
@@ -2825,16 +2874,7 @@ html, body {
 }
 
 .chapter-block::before {
-  content: '';
-  position: absolute;
-  inset: -2rem -2.5rem;
-  border-radius: 1rem;
-  background: rgba(5, 5, 8, 0.45);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.75;
+  display: none;
 }
 
 .chapter-block .section-title {
@@ -2874,12 +2914,226 @@ html, body {
    HERO CTA TRAY — improved contrast & sizing
    ============================================ */
 .hero-cta-tray {
-  backdrop-filter: blur(24px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  backdrop-filter: blur(12px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
   border: 1px solid rgba(200, 168, 78, 0.32) !important;
   box-shadow:
     0 0 0 1px rgba(200, 168, 78, 0.08),
     0 32px 80px rgba(0, 0, 0, 0.65),
     0 0 80px rgba(200, 168, 78, 0.06) !important;
+}
+
+
+/* ============================================
+   TYPOGRAPHY — Bebas Neue display / Inter body
+   ============================================ */
+.section-title {
+  font-family: 'Bebas Neue', sans-serif !important;
+  font-size: clamp(3.8rem, 9vw, 8.5rem) !important;
+  font-weight: 400 !important;
+  line-height: 0.92 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.act-divider-title {
+  font-family: 'Bebas Neue', sans-serif !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  font-size: clamp(4rem, 11vw, 10rem) !important;
+  letter-spacing: 0.04em !important;
+  color: rgba(255,255,255,0.95) !important;
+}
+
+/* Tag/label chips — keep Inter mono-spaced */
+.chapter-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  color: rgba(200, 168, 78, 1);
+  background: rgba(200, 168, 78, 0.08);
+  border: 1px solid rgba(200, 168, 78, 0.22);
+  border-radius: 2rem;
+  padding: 0.28rem 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.4rem;
+}
+
+/* Remove ::before line since we switched to pill chip style */
+.chapter-label::before { display: none; }
+
+/* ============================================
+   GLASSMORPHISM CHAPTER BLOCKS
+   ============================================ */
+.chapter-block {
+  background: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 2.5rem 3rem !important;
+  max-width: 38rem;
+}
+
+
+/* ============================================
+   TESTIMONIALS — MOVING MARQUEE
+   ============================================ */
+.testimonials-marquee-section {
+  padding: 7rem 0 6rem;
+  overflow: hidden;
+  background: linear-gradient(180deg, #050508 0%, #0d0d16 60%, #0a0a0f 100%);
+  border-top: 1px solid rgba(200,168,78,0.12);
+}
+
+.testimonials-marquee-header {
+  text-align: center;
+  padding: 0 2rem 3.5rem;
+}
+
+.testimonials-marquee-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.8rem, 8vw, 7rem);
+  font-weight: 400;
+  line-height: 0.95;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.testimonials-marquee-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.02em;
+  max-width: 36rem;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.marquee-track-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.marquee-fade-left,
+.marquee-fade-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  z-index: 2;
+  pointer-events: none;
+}
+.marquee-fade-left  { left: 0;  background: linear-gradient(to right, #050508, transparent); }
+.marquee-fade-right { right: 0; background: linear-gradient(to left,  #050508, transparent); }
+
+.marquee-track {
+  display: flex;
+  gap: 1.25rem;
+  width: max-content;
+  padding: 0.5rem 0;
+}
+
+.marquee-track--left  { animation: marqueeLeft  35s linear infinite; }
+.marquee-track--right { animation: marqueeRight 32s linear infinite; }
+
+@keyframes marqueeLeft  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes marqueeRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+.marquee-track--left:hover,
+.marquee-track--right:hover { animation-play-state: paused; }
+
+.marquee-card {
+  flex-shrink: 0;
+  width: 340px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 1.5rem;
+  padding: 1.8rem 2rem;
+  cursor: default;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+}
+
+.marquee-card:hover {
+  background: rgba(200, 168, 78, 0.08);
+  border-color: rgba(200, 168, 78, 0.35);
+  transform: translateY(-2px);
+}
+
+.marquee-card--dim { opacity: 0.8; }
+
+.marquee-card-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.marquee-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(200,168,78,0.35), rgba(200,168,78,0.1));
+  border: 1.5px solid rgba(200,168,78,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  color: #c8a84e;
+  flex-shrink: 0;
+}
+
+.marquee-company {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.marquee-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(200,168,78,0.9);
+  margin-top: 0.2rem;
+}
+
+.marquee-quote {
+  font-family: 'Inter', sans-serif;
+  font-style: italic;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.88);
+  margin-bottom: 1rem;
+}
+
+.marquee-stars {
+  display: flex;
+  gap: 4px;
+}
+
+/* ============================================
+   SECTION TITLE — remove text-shadow fighting
+   with glassmorphism backdrop
+   ============================================ */
+.chapter-block .section-title,
+.chapter-hero-left .section-title {
+  text-shadow: none !important;
+}
+
+.chapter-block .section-body,
+.chapter-hero-left .section-body {
+  text-shadow: none !important;
 }
 

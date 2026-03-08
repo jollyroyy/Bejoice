@@ -2,107 +2,87 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
-import QuickQuoteSection from './QuickQuote.jsx';
 import './index.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 // ============================================
-// CONSTANTS
+// CONSTANTS — three-source combined sequence
+//   frames-hero/ : 300 frames  (global index   0–299)  — ship / ocean hero
+//   frames-new/  : 176 frames  (global index 300–475)  — port, customs, CTA
+//   frames-mid/  :  76 frames  (global index 476–551)  — transition into air
 // ============================================
-const GLOBE_SEA_FRAMES  = 200;
-const SEA_FLIGHT_FRAMES = 200;
-const TOTAL_FRAMES = GLOBE_SEA_FRAMES + SEA_FLIGHT_FRAMES; // 400
+const HERO_FRAMES  = 300;
+const NEW_FRAMES   = 176;
+const MID_FRAMES   =  76;
+const TOTAL_FRAMES = HERO_FRAMES + NEW_FRAMES + MID_FRAMES; // 552
 
-const FRAME_URL = (globalIndex) => {
-  if (globalIndex < GLOBE_SEA_FRAMES) {
-    const n = (globalIndex + 1).toString().padStart(3, '0');
-    return `/globe-sea/ezgif-frame-${n}.jpg`;
-  } else {
-    const n = (globalIndex - GLOBE_SEA_FRAMES + 1).toString().padStart(3, '0');
-    return `/sea-flight/ezgif-frame-${n}.jpg`;
+const FRAME_URL = (i) => {
+  if (i < HERO_FRAMES) {
+    const n = (i + 1).toString().padStart(3, '0');
+    return `/frames-hero/ezgif-frame-${n}.jpg`;
   }
+  if (i < HERO_FRAMES + NEW_FRAMES) {
+    const n = (i - HERO_FRAMES + 1).toString().padStart(3, '0');
+    return `/frames-new/ezgif-frame-${n}.jpg`;
+  }
+  const n = (i - HERO_FRAMES - NEW_FRAMES + 1).toString().padStart(3, '0');
+  return `/frames-mid/ezgif-frame-${n}.jpg`;
 };
 
-// ── Narrative chapters ────────────────────────────────────────────────────────
+// ── 6 chapters across 552 frames ─────────────────────────────────────────────
+//   0  – 149 : hero     — big ship reveal
+// 150  – 299 : maritime — ocean operations
+// 300  – 369 : port     — port & customs
+// 370  – 430 : air-lead — air freight (frames-new tail)
+// 431  – 475 : cta      — one partner CTA (frames-new end)
+// 476  – 551 : sky      — mid transition into air (frames-mid, smooth bridge)
 const CHAPTERS = [
-  // ── ACT 1: Globe → Sea ──────────────────────────────────────────────────
   {
-    id: 'world',
-    label: 'Act I — The World Awaits',
-    titleLines: ['Unleash', 'Global', 'Trade'],
-    body: "Every continent. Every corridor. Every deadline. Bejoice charts the most intelligent route between your cargo and the world \u2014 before the tide even turns.",
+    id: 'hero',
+    label: 'BEJOICE GROUP',
+    titleLines: ['Unleash', 'Global Trade.'],
+    body: 'Move cargo faster. Pay less. Bejoice delivers to Saudi Arabia by sea, air, road & customs — with zero delays and a 30-minute quote guarantee.',
     frameStart: 0,
-    frameEnd: 44,
+    frameEnd: 149,
     align: 'left',
     isHero: true,
     hasHeroForm: true,
   },
   {
-    id: 'routes',
-    label: 'Act I — Charting Your Course',
-    titleLines: ['Chart the Course.', 'Own the Ocean.'],
-    body: 'Thousands of nautical miles, calculated to the hour. Our sea freight specialists engineer the optimal route \u2014 so your cargo rides the current, never fights it.',
-    frameStart: 45,
-    frameEnd: 89,
-    align: 'right',
-    hasMiniCTA: true,
-  },
-  {
-    id: 'horizon',
-    label: 'Act I — The Open Horizon',
-    titleLines: ['Where the Sea', 'Becomes Strategy.'],
-    body: "Saudi Arabia sits at the crossroads of the world\u2019s busiest trade lanes. Bejoice turns that geography into your competitive advantage \u2014 port to port, without compromise.",
-    frameStart: 90,
-    frameEnd: 144,
-    align: 'left',
-  },
-  {
     id: 'maritime',
-    label: 'Act I — Maritime Mastery',
-    titleLines: ['Deep Water.', 'Deeper Trust.'],
-    body: 'FCL or LCL, reefer or breakbulk \u2014 our vessels move with the precision of a tide chart and the muscle of an entire fleet. The sea is not an obstacle. It is our highway.',
-    frameStart: 145,
-    frameEnd: 199,
+    label: 'OCEAN FREIGHT',
+    titleLines: ['Masters of', 'the Deep Blue.'],
+    body: 'FCL · LCL · Reefer · OOG. Every vessel type, every trade lane — KSA covered.',
+    frameStart: 150,
+    frameEnd: 299,
     align: 'right',
-    stats: [
-      { value: '45+', label: 'Global Ports' },
-      { value: '12M', label: 'TEUs Handled' },
-    ],
-    hasMiniCTA: true,
   },
-
-  // ── ACT 2: Sea → Flight ──────────────────────────────────────────────────
   {
-    id: 'liftoff',
-    label: 'Act II — The Ascent',
-    titleLines: ['Leave the Waves.', 'Rule the Sky.'],
-    body: 'When the ocean is too slow, we lift off. Bejoice bridges sea and air in a single, seamless handoff \u2014 your shipment ascends without missing a beat.',
-    frameStart: 200,
-    frameEnd: 254,
+    id: 'port',
+    label: 'PORT & CUSTOMS',
+    titleLines: ['Port-Ready.', 'Pre-Cleared.'],
+    body: 'Jeddah · Dammam · King Fahd Port. ZATCA-aligned, zero-delay customs clearance.',
+    frameStart: 300,
+    frameEnd: 430,
     align: 'left',
   },
   {
-    id: 'airways',
-    label: 'Act II — Commanding the Airways',
-    titleLines: ['Airborne.', 'On Time.', 'Every Time.'],
-    body: '150+ destinations. Priority lanes. Same-day uplift where it matters. When every hour carries a price tag, Bejoice air freight is the answer that never blinks.',
-    frameStart: 255,
-    frameEnd: 319,
+    id: 'air',
+    label: 'AIR FREIGHT',
+    titleLines: ['Wheels Up.', 'On Time.'],
+    body: 'Direct uplift to RUH · JED · DMM. Express, cold-chain or oversized — same precision.',
+    frameStart: 431,
+    frameEnd: 513,
     align: 'right',
-    stats: [
-      { value: '150+', label: 'Destinations' },
-      { value: '24/7', label: 'Live Tracking' },
-    ],
-    hasMiniCTA: true,
   },
   {
-    id: 'promise',
-    label: 'Act II — The Bejoice Promise',
+    id: 'cta',
+    label: 'ONE PARTNER',
     titleLines: ['One Partner.', 'Every Mile.'],
-    body: 'Sea or sky, port or runway \u2014 Bejoice is the single thread that connects your supply chain from origin to delivery. No gaps. No excuses. Just results.',
-    frameStart: 320,
-    frameEnd: 399,
+    body: 'No hand-offs. No surprises. Bejoice Group — your Saudi logistics bridge.',
+    frameStart: 514,
+    frameEnd: 551,
     align: 'center',
     hasCTA: true,
   },
@@ -120,11 +100,11 @@ const TRANSLATIONS = {
 
     // Hero form
     heroFormOrigin: 'Origin (City / Country)',
-    heroFormDest: 'Destination',
+    heroFormDest: 'Destination (KSA Port / City)',
     heroFormWeight: 'Weight (kg)',
     heroFormEmail: 'Your Email',
-    heroFormBtn: 'Get Saudi Quote — 30 min response',
-    heroFormPhone: 'Or call',
+    heroFormBtn: 'Get My Saudi Quote — Free, 30 min',
+    heroFormPhone: 'Or call us now',
 
     // Trust strip
     trustISO: 'ISO Certified',
@@ -191,22 +171,22 @@ const TRANSLATIONS = {
     footerCopyright: `© ${new Date().getFullYear()} Bejoice Group. All rights reserved.`,
     footerCompliance: 'ZATCA Compliant · ISO 9001 · FIATA Member',
 
-    // Act divider
-    actDividerTitle: 'Now,\nWe Take Flight.',
+    actDividerTitle: 'Now,\nWe Own the Sky.',
+    actDividerTitle2: 'The Ground\nIs Ours Too.',
 
-    // Chapters — act labels, titles, bodies
+    // Chapters — 7 chapters matching CHAPTERS array
     chapters: {
-      world:    { label: 'Act I — The World Awaits', titleLines: ['Unleash', 'Global', 'Trade'], body: "Every continent. Every corridor. Every deadline. Bejoice charts the most intelligent route between your cargo and the world — before the tide even turns." },
-      routes:   { label: 'Act I — Charting Your Course', titleLines: ['Chart the Course.', 'Own the Ocean.'], body: 'Thousands of nautical miles, calculated to the hour. Our sea freight specialists engineer the optimal route — so your cargo rides the current, never fights it.' },
-      horizon:  { label: 'Act I — The Open Horizon', titleLines: ['Where the Sea', 'Becomes Strategy.'], body: "Saudi Arabia sits at the crossroads of the world's busiest trade lanes. Bejoice turns that geography into your competitive advantage — port to port, without compromise." },
-      maritime: { label: 'Act I — Maritime Mastery', titleLines: ['Deep Water.', 'Deeper Trust.'], body: 'FCL or LCL, reefer or breakbulk — our vessels move with the precision of a tide chart and the muscle of an entire fleet. The sea is not an obstacle. It is our highway.' },
-      liftoff:  { label: 'Act II — The Ascent', titleLines: ['Leave the Waves.', 'Rule the Sky.'], body: 'When the ocean is too slow, we lift off. Bejoice bridges sea and air in a single, seamless handoff — your shipment ascends without missing a beat.' },
-      airways:  { label: 'Act II — Commanding the Airways', titleLines: ['Airborne.', 'On Time.', 'Every Time.'], body: '150+ destinations. Priority lanes. Same-day uplift where it matters. When every hour carries a price tag, Bejoice air freight is the answer that never blinks.' },
-      promise:  { label: 'Act II — The Bejoice Promise', titleLines: ['One Partner.', 'Every Mile.'], body: 'Sea or sky, port or runway — Bejoice is the single thread that connects your supply chain from origin to delivery. No gaps. No excuses. Just results.' },
+      world:         { label: 'MARITIME',    titleLines: ['Unleash', 'Global Trade.'],      body: 'Record-breaking speed. Unbeatable cost. Sea. Air. Road. Saudi Arabia — delivered without compromise.' },
+      'port-ops':    { label: 'PORT OPS',    titleLines: ['Port-Ready.', 'Day One.'],        body: 'Jeddah Islamic Port. King Fahd Industrial Port. Dammam Gateway. Pre-berthing clearance standard.' },
+      'cargo-ops':   { label: 'CARGO INTEL', titleLines: ['Tagged. Tracked.', 'Trusted.'],   body: 'Every box scanned. Every pallet staged. Live dashboard from origin to final mile.' },
+      customs:       { label: 'CUSTOMS',     titleLines: ['Cleared Before', 'You Arrive.'],  body: 'ZATCA-aligned. Pre-arrival clearance. HS codes, duty estimates, import permits — done.' },
+      'air-launch':  { label: 'AIR FREIGHT', titleLines: ['Wheels Up.', 'On Time.'],         body: 'Direct uplift to RUH · JED · DMM. Express, cold-chain, oversized — same ruthless precision.' },
+      skyways:       { label: 'HIGH ALTITUDE',titleLines: ['Above Borders.', 'On Schedule.'],body: 'Hub sync: Frankfurt · Dubai · Hong Kong. Express lift for critical, time-sensitive cargo.' },
+      'world-reach': { label: 'ONE PARTNER', titleLines: ['One Partner.', 'Every Mile.'],    body: 'No hand-offs. No surprises. Bejoice Group — your Saudi logistics bridge, globally connected.' },
     },
 
     // CTA
-    ctaButton: 'Get a Quick Quote',
+    ctaButton: 'Get Your Free Quote Now',
     ctaSub: 'Sea · Air · Land · Customs · Project Cargo',
   },
 
@@ -289,18 +269,21 @@ const TRANSLATIONS = {
     footerCopyright: `© ${new Date().getFullYear()} مجموعة بيجويس. جميع الحقوق محفوظة.`,
     footerCompliance: 'متوافق مع هيئة الزكاة والضريبة · ISO 9001 · عضو FIATA',
 
-    // Act divider
     actDividerTitle: 'الآن،\nنحلق في السماء.',
+    actDividerTitle2: 'خطواتكم الأخيرة\nنحو النجاح.',
 
     // Chapters
     chapters: {
-      world:    { label: 'الفصل الأول — العالم ينتظر', titleLines: ['أطلق العنان', 'للتجارة', 'العالمية'], body: 'كل قارة. كل ممر. كل موعد نهائي. تضع بيجويس أذكى المسارات بين بضائعك والعالم — قبل أن يتحول المد.' },
-      routes:   { label: 'الفصل الأول — ارسم المسار', titleLines: ['ارسم المسار.', 'امتلك المحيط.'], body: 'آلاف الأميال البحرية محسوبة بدقة بالساعة. يصمم متخصصونا في الشحن البحري المسار الأمثل — لتسير بضائعك مع التيار لا ضده.' },
-      horizon:  { label: 'الفصل الأول — الأفق المفتوح', titleLines: ['حيث البحر', 'يصبح استراتيجية.'], body: 'تقع المملكة العربية السعودية عند تقاطع أكثر مسارات التجارة ازدحاماً في العالم. تحوّل بيجويس هذا الموقع إلى ميزتك التنافسية — من ميناء إلى ميناء بلا تنازلات.' },
-      maritime: { label: 'الفصل الأول — إتقان بحري', titleLines: ['مياه عميقة.', 'ثقة أعمق.'], body: 'FCL أو LCL، مبردة أو بضائع غير نظامية — تتحرك سفننا بدقة خريطة المد وقوة أسطول كامل. البحر ليس عقبة. إنه طريقنا السريع.' },
-      liftoff:  { label: 'الفصل الثاني — الصعود', titleLines: ['اترك الأمواج.', 'احكم السماء.'], body: 'عندما يكون المحيط بطيئاً جداً، نحلق. تجسر بيجويس البحر والجو في تسليم سلس — تصعد شحنتك دون أن تفوت خطوة.' },
-      airways:  { label: 'الفصل الثاني — السيطرة على الأجواء', titleLines: ['في الجو.', 'في الوقت.', 'دائماً.'], body: 'أكثر من 150 وجهة. مسارات أولوية. رفع في اليوم ذاته عند الحاجة. حين يحمل كل ساعة ثمناً، الشحن الجوي ببيجويس هو الإجابة التي لا تتردد.' },
-      promise:  { label: 'الفصل الثاني — وعد بيجويس', titleLines: ['شريك واحد.', 'كل ميل.'], body: 'براً أو جواً، ميناء أو مدرج — بيجويس هو الخيط الواحد الذي يربط سلسلة توريدك من المنشأ إلى التسليم. بلا ثغرات. بلا أعذار. فقط نتائج.' },
+      world:          { label: 'الشحن الدولي', titleLines: ['أطلق التجارة', 'العالمية.'], body: 'سرعة قياسية. تكلفة لا تُضاهى. جواً · بحراً · براً · جمارك — شريك واحد لكل ميل إلى المملكة.' },
+      'port-ops':     { label: 'المشهد الثاني - تفعيل العمليات المينائية', titleLines: ['كل رحلة تبدأ', 'بدقة كاملة.'], body: 'تم إنشاء الشحنة. اكتمل الفحص. عُبئت بنجاح. تتبع رقمي مُفعّل.' },
+      'ground-sync':   { label: 'المشهد الثالث - مزامنة المستودعات', titleLines: ['مناولة ذكية.', 'معايير عالمية.'], body: 'يتم فحص البضائع ووزمها وتجهيزها للنقل الفوري إلى البوابة السعودية.' },
+      'cargo-approval': { label: 'المشهد الرابع - اعتماد الشحنة وفحصها', titleLines: ['تم الاعتماد.', 'جاهز للمغادرة.'], body: 'الضوء الأخضر لجمارك المملكة. الوثائق المسبقة معتمدة. لا تأخير عند الحدود.' },
+      'sea-freight':  { label: 'المشهد الخامس - التميز البحري', titleLines: ['جمارك مجهزة بالكامل', 'قبل تحرك شحنتك.'], body: 'بوليصة شحن. فاتورة تجارية. قائمة التعبئة. رخصة تصدير. تم التحقق آلياً.' },
+      'air-launch':   { label: 'المشهد السادس - تسريع الشحن الجوي', titleLines: ['تم التخليص قبل', 'أن تتوقف الشحنة.'], body: 'شحنتك جاهزة قبل أن تهبط. شريك جمركي سعودي. مسار سريع للتخليص.' },
+      'global-transit': { label: 'المشهد السابع - لوجستيات النقل الجوي', titleLines: ['عبر الحدود.', 'فوق الأمواج.'], body: 'مزامنة المراكز العالمية. مراقبة الحركة الجوية في الوقت الفعلي. نقل سريع للشحنات الحساسة.' },
+      'sky-precision': { label: 'المشهد الثامن - الدقة الجوية', titleLines: ['في الجو. في الموعد.', 'في كل مرة.'], body: 'رحلات مباشرة إلى الرياض وجدة والدمام. شحن مبرد أو ضخم أو سريع.' },
+      dispatch:       { label: 'المشهد التاسع - بداية الميل الأخير', titleLines: ['المرحلة الأخيرة.', 'توصيل لباب المنزل.'], body: 'شبكة الشحن البري الخليجي. أساطيل مزودة بنظام GPS. من الميناء إلى المستودع.' },
+      'mission-ksa':  { label: 'المشهد العاشر - تمت المهمة بنجاح', titleLines: ['شحن عالمي.', 'بلا متاعب.'], body: 'لا تأخيرات. لا مفاجآت. مجموعة بيجويس — جسرك اللوجستي السعودي.' },
     },
 
     // CTA
@@ -450,131 +433,477 @@ function BJSLogo() {
 }
 
 // ============================================
-// HEADER — frosted glass on scroll
+// LOAD CALCULATOR — Sea / Air / Land / Warehouse
+// ============================================
+function LoadCalculator({ lang }) {
+  const ar = lang === 'ar';
+  const [tab, setTab] = useState('sea');
+  const [results, setResults] = useState(null);
+
+  // ── Sea ──
+  const [seaRows, setSeaRows] = useState([{ l: '', w: '', h: '', qty: '1', unit: 'cm' }]);
+  const [seaWeight, setSeaWeight] = useState('');
+
+  // ── Air ──
+  const [airL, setAirL] = useState(''); const [airW, setAirW] = useState('');
+  const [airH, setAirH] = useState(''); const [airQty, setAirQty] = useState('1');
+  const [airActual, setAirActual] = useState('');
+
+  // ── Land ──
+  const [landRows, setLandRows] = useState([{ l: '', w: '', h: '', qty: '1', weight: '' }]);
+  const [truckType, setTruckType] = useState('20t');
+
+  // ── Warehouse ──
+  const [whL, setWhL] = useState(''); const [whW, setWhW] = useState('');
+  const [whH, setWhH] = useState(''); const [whQty, setWhQty] = useState('1');
+  const [whDays, setWhDays] = useState('30');
+
+  const TRUCK_CAP = { '3.5t': { vol: 18, wt: 3500 }, '10t': { vol: 40, wt: 10000 }, '20t': { vol: 80, wt: 20000 }, '40t': { vol: 120, wt: 40000 } };
+  const CONTAINER = (cbm) => cbm <= 25 ? '20ft (≤25 CBM)' : cbm <= 67 ? '40ft Std (≤67 CBM)' : '40ft HC (≤76 CBM)';
+
+  const calculate = () => {
+    if (tab === 'sea') {
+      let totalCBM = 0, totalKg = parseFloat(seaWeight) || 0;
+      for (const r of seaRows) {
+        const div = r.unit === 'cm' ? 1e6 : 1;
+        totalCBM += ((parseFloat(r.l)||0)*(parseFloat(r.w)||0)*(parseFloat(r.h)||0)/div) * (parseInt(r.qty)||1);
+      }
+      setResults({ tab: 'sea', cbm: totalCBM.toFixed(3), weight: totalKg, container: CONTAINER(totalCBM), loadPct: Math.min(100, (totalCBM/76*100)).toFixed(1) });
+    } else if (tab === 'air') {
+      const vol = ((parseFloat(airL)||0)*(parseFloat(airW)||0)*(parseFloat(airH)||0)/5000) * (parseInt(airQty)||1);
+      const act = (parseFloat(airActual)||0) * (parseInt(airQty)||1);
+      const chargeable = Math.max(vol, act);
+      setResults({ tab: 'air', volWeight: vol.toFixed(2), actWeight: act.toFixed(2), chargeable: chargeable.toFixed(2), basis: chargeable === vol ? 'Volumetric' : 'Actual' });
+    } else if (tab === 'land') {
+      let totalVol = 0, totalKg = 0;
+      for (const r of landRows) {
+        const q = parseInt(r.qty)||1;
+        totalVol += ((parseFloat(r.l)||0)*(parseFloat(r.w)||0)*(parseFloat(r.h)||0)/1e6)*q;
+        totalKg  += (parseFloat(r.weight)||0)*q;
+      }
+      const cap = TRUCK_CAP[truckType];
+      setResults({ tab: 'land', vol: totalVol.toFixed(3), weight: totalKg.toFixed(0), truck: truckType, volPct: Math.min(100,(totalVol/cap.vol*100)).toFixed(1), wtPct: Math.min(100,(totalKg/cap.wt*100)).toFixed(1) });
+    } else {
+      const cbm = ((parseFloat(whL)||0)*(parseFloat(whW)||0)*(parseFloat(whH)||0)/1e6)*(parseInt(whQty)||1);
+      const days = parseFloat(whDays)||1;
+      const cost = (cbm * days * 0.35).toFixed(2);
+      setResults({ tab: 'warehouse', cbm: cbm.toFixed(3), days, cost });
+    }
+  };
+
+  const exportCSV = () => {
+    if (!results) return;
+    const rows = [['Field', 'Value']];
+    Object.entries(results).forEach(([k, v]) => k !== 'tab' && rows.push([k, v]));
+    const csv = rows.map(r => r.join(',')).join('\n');
+    const a = document.createElement('a'); a.href = 'data:text/csv,' + encodeURIComponent(csv);
+    a.download = `bejoice-${results.tab}-calc.csv`; a.click();
+  };
+
+  const exportPDF = () => {
+    if (!results) return;
+    const w = window.open('', '_blank');
+    w.document.write(`<html><head><title>Bejoice Load Calc</title><style>body{font-family:sans-serif;padding:2rem;color:#111}h2{color:#c8a84e}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:8px}th{background:#f5f5f5}</style></head><body><h2>Bejoice Group — Load Calculation</h2><p>${new Date().toLocaleString()}</p><table><tr><th>Field</th><th>Value</th></tr>${Object.entries(results).filter(([k])=>k!=='tab').map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</table></body></html>`);
+    w.document.close(); w.print();
+  };
+
+  const inp = { background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.12)', borderRadius:'0.4rem', padding:'0.5rem 0.7rem', color:'#fff', fontFamily:"'Inter',sans-serif", fontSize:'0.82rem', outline:'none', width:'100%' };
+  const lbl = { fontFamily:"'Inter',sans-serif", fontSize:'0.58rem', fontWeight:600, letterSpacing:'0.1em', textTransform:'uppercase', color:'rgba(255,255,255,0.45)', display:'block', marginBottom:'0.3rem' };
+
+  const tabs = [
+    { id:'sea',  icon:'🚢', label: ar?'بحري':'Sea' },
+    { id:'air',  icon:'✈️', label: ar?'جوي':'Air' },
+    { id:'land', icon:'🚛', label: ar?'بري':'Land' },
+    { id:'warehouse', icon:'🏭', label: ar?'مستودع':'Warehouse' },
+  ];
+
+  return (
+    <div style={{ height:'100%', display:'flex', flexDirection:'column', overflow:'hidden' }}>
+      {/* Tabs */}
+      <div style={{ display:'flex', gap:'0.4rem', padding:'1rem 1.2rem 0', flexShrink:0 }}>
+        {tabs.map(t => (
+          <button key={t.id} onClick={() => { setTab(t.id); setResults(null); }}
+            style={{ flex:1, padding:'0.55rem 0.3rem', background: tab===t.id?'#c8a84e':'rgba(255,255,255,0.05)', border:'1px solid', borderColor: tab===t.id?'#c8a84e':'rgba(255,255,255,0.1)', borderRadius:'0.5rem', color: tab===t.id?'#0a0a0f':'rgba(255,255,255,0.65)', fontFamily:"'Inter',sans-serif", fontSize:'0.65rem', fontWeight:600, cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:'0.2rem', transition:'all 0.2s' }}>
+            <span>{t.icon}</span><span>{t.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Inputs */}
+      <div style={{ flex:1, overflowY:'auto', padding:'1rem 1.2rem' }}>
+        {/* ── SEA ── */}
+        {tab==='sea' && (
+          <div style={{ display:'flex', flexDirection:'column', gap:'0.8rem' }}>
+            {seaRows.map((r, i) => (
+              <div key={i} style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr 0.6fr 0.6fr auto', gap:'0.4rem', alignItems:'end' }}>
+                {['l','w','h'].map(f => (
+                  <div key={f}><label style={lbl}>{f.toUpperCase()} (cm)</label>
+                    <input style={inp} type="number" value={r[f]} onChange={e=>setSeaRows(rows=>rows.map((row,idx)=>idx===i?{...row,[f]:e.target.value}:row))} placeholder="0"/></div>
+                ))}
+                <div><label style={lbl}>{ar?'كمية':'Qty'}</label><input style={inp} type="number" value={r.qty} onChange={e=>setSeaRows(rows=>rows.map((row,idx)=>idx===i?{...row,qty:e.target.value}:row))}/></div>
+                <div><label style={lbl}>Unit</label>
+                  <select style={{...inp,padding:'0.45rem'}} value={r.unit} onChange={e=>setSeaRows(rows=>rows.map((row,idx)=>idx===i?{...row,unit:e.target.value}:row))}>
+                    <option value="cm">cm</option><option value="m">m</option>
+                  </select>
+                </div>
+                {seaRows.length>1&&<button onClick={()=>setSeaRows(r=>r.filter((_,idx)=>idx!==i))} style={{background:'rgba(255,50,50,0.15)',border:'none',borderRadius:'0.3rem',color:'rgba(255,100,100,0.8)',cursor:'pointer',padding:'0.45rem 0.6rem',alignSelf:'flex-end'}}>✕</button>}
+              </div>
+            ))}
+            <div style={{ display:'flex', gap:'0.8rem', alignItems:'center' }}>
+              <button onClick={()=>setSeaRows(r=>[...r,{l:'',w:'',h:'',qty:'1',unit:'cm'}])} style={{background:'rgba(200,168,78,0.1)',border:'1px solid rgba(200,168,78,0.25)',borderRadius:'0.4rem',color:'#c8a84e',cursor:'pointer',padding:'0.4rem 0.8rem',fontFamily:"'Inter',sans-serif",fontSize:'0.7rem'}}>+ {ar?'إضافة صف':'Add Row'}</button>
+              <div style={{flex:1}}><label style={lbl}>{ar?'الوزن الكلي (كغ)':'Total Weight (kg)'}</label><input style={inp} type="number" value={seaWeight} onChange={e=>setSeaWeight(e.target.value)} placeholder="0"/></div>
+            </div>
+          </div>
+        )}
+
+        {/* ── AIR ── */}
+        {tab==='air' && (
+          <div style={{ display:'flex', flexDirection:'column', gap:'0.8rem' }}>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr 0.7fr', gap:'0.5rem' }}>
+              {[['airL',setAirL,airL,'L (cm)'],['airW',setAirW,airW,'W (cm)'],['airH',setAirH,airH,'H (cm)'],['airQty',setAirQty,airQty,'Qty']].map(([,setter,val,lbTxt])=>(
+                <div key={lbTxt}><label style={lbl}>{lbTxt}</label><input style={inp} type="number" value={val} onChange={e=>setter(e.target.value)} placeholder="0"/></div>
+              ))}
+            </div>
+            <div><label style={lbl}>{ar?'الوزن الفعلي (كغ/قطعة)':'Actual Weight (kg/pc)'}</label><input style={inp} type="number" value={airActual} onChange={e=>setAirActual(e.target.value)} placeholder="0"/></div>
+            <p style={{fontFamily:"'Inter',sans-serif",fontSize:'0.68rem',color:'rgba(255,255,255,0.35)',margin:0}}>Vol. weight = L×W×H÷5000 per piece</p>
+          </div>
+        )}
+
+        {/* ── LAND ── */}
+        {tab==='land' && (
+          <div style={{ display:'flex', flexDirection:'column', gap:'0.8rem' }}>
+            <div><label style={lbl}>{ar?'نوع الشاحنة':'Truck Type'}</label>
+              <select style={{...inp,padding:'0.5rem'}} value={truckType} onChange={e=>setTruckType(e.target.value)}>
+                <option value="3.5t">3.5t Pickup (18 CBM)</option><option value="10t">10t Truck (40 CBM)</option>
+                <option value="20t">20t Truck (80 CBM)</option><option value="40t">40t Semi (120 CBM)</option>
+              </select>
+            </div>
+            {landRows.map((r, i) => (
+              <div key={i} style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr 0.6fr 0.8fr auto', gap:'0.4rem', alignItems:'end' }}>
+                {['l','w','h'].map(f=>(<div key={f}><label style={lbl}>{f.toUpperCase()} (cm)</label><input style={inp} type="number" value={r[f]} onChange={e=>setLandRows(rows=>rows.map((row,idx)=>idx===i?{...row,[f]:e.target.value}:row))} placeholder="0"/></div>))}
+                <div><label style={lbl}>Qty</label><input style={inp} type="number" value={r.qty} onChange={e=>setLandRows(rows=>rows.map((row,idx)=>idx===i?{...row,qty:e.target.value}:row))}/></div>
+                <div><label style={lbl}>kg/pc</label><input style={inp} type="number" value={r.weight} onChange={e=>setLandRows(rows=>rows.map((row,idx)=>idx===i?{...row,weight:e.target.value}:row))}/></div>
+                {landRows.length>1&&<button onClick={()=>setLandRows(r=>r.filter((_,idx)=>idx!==i))} style={{background:'rgba(255,50,50,0.15)',border:'none',borderRadius:'0.3rem',color:'rgba(255,100,100,0.8)',cursor:'pointer',padding:'0.45rem 0.6rem',alignSelf:'flex-end'}}>✕</button>}
+              </div>
+            ))}
+            <button onClick={()=>setLandRows(r=>[...r,{l:'',w:'',h:'',qty:'1',weight:''}])} style={{background:'rgba(200,168,78,0.1)',border:'1px solid rgba(200,168,78,0.25)',borderRadius:'0.4rem',color:'#c8a84e',cursor:'pointer',padding:'0.4rem 0.8rem',fontFamily:"'Inter',sans-serif",fontSize:'0.7rem',alignSelf:'flex-start'}}>+ {ar?'إضافة صف':'Add Row'}</button>
+          </div>
+        )}
+
+        {/* ── WAREHOUSE ── */}
+        {tab==='warehouse' && (
+          <div style={{ display:'flex', flexDirection:'column', gap:'0.8rem' }}>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr 0.7fr', gap:'0.5rem' }}>
+              {[['L (cm)',whL,setWhL],['W (cm)',whW,setWhW],['H (cm)',whH,setWhH],['Qty',whQty,setWhQty]].map(([lbTxt,val,setter])=>(
+                <div key={lbTxt}><label style={lbl}>{lbTxt}</label><input style={inp} type="number" value={val} onChange={e=>setter(e.target.value)} placeholder="0"/></div>
+              ))}
+            </div>
+            <div><label style={lbl}>{ar?'أيام التخزين':'Storage Days'}</label><input style={inp} type="number" value={whDays} onChange={e=>setWhDays(e.target.value)} placeholder="30"/></div>
+            <p style={{fontFamily:"'Inter',sans-serif",fontSize:'0.68rem',color:'rgba(255,255,255,0.35)',margin:0}}>Rate: $0.35 / CBM / day (indicative)</p>
+          </div>
+        )}
+
+        {/* Results */}
+        {results && (
+          <div style={{ marginTop:'1.2rem', background:'rgba(200,168,78,0.08)', border:'1px solid rgba(200,168,78,0.2)', borderRadius:'0.7rem', padding:'1rem' }}>
+            <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'1rem', letterSpacing:'0.06em', color:'#c8a84e', marginBottom:'0.6rem' }}>{ar?'نتائج الحساب':'Results'}</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:'0.4rem' }}>
+              {Object.entries(results).filter(([k])=>k!=='tab').map(([k,v])=>(
+                <div key={k} style={{ display:'flex', justifyContent:'space-between', fontFamily:"'Inter',sans-serif", fontSize:'0.78rem' }}>
+                  <span style={{color:'rgba(255,255,255,0.5)',textTransform:'capitalize'}}>{k.replace(/([A-Z])/g,' $1')}</span>
+                  <span style={{color:'#fff',fontWeight:600}}>{v}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ display:'flex', gap:'0.6rem', marginTop:'1rem' }}>
+              <button onClick={exportCSV} style={{flex:1,background:'rgba(255,255,255,0.07)',border:'1px solid rgba(255,255,255,0.12)',borderRadius:'0.4rem',color:'rgba(255,255,255,0.75)',fontFamily:"'Inter',sans-serif",fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.1em',padding:'0.55rem',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'0.3rem'}}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                CSV
+              </button>
+              <button onClick={exportPDF} style={{flex:1,background:'rgba(200,168,78,0.12)',border:'1px solid rgba(200,168,78,0.25)',borderRadius:'0.4rem',color:'#c8a84e',fontFamily:"'Inter',sans-serif",fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.1em',padding:'0.55rem',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'0.3rem'}}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                PDF
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Calculate button */}
+      <div style={{ padding:'0.8rem 1.2rem', flexShrink:0, borderTop:'1px solid rgba(255,255,255,0.07)' }}>
+        <button onClick={calculate} style={{ width:'100%', padding:'0.85rem', background:'#c8a84e', border:'none', borderRadius:'0.55rem', color:'#0a0a0f', fontFamily:"'Inter',sans-serif", fontSize:'0.72rem', fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', cursor:'pointer', transition:'background 0.2s' }}
+          onMouseEnter={e=>e.currentTarget.style.background='#e8d48a'} onMouseLeave={e=>e.currentTarget.style.background='#c8a84e'}>
+          {ar?'احسب':'Calculate'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ============================================
+// TOOL MODAL — generic full-screen panel
+// ============================================
+function ToolModal({ open, onClose, title, subtitle, children }) {
+  const overlayRef = useRef(null);
+  const panelRef   = useRef(null);
+
+  useEffect(() => { document.body.style.overflow = open ? 'hidden' : ''; return () => { document.body.style.overflow = ''; }; }, [open]);
+  useEffect(() => {
+    if (!open) return;
+    const h = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, [open, onClose]);
+  useEffect(() => {
+    const o = overlayRef.current, p = panelRef.current;
+    if (!o || !p) return;
+    if (open) {
+      o.style.display = 'flex';
+      gsap.fromTo(o, { opacity:0 }, { opacity:1, duration:0.28, ease:'power2.out' });
+      gsap.fromTo(p, { opacity:0, y:28, scale:0.97 }, { opacity:1, y:0, scale:1, duration:0.38, ease:'power3.out' });
+    } else {
+      gsap.to(p, { opacity:0, y:18, scale:0.97, duration:0.22, ease:'power2.in' });
+      gsap.to(o, { opacity:0, duration:0.28, ease:'power2.in', onComplete:()=>{ if(o) o.style.display='none'; } });
+    }
+  }, [open]);
+
+  return (
+    <div ref={overlayRef} onClick={e=>e.target===overlayRef.current&&onClose()}
+      style={{ display:'none', position:'fixed', inset:0, background:'rgba(0,0,0,0.78)', backdropFilter:'blur(10px)', WebkitBackdropFilter:'blur(10px)', zIndex:3000, alignItems:'center', justifyContent:'center', padding:'1rem' }}>
+      <div ref={panelRef} style={{ background:'#0a0a0f', border:'1px solid rgba(200,168,78,0.15)', borderRadius:'1.1rem', width:'100%', maxWidth:'860px', maxHeight:'92vh', display:'flex', flexDirection:'column', overflow:'hidden', boxShadow:'0 32px 80px rgba(0,0,0,0.75)' }}>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'1rem 1.4rem', borderBottom:'1px solid rgba(255,255,255,0.07)', flexShrink:0 }}>
+          <div>
+            <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'1.3rem', letterSpacing:'0.08em', color:'#fff' }}>{title}</div>
+            {subtitle && <div style={{ fontFamily:"'Inter',sans-serif", fontSize:'0.62rem', color:'rgba(200,168,78,0.65)', letterSpacing:'0.1em', marginTop:'0.1rem' }}>{subtitle}</div>}
+          </div>
+          <button onClick={onClose} style={{ background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)', borderRadius:'50%', width:32, height:32, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', color:'rgba(255,255,255,0.5)', fontSize:'0.9rem', transition:'all 0.2s' }}
+            onMouseEnter={e=>{e.currentTarget.style.background='rgba(255,255,255,0.12)';e.currentTarget.style.color='#fff';}}
+            onMouseLeave={e=>{e.currentTarget.style.background='rgba(255,255,255,0.06)';e.currentTarget.style.color='rgba(255,255,255,0.5)';}}>✕</button>
+        </div>
+        <div style={{ flex:1, minHeight:0, overflow:'hidden' }}>{children}</div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================
+// HAMBURGER MENU DRAWER — Tools Hub
+// ============================================
+function MenuDrawer({ open, onClose, onQuoteClick, onBook, lang, toggleLang }) {
+  const drawerRef  = useRef(null);
+  const overlayRef = useRef(null);
+  const [airOpen,  setAirOpen]  = useState(false);
+  const [calcOpen, setCalcOpen] = useState(false);
+  const ar = lang === 'ar';
+
+  useEffect(() => {
+    const drawer = drawerRef.current, overlay = overlayRef.current;
+    if (!drawer || !overlay) return;
+    if (open) {
+      overlay.style.display = 'block';
+      gsap.fromTo(overlay, { opacity:0 }, { opacity:1, duration:0.28, ease:'power2.out' });
+      gsap.fromTo(drawer,  { x:'100%' },  { x:'0%',   duration:0.42, ease:'power3.out' });
+    } else {
+      gsap.to(drawer,  { x:'100%',  duration:0.32, ease:'power3.in' });
+      gsap.to(overlay, { opacity:0, duration:0.28, ease:'power2.in', onComplete:()=>{ if(overlay) overlay.style.display='none'; } });
+    }
+  }, [open]);
+
+  const navLink = (label, onClick) => (
+    <button onClick={()=>{ onClose(); setTimeout(onClick, 300); }}
+      style={{ display:'flex', alignItems:'center', gap:'0.6rem', width:'100%', textAlign:'left', fontFamily:"'Bebas Neue',sans-serif", fontSize:'1.15rem', fontWeight:400, letterSpacing:'0.12em', color:'rgba(255,255,255,0.65)', background:'none', border:'none', cursor:'pointer', padding:'0.7rem 0', borderBottom:'1px solid rgba(255,255,255,0.06)', transition:'color 0.2s' }}
+      onMouseEnter={e=>e.currentTarget.style.color='#c8a84e'}
+      onMouseLeave={e=>e.currentTarget.style.color='rgba(255,255,255,0.65)'}>
+      <span style={{ display:'inline-block', width:3, height:14, background:'rgba(200,168,78,0.4)', borderRadius:2, flexShrink:0 }}/>
+      {label}
+    </button>
+  );
+
+  const toolCard = (icon, label, sub, onClick) => (
+    <button onClick={onClick}
+      style={{ display:'flex', flexDirection:'column', gap:'0.5rem', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.1)', borderRadius:'0.9rem', padding:'1.1rem 1rem', cursor:'pointer', transition:'all 0.22s', textAlign:'left' }}
+      onMouseEnter={e=>{ e.currentTarget.style.background='rgba(200,168,78,0.1)'; e.currentTarget.style.borderColor='rgba(200,168,78,0.35)'; e.currentTarget.style.transform='translateY(-1px)'; }}
+      onMouseLeave={e=>{ e.currentTarget.style.background='rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor='rgba(255,255,255,0.1)'; e.currentTarget.style.transform=''; }}>
+      <span style={{ fontSize:'1.6rem', lineHeight:1 }}>{icon}</span>
+      <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'1rem', letterSpacing:'0.1em', color:'#ffffff', lineHeight:1.1 }}>{label}</span>
+      <span style={{ fontFamily:"'Inter',sans-serif", fontSize:'0.68rem', fontWeight:500, color:'rgba(200,168,78,0.7)', lineHeight:1.4, letterSpacing:'0.02em' }}>{sub}</span>
+    </button>
+  );
+
+  return (
+    <>
+      <div ref={overlayRef} onClick={onClose} style={{ display:'none', position:'fixed', inset:0, background:'rgba(0,0,0,0.6)', zIndex:998, backdropFilter:'blur(5px)', WebkitBackdropFilter:'blur(5px)' }}/>
+      <div ref={drawerRef} style={{ position:'fixed', top:0, right:0, bottom:0, width:'min(400px, 92vw)', background:'#080810', borderLeft:'1px solid rgba(200,168,78,0.1)', zIndex:999, display:'flex', flexDirection:'column', transform:'translateX(100%)', overflowY:'auto' }}>
+
+        {/* Header row */}
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'1.2rem 1.4rem', borderBottom:'1px solid rgba(255,255,255,0.05)', flexShrink:0 }}>
+          <BJSLogo />
+          <button onClick={onClose} style={{ background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.08)', borderRadius:'50%', width:30, height:30, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', color:'rgba(255,255,255,0.45)', fontSize:'0.85rem', transition:'all 0.2s' }}
+            onMouseEnter={e=>{ e.currentTarget.style.color='#fff'; e.currentTarget.style.background='rgba(255,255,255,0.1)'; }}
+            onMouseLeave={e=>{ e.currentTarget.style.color='rgba(255,255,255,0.45)'; e.currentTarget.style.background='rgba(255,255,255,0.05)'; }}>✕</button>
+        </div>
+
+        {/* Nav */}
+        <div style={{ padding:'1rem 1.4rem 0.5rem', flexShrink:0 }}>
+          {navLink(ar?'عرض سعر سريع':'Quick Quote', onQuoteClick)}
+          {navLink(ar?'تتبع شحنتك':'Track Shipment', ()=>document.getElementById('tools-section')?.scrollIntoView({behavior:'smooth'}))}
+          {navLink(ar?'تواصل معنا':'Contact Us', ()=>document.querySelector('.site-footer')?.scrollIntoView({behavior:'smooth'}))}
+        </div>
+
+        {/* Tools section */}
+        <div style={{ padding:'1rem 1.4rem', flexShrink:0 }}>
+          <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'0.85rem', letterSpacing:'0.28em', textTransform:'uppercase', color:'rgba(200,168,78,0.7)', marginBottom:'0.8rem', borderBottom:'1px solid rgba(200,168,78,0.12)', paddingBottom:'0.5rem' }}>
+            {ar?'أدوات لوجستية':'Logistics Tools'}
+          </div>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.6rem' }}>
+            {toolCard('🌍', ar?'حركة الجو المباشرة':'Live Air Traffic', ar?'رادار الطائرات في الوقت الحقيقي':'Real-time flight radar', ()=>setAirOpen(true))}
+            {toolCard('📦', ar?'حاسبة الحمولة':'Load Calculator', ar?'بحري · جوي · بري · مستودع':'Sea · Air · Land · Warehouse', ()=>setCalcOpen(true))}
+            {toolCard('🚢', ar?'عرض سعر سريع':'Quick Quote', ar?'أسعار فورية لجميع أنواع الشحن':'Instant freight rates', ()=>{ onClose(); setTimeout(onQuoteClick, 300); })}
+            {toolCard('📡', ar?'تتبع الشحنة':'Track Shipment', ar?'تتبع بوليصة الشحن أو AWB':'BL / AWB live tracking', ()=>{ onClose(); setTimeout(()=>document.getElementById('tools-section')?.scrollIntoView({behavior:'smooth'}), 300); })}
+          </div>
+        </div>
+
+        {/* Spacer */}
+        <div style={{ flex:1 }}/>
+
+        {/* Book CTA */}
+        <div style={{ padding:'1rem 1.4rem', borderTop:'1px solid rgba(255,255,255,0.05)', flexShrink:0 }}>
+          <button onClick={()=>{ onClose(); setTimeout(onBook, 300); }}
+            style={{ width:'100%', padding:'1rem', background:'linear-gradient(135deg,#c8a84e,#a8843e)', border:'none', borderRadius:'0.75rem', color:'#050508', fontFamily:"'Bebas Neue',sans-serif", fontSize:'1.05rem', letterSpacing:'0.18em', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:'0.6rem', transition:'all 0.2s', boxShadow:'0 4px 20px rgba(200,168,78,0.25)' }}
+            onMouseEnter={e=>{e.currentTarget.style.background='linear-gradient(135deg,#e8d48a,#c8a84e)';e.currentTarget.style.boxShadow='0 6px 28px rgba(200,168,78,0.4)';}} onMouseLeave={e=>{e.currentTarget.style.background='linear-gradient(135deg,#c8a84e,#a8843e)';e.currentTarget.style.boxShadow='0 4px 20px rgba(200,168,78,0.25)';}}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            {ar?'احجز خبير شحن':'Book a Freight Expert'}
+          </button>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:'0.9rem' }}>
+            <button onClick={toggleLang} style={{ fontFamily:"'Inter',sans-serif", fontSize:'0.58rem', fontWeight:700, letterSpacing:'0.16em', color:'rgba(255,255,255,0.4)', background:'none', border:'1px solid rgba(255,255,255,0.1)', borderRadius:'2rem', cursor:'pointer', padding:'0.25rem 0.65rem', display:'flex', gap:'0.25rem' }}>
+              <span style={{color:lang==='en'?'#c8a84e':'inherit'}}>EN</span>
+              <span style={{color:'rgba(255,255,255,0.15)'}}>|</span>
+              <span style={{color:lang==='ar'?'#c8a84e':'inherit'}}>AR</span>
+            </button>
+            <span style={{ fontFamily:"'Inter',sans-serif", fontSize:'0.52rem', color:'rgba(255,255,255,0.15)', letterSpacing:'0.08em' }}>ZATCA · ISO 9001 · FIATA</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Air Traffic Tool */}
+      <ToolModal open={airOpen} onClose={()=>setAirOpen(false)}
+        title={ar?'حركة الجو المباشرة':'Live Air Traffic'}
+        subtitle={ar?'رادار الطائرات في الوقت الحقيقي — مدعوم من AirNav RadarBox':'Real-time flight radar — powered by AirNav RadarBox'}>
+        <div style={{ height:'100%', minHeight:'560px', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'2rem', background:'radial-gradient(ellipse at 50% 40%, rgba(200,168,78,0.07) 0%, rgba(5,5,8,0.0) 70%)', padding:'2rem' }}>
+          {/* Animated radar ring */}
+          <div style={{ position:'relative', width:'140px', height:'140px' }}>
+            <div style={{ position:'absolute', inset:0, borderRadius:'50%', border:'2px solid rgba(200,168,78,0.35)', animation:'radarPing 2s ease-out infinite' }} />
+            <div style={{ position:'absolute', inset:'15px', borderRadius:'50%', border:'1.5px solid rgba(200,168,78,0.25)', animation:'radarPing 2s ease-out 0.6s infinite' }} />
+            <div style={{ position:'absolute', inset:'30px', borderRadius:'50%', border:'1px solid rgba(200,168,78,0.18)', animation:'radarPing 2s ease-out 1.2s infinite' }} />
+            <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'3.2rem' }}>✈️</div>
+          </div>
+          <style>{`@keyframes radarPing { 0%{transform:scale(1);opacity:0.8} 100%{transform:scale(1.5);opacity:0} }`}</style>
+          <div style={{ textAlign:'center', maxWidth:'420px' }}>
+            <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'1.7rem', letterSpacing:'0.12em', color:'#c8a84e', marginBottom:'0.6rem' }}>
+              {ar ? 'رادار الرحلات الجوية المباشرة' : 'LIVE FLIGHT RADAR'}
+            </div>
+            <div style={{ fontFamily:"'Inter',sans-serif", fontSize:'0.92rem', color:'rgba(255,255,255,0.6)', lineHeight:1.6, marginBottom:'1.8rem' }}>
+              {ar
+                ? 'AirNav RadarBox تمنع التضمين المباشر — انقر لفتح الرادار الحي في نافذة جديدة'
+                : 'AirNav RadarBox restricts direct embedding. Click below to open the live radar in a full browser window.'}
+            </div>
+            <a
+              href="https://www.airnavradar.com/@40.46017,74.38525,z3"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display:'inline-flex', alignItems:'center', gap:'0.6rem', background:'linear-gradient(135deg,#c8a84e,#a8843e)', color:'#050508', fontFamily:"'Inter',sans-serif", fontWeight:700, fontSize:'0.95rem', padding:'0.85rem 2.2rem', borderRadius:'3rem', textDecoration:'none', letterSpacing:'0.04em', boxShadow:'0 4px 24px rgba(200,168,78,0.35)', transition:'transform 0.2s,box-shadow 0.2s' }}
+              onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow='0 8px 32px rgba(200,168,78,0.5)'}}
+              onMouseLeave={e=>{e.currentTarget.style.transform='';e.currentTarget.style.boxShadow='0 4px 24px rgba(200,168,78,0.35)'}}
+            >
+              <span>🗺️</span> {ar ? 'فتح الرادار الحي' : 'Open Live Radar'}  ↗
+            </a>
+          </div>
+          <div style={{ fontFamily:"'Inter',sans-serif", fontSize:'0.72rem', color:'rgba(200,168,78,0.45)', letterSpacing:'0.08em' }}>
+            POWERED BY AIRNAVRADAR.COM
+          </div>
+        </div>
+      </ToolModal>
+
+      {/* Load Calculator Tool */}
+      <ToolModal open={calcOpen} onClose={()=>setCalcOpen(false)}
+        title={ar?'حاسبة الحمولة':'Load Calculator'}
+        subtitle={ar?'بحري · جوي · بري · مستودع — تصدير النتائج بصيغة CSV أو PDF':'Sea · Air · Land · Warehouse — Export results as CSV or PDF'}>
+        <LoadCalculator lang={lang} />
+      </ToolModal>
+    </>
+  );
+}
+
+// ============================================
+// HEADER — minimal: logo left, book CTA + burger right
 // ============================================
 function Header({ onToolsClick, onQuoteClick, lang, toggleLang }) {
   const headerRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const t = TRANSLATIONS[lang];
+
+  const scrollToHero = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   useEffect(() => {
     if (!headerRef.current) return;
-
-    gsap.fromTo(
-      headerRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 1.4, ease: 'power2.out', delay: 1.8 }
-    );
-
+    gsap.fromTo(headerRef.current, { opacity: 0 }, { opacity: 1, duration: 1.4, ease: 'power2.out', delay: 1.8 });
     const onScroll = () => {
       if (!headerRef.current) return;
-      if (window.scrollY > 40) {
-        headerRef.current.classList.add('scrolled');
-      } else {
-        headerRef.current.classList.remove('scrolled');
-      }
+      headerRef.current.classList.toggle('scrolled', window.scrollY > 40);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   return (
-    <header
-      ref={headerRef}
-      className="header-glass fixed top-0 left-0 w-full z-50 opacity-0"
-    >
-      <div className="flex items-center justify-between px-8 md:px-14 py-4">
-        <BJSLogo />
-
-        {/* Nav */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-          <button
-            onClick={onQuoteClick}
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: '0.65rem',
-              fontWeight: 500,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'rgba(200,168,78,0.85)',
-              background: 'rgba(200,168,78,0.08)',
-              border: '1px solid rgba(200,168,78,0.25)',
-              borderRadius: '2rem',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              padding: '0.35rem 1rem',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(200,168,78,0.15)'; e.currentTarget.style.borderColor = 'rgba(200,168,78,0.5)'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(200,168,78,0.08)'; e.currentTarget.style.borderColor = 'rgba(200,168,78,0.25)'; }}
-          >
-            {t.navQuote}
-          </button>
-          <button
-            onClick={onToolsClick}
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: '0.65rem',
-              fontWeight: 400,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'rgba(200,168,78,0.65)',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'color 0.3s ease',
-              padding: '0.25rem 0',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'rgba(200,168,78,1)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(200,168,78,0.65)')}
-          >
-            {t.navTools}
-          </button>
-          {/* Language toggle */}
-          <button
-            onClick={toggleLang}
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: '0.62rem',
-              fontWeight: 600,
-              letterSpacing: '0.14em',
-              color: 'rgba(255,255,255,0.55)',
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: '0.35rem',
-              cursor: 'pointer',
-              padding: '0.28rem 0.6rem',
-              transition: 'all 0.2s',
-              display: 'flex',
-              gap: '0.3rem',
-            }}
-          >
-            <span style={{ color: lang === 'en' ? 'rgba(200,168,78,1)' : 'rgba(255,255,255,0.35)' }}>EN</span>
-            <span style={{ color: 'rgba(255,255,255,0.2)' }}>|</span>
-            <span style={{ color: lang === 'ar' ? 'rgba(200,168,78,1)' : 'rgba(255,255,255,0.35)' }}>AR</span>
-          </button>
-
-          <button
-            id="contact-btn"
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: '0.65rem',
-              fontWeight: 400,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.4)',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'color 0.3s ease',
-              padding: '0.25rem 0',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.85)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.4)')}
-          >
-            {t.navContact}
-          </button>
+    <>
+      {/* Floating pill — left side, background hugs content */}
+      <header
+        ref={headerRef}
+        className="header-glass fixed top-0 left-0 w-full z-50 opacity-0"
+        style={{ pointerEvents: 'none', background: 'transparent' }}
+      >
+        <div style={{ padding: '0.9rem 1.4rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          {/* Logo — left */}
+          <div style={{ pointerEvents: 'auto' }}>
+            <button onClick={scrollToHero} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }} aria-label="Back to top">
+              <BJSLogo />
+            </button>
+          </div>
+          {/* Right controls — all in one pill */}
+          <div className="header-inner-pill" style={{ pointerEvents: 'auto' }}>
+            {/* Lang toggle */}
+            <button onClick={toggleLang} className="header-lang-btn" aria-label="Toggle language">
+              <span className={lang === 'en' ? 'lang-active' : ''}>{lang === 'en' ? 'EN' : 'ع'}</span>
+              <span className="lang-sep">|</span>
+              <span className={lang === 'ar' ? 'lang-active' : ''}>{lang === 'ar' ? 'AR' : 'ع'}</span>
+            </button>
+            {/* Divider */}
+            <div style={{ width: 1, height: 22, background: 'rgba(255,255,255,0.1)', flexShrink: 0 }} />
+            {/* Book CTA */}
+            <button onClick={onQuoteClick} className="header-book-btn">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              {lang === 'ar' ? 'احجز خبير شحن' : 'Book a Freight Expert'}
+            </button>
+            {/* Divider */}
+            <div style={{ width: 1, height: 22, background: 'rgba(255,255,255,0.1)', flexShrink: 0 }} />
+            {/* Burger */}
+            <button onClick={() => setMenuOpen(true)} className="header-burger" aria-label="Open menu">
+              <span /><span /><span />
+            </button>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      <MenuDrawer
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        onQuoteClick={onQuoteClick}
+        onBook={onQuoteClick}
+        lang={lang}
+        toggleLang={toggleLang}
+      />
+    </>
   );
 }
 
@@ -653,76 +982,56 @@ function ActDivider({ label, title }) {
 }
 
 // ============================================
-// HERO QUOTE FORM
+// HERO QUOTE FORM — minimal left-anchored card
 // ============================================
-function HeroQuoteForm({ lang = 'en' }) {
+function HeroQuoteForm({ lang = 'en', onBook }) {
   const t = TRANSLATIONS[lang];
-  const [origin, setOrigin]           = useState('');
-  const [destination, setDestination] = useState('');
+  const [origin, setOrigin] = useState('');
+  const [dest, setDest]     = useState('');
 
-  const handleSubmit = () => {
-    document.getElementById('quick-quote-section')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const handleSubmit = () => onBook?.();
 
   return (
-    <div className="hero-cta-tray">
-      {/* Header */}
-      <div className="hero-cta-tray-header">
-        <span className="hero-cta-tray-badge">Free Quote</span>
-        <span className="hero-cta-tray-tagline">30-min response · No commitment</span>
+    <div className="hero-mini-card">
+      {/* Eyebrow */}
+      <div className="hero-mini-card__eyebrow">
+        <span className="hero-mini-card__dot" />
+        {lang === 'ar' ? 'عرض مجاني · رد خلال 30 دقيقة' : 'Free quote · 30-min response'}
       </div>
 
-      {/* Route row */}
-      <div className="hero-cta-tray-route">
-        <div className="hero-cta-tray-field">
-          <label className="hero-cta-tray-label">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
-            {t.heroFormOrigin}
-          </label>
-          <input
-            className="hero-cta-tray-input"
-            type="text"
-            placeholder="e.g. Hamburg, Germany"
-            value={origin}
-            onChange={e => setOrigin(e.target.value)}
-          />
-        </div>
-        <div className="hero-cta-tray-arrow">→</div>
-        <div className="hero-cta-tray-field">
-          <label className="hero-cta-tray-label">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            {t.heroFormDest}
-          </label>
-          <input
-            className="hero-cta-tray-input"
-            type="text"
-            placeholder="e.g. Jeddah, KSA"
-            value={destination}
-            onChange={e => setDestination(e.target.value)}
-          />
-        </div>
+      {/* Inputs */}
+      <div className="hero-mini-card__fields">
+        <input
+          className="hero-mini-card__input"
+          type="text"
+          placeholder={lang === 'ar' ? 'بلد الشحن' : 'Origin — city or country'}
+          value={origin}
+          onChange={e => setOrigin(e.target.value)}
+        />
+        <div className="hero-mini-card__arrow">↓</div>
+        <input
+          className="hero-mini-card__input"
+          type="text"
+          placeholder={lang === 'ar' ? 'الوجهة في السعودية' : 'Destination — KSA port or city'}
+          value={dest}
+          onChange={e => setDest(e.target.value)}
+        />
       </div>
 
-      {/* CTA button */}
-      <button className="hero-cta-tray-btn" onClick={handleSubmit}>
-        {t.heroFormBtn}
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      {/* Primary CTA */}
+      <button className="hero-mini-card__btn" onClick={handleSubmit}>
+        {lang === 'ar' ? 'احجز خبير شحن' : 'Book a Freight Expert'}
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
 
-      {/* Sub-row */}
-      <div className="hero-cta-tray-sub">
-        <a href="tel:+966550000000" className="hero-cta-tray-phone">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3-8.69A2 2 0 0 1 3.82 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.61 5.61l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.28 16z"/></svg>
+      {/* Sub-links */}
+      <div className="hero-mini-card__sub">
+        <a href="tel:+966550000000" className="hero-mini-card__link">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3-8.69A2 2 0 0 1 3.82 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.61 5.61l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.28 16z"/></svg>
           +966 55 000 0000
         </a>
-        <span className="hero-cta-tray-divider" />
-        <a
-          href="https://wa.me/966550000000?text=Hello%2C+I+need+a+freight+quote"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hero-cta-tray-wa"
-        >
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        <span style={{ color: 'rgba(255,255,255,0.15)' }}>·</span>
+        <a href="https://wa.me/966550000000" target="_blank" rel="noopener noreferrer" className="hero-mini-card__link hero-mini-card__link--wa">
           WhatsApp
         </a>
       </div>
@@ -776,7 +1085,7 @@ function FloatingCTA({ onQuoteClick }) {
 // ============================================
 // CHAPTER SECTION
 // ============================================
-function ChapterSection({ chapter, lang = 'en' }) {
+function ChapterSection({ chapter, lang = 'en', onBook }) {
   const sectionRef = useRef(null);
   const blockRef   = useRef(null);
 
@@ -849,7 +1158,7 @@ function ChapterSection({ chapter, lang = 'en' }) {
 
           {/* RIGHT — CTA form */}
           <div className="chapter-hero-right">
-            <HeroQuoteForm lang={lang} />
+            <HeroQuoteForm lang={lang} onBook={onBook} />
           </div>
         </div>
       </section>
@@ -900,7 +1209,7 @@ function ChapterSection({ chapter, lang = 'en' }) {
           <div className={`mini-cta-wrap${isRight ? ' mini-cta-wrap--right' : ''}`}>
             <button
               className="mini-cta-pill"
-              onClick={() => document.getElementById('quick-quote-section')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => onBook?.()}
             >
               <span className="mini-cta-dot" />
               Get a Free Quote
@@ -916,7 +1225,7 @@ function ChapterSection({ chapter, lang = 'en' }) {
             <button
               id="cta-start-journey"
               className="cta-button cta-button-prominent"
-              onClick={() => document.getElementById('quick-quote-section')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => onBook?.()}
             >
               {t.ctaButton}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1496,101 +1805,85 @@ function CaseStudies({ lang = 'en' }) {
 }
 
 // ============================================
-// TESTIMONIALS
+// TESTIMONIALS — cinematic moving cards marquee
 // ============================================
 function Testimonials({ lang = 'en' }) {
-  const data = {
-    en: {
-      label: 'Client Voices',
-      title: 'They Trust Us.',
-      titleAccent: 'For Good Reason.',
-      items: [
-        {
-          quote: "Bejoice handled our automotive parts shipment from Germany to Jeddah with exceptional precision. Port clearance, documentation — everything seamless.",
-          author: "Mohammed Al-Rashid",
-          role: "Head of Supply Chain · Saudi Auto Industries",
-          stars: 5,
-          tag: "Sea Freight",
-        },
-        {
-          quote: "When we needed urgent pharma cargo on cold chain from Amsterdam to Riyadh, Bejoice delivered in under 14 hours uplift. Reliability that never blinks.",
-          author: "Sarah Chen",
-          role: "Logistics Director · PharmaGulf FZCO",
-          stars: 5,
-          tag: "Air Freight",
-        },
-        {
-          quote: "ZATCA compliance used to be our biggest pain. Bejoice handles HS codes, duty estimates, pre-clearance — everything. A genuine game-changer for our operation.",
-          author: "Ahmed Bin Zayed",
-          role: "Operations Manager · GCC Industrial Corp",
-          stars: 5,
-          tag: "Customs Clearance",
-        },
-      ],
-    },
-    ar: {
-      label: 'آراء العملاء',
-      title: 'يثقون بنا.',
-      titleAccent: 'ولسبب وجيه.',
-      items: [
-        {
-          quote: "تولّت بيجويس شحن قطع غيار السيارات من ألمانيا إلى جدة بدقة استثنائية. التخليص الجمركي، الوثائق — كل شيء كان سلسًا.",
-          author: "محمد الراشد",
-          role: "رئيس سلسلة التوريد · الصناعات السعودية للسيارات",
-          stars: 5,
-          tag: "شحن بحري",
-        },
-        {
-          quote: "حين احتجنا لنقل بضائع دوائية عاجلة بسلسلة التبريد من أمستردام إلى الرياض، أنجزت بيجويس المهمة في أقل من 14 ساعة. موثوقية لا مثيل لها.",
-          author: "سارة تشن",
-          role: "مديرة اللوجستيات · فارما جلف",
-          stars: 5,
-          tag: "شحن جوي",
-        },
-        {
-          quote: "كان الامتثال لهيئة الزكاة والضريبة مرهقًا. بيجويس تتولى رموز النظام المنسق وحسابات الجمارك والتخليص المسبق — كل شيء. تحوّل حقيقي.",
-          author: "أحمد بن زايد",
-          role: "مدير العمليات · الشركة الخليجية الصناعية",
-          stars: 5,
-          tag: "تخليص جمركي",
-        },
-      ],
-    },
-  };
+  const cards = [
+    { company: 'Saudi Auto Industries', quote: 'Flawless clearance. Germany to Jeddah in 18 days.', tag: 'Sea Freight', initial: 'S' },
+    { company: 'PharmaGulf FZCO', quote: 'Cold-chain from Amsterdam to RUH. Not a degree off.', tag: 'Air Reefer', initial: 'P' },
+    { company: 'GCC Industrial Corp', quote: 'ZATCA compliance handled end-to-end. Zero headaches.', tag: 'Customs', initial: 'G' },
+    { company: 'Al-Rajhi Logistics', quote: '40ft HC from Shenzhen. Port-to-door in 22 days flat.', tag: 'FCL', initial: 'A' },
+    { company: 'Rawabi Holdings', quote: 'Project cargo, OOG permits, escort — all coordinated.', tag: 'Project Cargo', initial: 'R' },
+    { company: 'Thiqah Trading Co.', quote: 'Three ports, two modes, one invoice. Brilliant.', tag: 'Multimodal', initial: 'T' },
+    { company: 'MedPlus KSA', quote: 'Pharma import licence, ATP certification — sorted fast.', tag: 'Air Freight', initial: 'M' },
+    { company: 'Al-Futtaim Retail', quote: 'Seasonal stock shipped sea freight. Never missed a window.', tag: 'LCL', initial: 'A' },
+  ];
 
-  const t = data[lang] || data.en;
+  // Duplicate for seamless loop
+  const all = [...cards, ...cards];
 
   return (
-    <section className="testimonials-section">
-      <div className="testimonials-inner">
-        <div className="chapter-label" style={{ justifyContent: 'center' }}>{t.label}</div>
-        <h2 className="testimonials-title">
-          {t.title}<br /><span className="title-accent">{t.titleAccent}</span>
+    <section className="testimonials-marquee-section">
+      <div className="testimonials-marquee-header">
+        <div className="chapter-label" style={{ justifyContent: 'center', marginBottom: '0.6rem' }}>
+          {lang === 'ar' ? 'آراء العملاء' : 'CLIENT VOICES'}
+        </div>
+        <h2 className="testimonials-marquee-title">
+          {lang === 'ar' ? 'يثقون بنا.' : 'Trusted by'}
+          {' '}<span className="title-accent">{lang === 'ar' ? 'ولسبب وجيه.' : 'Industry Leaders.'}</span>
         </h2>
-        <div className="testimonials-grid">
-          {t.items.map((item, i) => (
-            <div key={i} className="testimonial-card">
-              <div className="testimonial-top">
-                <div className="testimonial-stars">
-                  {Array.from({ length: item.stars }).map((_, j) => (
-                    <svg key={j} width="13" height="13" viewBox="0 0 24 24" fill="rgba(200,168,78,0.9)">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                    </svg>
-                  ))}
-                </div>
-                <span className="testimonial-tag">{item.tag}</span>
-              </div>
-              <blockquote className="testimonial-quote">"{item.quote}"</blockquote>
-              <div className="testimonial-author">
-                <div className="testimonial-avatar">{item.author.charAt(0)}</div>
+        <p className="testimonials-marquee-sub">
+          {lang === 'ar'
+            ? 'من كبرى شركات الشحن إلى شركات الأدوية — نُنجز المهمة.'
+            : 'From FMCG giants to pharmaceutical specialists — we deliver.'}
+        </p>
+      </div>
+
+      {/* Row 1 — moves left */}
+      <div className="marquee-track-wrap">
+        <div className="marquee-fade-left" />
+        <div className="marquee-track marquee-track--left">
+          {all.map((c, i) => (
+            <div key={i} className="marquee-card">
+              <div className="marquee-card-top">
+                <div className="marquee-avatar">{c.initial}</div>
                 <div>
-                  <div className="testimonial-name">{item.author}</div>
-                  <div className="testimonial-role">{item.role}</div>
+                  <div className="marquee-company">{c.company}</div>
+                  <div className="marquee-tag">{c.tag}</div>
                 </div>
+              </div>
+              <p className="marquee-quote">"{c.quote}"</p>
+              <div className="marquee-stars">
+                {[1,2,3,4,5].map(s => (
+                  <svg key={s} width="11" height="11" viewBox="0 0 24 24" fill="rgba(200,168,78,0.85)">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                  </svg>
+                ))}
               </div>
             </div>
           ))}
         </div>
+        <div className="marquee-fade-right" />
+      </div>
+
+      {/* Row 2 — moves right (reversed) */}
+      <div className="marquee-track-wrap" style={{ marginTop: '1.25rem' }}>
+        <div className="marquee-fade-left" />
+        <div className="marquee-track marquee-track--right">
+          {[...all].reverse().map((c, i) => (
+            <div key={i} className="marquee-card marquee-card--dim">
+              <div className="marquee-card-top">
+                <div className="marquee-avatar">{c.initial}</div>
+                <div>
+                  <div className="marquee-company">{c.company}</div>
+                  <div className="marquee-tag">{c.tag}</div>
+                </div>
+              </div>
+              <p className="marquee-quote">"{c.quote}"</p>
+            </div>
+          ))}
+        </div>
+        <div className="marquee-fade-right" />
       </div>
     </section>
   );
@@ -1929,7 +2222,167 @@ function ActIndicator({ currentAct }) {
         whiteSpace: 'nowrap',
       }}
     >
-      {currentAct === 1 ? 'Act I — Globe to Sea' : 'Act II — Sea to Flight'}
+      {CHAPTERS[currentAct]?.label || ''}
+    </div>
+  );
+}
+
+// ============================================
+// BOOKING MODAL — Calendly calendar embed
+// ============================================
+// Replace this URL with your actual Calendly link
+const CAL_USERNAME = 'bejoicegroup';
+const CAL_EVENT    = 'freight-expert';
+const CAL_URL      = `https://cal.com/${CAL_USERNAME}/${CAL_EVENT}`;
+
+// ── Cal.com inline embed — uses official Cal JS SDK ──────────────────────────
+function CalEmbed({ username, eventSlug }) {
+  const containerRef = useRef(null);
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    // Inject Cal SDK script once
+    const scriptId = 'cal-sdk';
+    if (!document.getElementById(scriptId)) {
+      const s = document.createElement('script');
+      s.id = scriptId;
+      s.async = true;
+      s.src = 'https://app.cal.com/embed/embed.js';
+      document.head.appendChild(s);
+    }
+    // Wait for Cal to load then init inline embed
+    const init = () => {
+      if (typeof window.Cal === 'undefined') return setTimeout(init, 100);
+      window.Cal('init', { origin: 'https://cal.com' });
+      window.Cal('inline', {
+        elementOrSelector: el,
+        calLink: `${username}/${eventSlug}`,
+        config: { theme: 'dark' },
+      });
+    };
+    init();
+    return () => { el.innerHTML = ''; };
+  }, [username, eventSlug]);
+  return (
+    <div ref={containerRef} style={{ width:'100%', height:'100%', minHeight:'580px' }} />
+  );
+}
+
+function BookingModal({ open, onClose, lang }) {
+  const overlayRef = useRef(null);
+  const panelRef   = useRef(null);
+
+  // Lock body scroll when open
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
+  // ESC to close
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [open, onClose]);
+
+  // Animate in/out
+  useEffect(() => {
+    const overlay = overlayRef.current;
+    const panel   = panelRef.current;
+    if (!overlay || !panel) return;
+    if (open) {
+      overlay.style.display = 'flex';
+      gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+      gsap.fromTo(panel,   { opacity: 0, y: 32, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'power3.out' });
+    } else {
+      gsap.to(panel,   { opacity: 0, y: 20, scale: 0.97, duration: 0.25, ease: 'power2.in' });
+      gsap.to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.in',
+        onComplete: () => { if (overlay) overlay.style.display = 'none'; }
+      });
+    }
+  }, [open]);
+
+  return (
+    <div
+      ref={overlayRef}
+      onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
+      style={{
+        display: 'none',
+        position: 'fixed', inset: 0,
+        background: 'rgba(0,0,0,0.72)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        zIndex: 2000,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '1rem',
+      }}
+    >
+      <div
+        ref={panelRef}
+        style={{
+          background: '#0d0d14',
+          border: '1px solid rgba(200,168,78,0.18)',
+          borderRadius: '1.2rem',
+          width: '100%',
+          maxWidth: '780px',
+          maxHeight: '90vh',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          boxShadow: '0 32px 80px rgba(0,0,0,0.7)',
+        }}
+      >
+        {/* Modal header */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '1.1rem 1.5rem',
+          borderBottom: '1px solid rgba(255,255,255,0.07)',
+          flexShrink: 0,
+        }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+            <span style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: '1.35rem', letterSpacing: '0.08em',
+              color: '#fff',
+            }}>
+              {lang === 'ar' ? 'احجز خبير الشحن' : 'Book a Freight Expert'}
+            </span>
+            <span style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '0.65rem', letterSpacing: '0.1em',
+              color: 'rgba(200,168,78,0.7)',
+            }}>
+              {lang === 'ar'
+                ? 'اختر الوقت المناسب — رد مضمون خلال 30 دقيقة'
+                : 'Pick a time — guaranteed response within 30 minutes'}
+            </span>
+          </div>
+          <button
+            onClick={onClose}
+            style={{
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '50%',
+              width: 34, height: 34,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', color: 'rgba(255,255,255,0.5)',
+              fontSize: '1rem', lineHeight: 1,
+              transition: 'all 0.2s',
+              flexShrink: 0,
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = '#fff'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = 'rgba(255,255,255,0.5)'; }}
+            aria-label="Close"
+          >✕</button>
+        </div>
+
+        {/* Cal.com official inline embed — loads via their SDK script */}
+        <div style={{ flex: 1, minHeight: 0, overflow: 'hidden auto', position: 'relative' }}>
+          {open && <CalEmbed username={CAL_USERNAME} eventSlug={CAL_EVENT} />}
+        </div>
+      </div>
     </div>
   );
 }
@@ -1947,7 +2400,19 @@ export default function App() {
   const [isLoaded, setIsLoaded]         = useState(false);
   const [currentAct, setCurrentAct]     = useState(1);
   const [lang, setLang]                 = useState('en');
+  const [bookingOpen, setBookingOpen]   = useState(false);
   const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
+
+  const openBooking  = useCallback(() => setBookingOpen(true),  []);
+  const closeBooking = useCallback(() => setBookingOpen(false), []);
+
+  // Prevent browser from restoring scroll position on refresh
+  useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
 
   const toggleLang = useCallback(() => {
     setLang(prev => {
@@ -1969,7 +2434,8 @@ export default function App() {
   const drawFrame = useCallback((frameIndex) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+    // desynchronized: false → full compositing quality (no tearing, no softness)
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: false, willReadFrequently: false });
     const img = imagesRef.current[frameIndex];
     if (!img || !img.complete || !img.naturalWidth) return;
 
@@ -1980,13 +2446,14 @@ export default function App() {
 
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
+    ctx.globalCompositeOperation = 'source-over';
 
     // Smooth mouse/gyro parallax
     mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.04;
     mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.04;
 
-    // Gentle ambient drift
-    const dpr    = window.devicePixelRatio || 1;
+    // Gentle ambient drift — use same minimum-2 DPR as handleResize
+    const dpr    = Math.max(2, window.devicePixelRatio || 1);
     const t      = performance.now() / 1000;
     const driftX = (Math.sin(t * 0.17) * 4 + Math.sin(t * 0.08) * 2) * dpr;
     const driftY = (Math.cos(t * 0.13) * 3 + Math.cos(t * 0.09) * 1) * dpr;
@@ -2014,18 +2481,34 @@ export default function App() {
     const ddw = Math.round(dw);
     const ddh = Math.round(dh);
 
+    // ── Base draw ──────────────────────────────────────────────────────────────
     ctx.drawImage(img, dx, dy, ddw, ddh);
 
-    // Vignette overlay
+    // ── HDR-like enhancement passes ────────────────────────────────────────────
+    // Pass 1: soft-light at 18% — lifts midtone saturation and perceived depth
+    ctx.globalAlpha = 0.18;
+    ctx.globalCompositeOperation = 'soft-light';
+    ctx.drawImage(img, dx, dy, ddw, ddh);
+
+    // Pass 2: overlay at 10% — punches contrast in highlights and shadows
+    ctx.globalAlpha = 0.10;
+    ctx.globalCompositeOperation = 'overlay';
+    ctx.drawImage(img, dx, dy, ddw, ddh);
+
+    // Reset compositing for vignette
+    ctx.globalAlpha = 1.0;
+    ctx.globalCompositeOperation = 'source-over';
+
+    // Vignette — lighter touch to preserve frame detail and mid-tones
     const vigCx    = cw / 2;
     const vigCy    = ch / 2;
-    const vigInner = isPortrait ? Math.min(dw, dh) * 0.08 : ch * 0.10;
-    const vigOuter = isPortrait ? Math.max(dw, dh) * 0.72 : Math.max(cw, ch) * 0.82;
+    const vigInner = isPortrait ? Math.min(dw, dh) * 0.12 : ch * 0.15;
+    const vigOuter = isPortrait ? Math.max(dw, dh) * 0.80 : Math.max(cw, ch) * 0.90;
     const vig = ctx.createRadialGradient(vigCx, vigCy, vigInner, vigCx, vigCy, vigOuter);
     vig.addColorStop(0,    'rgba(0,0,0,0)');
-    vig.addColorStop(0.45, 'rgba(0,0,0,0)');
-    vig.addColorStop(0.74, 'rgba(0,0,0,0.18)');
-    vig.addColorStop(1,    'rgba(0,0,0,0.55)');
+    vig.addColorStop(0.50, 'rgba(0,0,0,0)');
+    vig.addColorStop(0.78, 'rgba(0,0,0,0.12)');
+    vig.addColorStop(1,    'rgba(0,0,0,0.38)');
     ctx.fillStyle = vig;
     ctx.fillRect(0, 0, cw, ch);
   }, []);
@@ -2078,14 +2561,15 @@ export default function App() {
   const handleResize = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const dpr = window.devicePixelRatio || 1;
+    // Use actual DPR, minimum 2 for crisp rendering on all screens
+    const dpr = Math.max(2, window.devicePixelRatio || 1);
     const w   = Math.round(window.innerWidth  * dpr);
     const h   = Math.round(window.innerHeight * dpr);
     canvas.width        = w;
     canvas.height       = h;
     canvas.style.width  = `${window.innerWidth}px`;
     canvas.style.height = `${window.innerHeight}px`;
-    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: false, willReadFrequently: false });
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
     drawFrame(Math.round(frameObjRef.current.frame));
@@ -2103,8 +2587,9 @@ export default function App() {
     const images = new Array(TOTAL_FRAMES).fill(null);
     imagesRef.current = images;
 
-    // Phase 1: load first 20 frames (critical path — shown immediately)
-    const CRITICAL = 20;
+    // Load first 40 frames before unlocking (hero chapter),
+    // then stream the remaining 436 in sequential batches.
+    const CRITICAL = 40;
     let critLoaded = 0;
     let totalLoaded = 0;
 
@@ -2114,24 +2599,38 @@ export default function App() {
       totalLoaded++;
       setLoadProgress((totalLoaded / TOTAL_FRAMES) * 100);
       if (critLoaded === CRITICAL) {
-        // Site is usable — show it and keep loading the rest in background
         setIsLoaded(true);
         loadRest();
       }
     };
 
+    // Stream remaining frames sequentially in batches of 8.
+    // Each batch starts only after the previous batch completes,
+    // guaranteeing frames are ready in scroll order — no repeats.
     const loadRest = () => {
-      for (let i = CRITICAL; i < TOTAL_FRAMES; i++) {
-        if (cancelled) return;
-        const img = new Image();
-        img.onload = img.onerror = () => {
+      const BATCH = 8;
+
+      const loadBatch = (start) => {
+        if (cancelled || start >= TOTAL_FRAMES) return;
+        const end = Math.min(start + BATCH, TOTAL_FRAMES);
+        const batchSize = end - start;
+        let batchDone = 0;
+
+        for (let i = start; i < end; i++) {
           if (cancelled) return;
-          totalLoaded++;
-          setLoadProgress((totalLoaded / TOTAL_FRAMES) * 100);
-        };
-        img.src = FRAME_URL(i);
-        images[i] = img;
-      }
+          const img = new Image();
+          img.onload = img.onerror = () => {
+            if (cancelled) return;
+            totalLoaded++;
+            setLoadProgress((totalLoaded / TOTAL_FRAMES) * 100);
+            if (++batchDone === batchSize) loadBatch(end); // trigger next batch
+          };
+          img.src = FRAME_URL(i);
+          images[i] = img;
+        }
+      };
+
+      loadBatch(CRITICAL);
     };
 
     for (let i = 0; i < CRITICAL; i++) {
@@ -2150,22 +2649,33 @@ export default function App() {
     if (!isLoaded) return;
     drawFrame(0);
 
-    const trigger = ScrollTrigger.create({
-      trigger: '#scroll-container',
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 1,
-      onUpdate: (self) => {
-        const newFrame = Math.round(self.progress * (TOTAL_FRAMES - 1));
-        if (newFrame !== Math.round(frameObjRef.current.frame)) {
-          frameObjRef.current.frame = newFrame;
-          drawFrame(newFrame);
-          setCurrentAct(newFrame < GLOBE_SEA_FRAMES ? 1 : 2);
-        }
+    const tween = gsap.to(frameObjRef.current, {
+      frame: TOTAL_FRAMES - 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: '#scroll-container',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.5,
       },
+      onUpdate: () => {
+        const frame = Math.round(frameObjRef.current.frame);
+        drawFrame(frame);
+        // Debug overlay
+        const el = document.getElementById('debug-frame-num');
+        if (el) el.textContent = frame;
+        // Find current chapter index
+        const chapterIndex = CHAPTERS.findIndex(c => frame >= c.frameStart && frame <= c.frameEnd);
+        if (chapterIndex !== -1) {
+          setCurrentAct(chapterIndex);
+        }
+      }
     });
 
-    return () => trigger.kill();
+    return () => {
+      tween.scrollTrigger?.kill();
+      tween.kill();
+    };
   }, [isLoaded, drawFrame]);
 
   // ── DRAW INITIAL FRAME ──────────────────────────────────────────────────────
@@ -2203,45 +2713,70 @@ export default function App() {
         <canvas ref={canvasRef} />
       </div>
 
-      <Header onToolsClick={scrollToTools} onQuoteClick={scrollToQuote} lang={lang} toggleLang={toggleLang} />
+      {/* DEBUG — frame counter, remove after identifying the misspelled frame */}
+      <div
+        id="debug-frame"
+        style={{
+          position: 'fixed',
+          bottom: '1rem',
+          right: '1rem',
+          zIndex: 9999,
+          background: 'rgba(0,0,0,0.75)',
+          color: '#c8a84e',
+          fontFamily: 'monospace',
+          fontSize: '0.85rem',
+          padding: '0.35rem 0.7rem',
+          borderRadius: '0.3rem',
+          pointerEvents: 'none',
+        }}
+      >
+        frame: <span id="debug-frame-num">0</span>
+      </div>
+
+      <Header onToolsClick={scrollToTools} onQuoteClick={openBooking} lang={lang} toggleLang={toggleLang} />
       <ActIndicator currentAct={currentAct} />
 
       <div id="scroll-container" className="relative z-10">
-        {/* Opening spacer — minimal so hero text is visible from the start */}
-        <div style={{ height: '5vh' }} />
+        {/* Opening spacer — small so hero text is visible from the start */}
+        <div style={{ height: '10vh' }} />
 
-        {/* Act 1 chapters */}
-        {CHAPTERS.filter(c => c.frameStart < GLOBE_SEA_FRAMES).map(chapter => (
-          <ChapterSection key={chapter.id} chapter={chapter} lang={lang} />
+        {/* Chapter 0 — Hero */}
+        <ChapterSection chapter={CHAPTERS[0]} lang={lang} onBook={openBooking} />
+
+        {/* Act Divider 1 */}
+        <ActDivider
+          label={lang === 'ar' ? "الشحن البحري" : "OCEAN FREIGHT"}
+          title={lang === 'ar' ? 'البحر.\nملعبنا.' : 'The Ocean.\nOur Arena.'}
+        />
+
+        {/* Chapters 1–2 — Maritime & Port */}
+        {CHAPTERS.slice(1, 3).map(ch => (
+          <ChapterSection key={ch.id} chapter={ch} lang={lang} />
         ))}
 
-        {/* Act transition divider */}
+        {/* Act Divider 2 */}
         <ActDivider
-          label="Transition — Sea to Sky"
+          label={lang === 'ar' ? "الشحن الجوي" : "AIR FREIGHT"}
           title={TRANSLATIONS[lang].actDividerTitle}
         />
 
-        {/* Act 2 chapters */}
-        {CHAPTERS.filter(c => c.frameStart >= GLOBE_SEA_FRAMES).map(chapter => (
-          <ChapterSection key={chapter.id} chapter={chapter} lang={lang} />
+        {/* Chapters 3–4 — Air & CTA */}
+        {CHAPTERS.slice(3).map(ch => (
+          <ChapterSection key={ch.id} chapter={ch} lang={lang} onBook={openBooking} />
         ))}
 
-        {/* Closing spacer */}
-        <div style={{ height: '40vh' }} />
+        {/* Closing spacer — extra room so last frames breathe before page continues */}
+        <div style={{ height: '60vh' }} />
       </div>
 
-      {/* Post-scroll sections — normal page flow */}
+      {/* Post-scroll sections — testimonials first, right after last frame */}
+      <Testimonials lang={lang} />
       <TrustStrip lang={lang} />
       <SaudiSection lang={lang} />
       <RouteMap lang={lang} />
       <HowItWorks lang={lang} />
       <PricingEstimator lang={lang} />
-
-      {/* Quick Quote section */}
-      <QuickQuoteSection sectionRef={quoteSectionRef} />
-
       <CaseStudies lang={lang} />
-      <Testimonials lang={lang} />
       <ClientLogos lang={lang} />
 
       {/* Tools section — below scroll, normal page flow */}
@@ -2251,8 +2786,11 @@ export default function App() {
       <WhatsAppButton />
       <ProgressBar />
 
+      {/* Booking modal — Calendly calendar */}
+      <BookingModal open={bookingOpen} onClose={closeBooking} lang={lang} />
+
       {/* Floating sticky CTA bar — slides in after hero */}
-      <FloatingCTA onQuoteClick={scrollToQuote} />
+      <FloatingCTA onQuoteClick={openBooking} />
 
       {/* Veo watermark cover — masks AI video branding bottom-right of canvas */}
       <div className="veo-cover" aria-hidden="true" />

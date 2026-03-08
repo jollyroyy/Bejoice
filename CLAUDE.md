@@ -10,21 +10,26 @@ Below the scroll: **TrustStrip → SaudiSection → RouteMap → HowItWorks → 
 
 ---
 
-## Two-Act Architecture
+## Three-Act Architecture
 
 ```
-Act 1 — Globe to Sea (frames 0–199)
-  └── 200 JPEGs from public/globe-sea/ezgif-frame-001..200.jpg
-  └── 4 chapter text overlays (left/right alternating)
-  └── Hero chapter uses two-column layout (text left, CTA tray right)
+Act 1 — Global to Sea (frames 0–149)
+  └── 150 JPEGs from public/final_gif/
+  └── Sea/Port logistics operations
 
-ActDivider — "Now, We Take Flight." (1 × 100vh section)
-  └── Cinematic title card between acts, fade in/out on scroll
-  └── Title text comes from TRANSLATIONS[lang].actDividerTitle
+ActDivider 1 — "Now, We Take Flight."
+  └── Transition between maritime and air freight
 
-Act 2 — Sea to Flight (frames 200–399)
-  └── 200 JPEGs from public/sea-flight/ezgif-frame-001..200.jpg
-  └── 3 chapter text overlays, last has prominent gold CTA → scrolls to Quick Quote
+Act 2 — Taking Flight (frames 150–349)
+  └── 200 JPEGs from public/flight/
+  └── High-altitude airborne logistics sequence
+
+ActDivider 2 — "The Final Mile Awaits."
+  └── Transition between airborne and last-mile delivery
+
+Act 3 — The Final Mile (frames 350–648)
+  └── 299 JPEGs from public/delivery/
+  └── KSA port arrival, customs, and Saudi-wide delivery
 ```
 
 ---
@@ -32,15 +37,21 @@ Act 2 — Sea to Flight (frames 200–399)
 ## Frame URL Logic
 
 ```js
-const GLOBE_SEA_FRAMES  = 200;
-const SEA_FLIGHT_FRAMES = 200;
-const TOTAL_FRAMES = 400;
+const FINAL_GIF_FRAMES = 150;
+const FLIGHT_FRAMES    = 200;
+const DELIVERY_FRAMES  = 299;
+const TOTAL_FRAMES     = 649;
 
 const FRAME_URL = (globalIndex) => {
-  if (globalIndex < GLOBE_SEA_FRAMES) {
-    return `/globe-sea/ezgif-frame-${(globalIndex + 1).toString().padStart(3,'0')}.jpg`;
+  if (globalIndex < FINAL_GIF_FRAMES) {
+    const n = (globalIndex + 1).toString().padStart(3, '0');
+    return `/final_gif/ezgif-frame-${n}.jpg`;
+  } else if (globalIndex < FINAL_GIF_FRAMES + FLIGHT_FRAMES) {
+    const n = (globalIndex - FINAL_GIF_FRAMES + 1).toString().padStart(3, '0');
+    return `/flight/ezgif-frame-${n}.jpg`;
   } else {
-    return `/sea-flight/ezgif-frame-${(globalIndex - 200 + 1).toString().padStart(3,'0')}.jpg`;
+    const n = (globalIndex - (FINAL_GIF_FRAMES + FLIGHT_FRAMES) + 1).toString().padStart(3, '0');
+    return `/delivery/ezgif-frame-${n}.jpg`;
   }
 };
 ```

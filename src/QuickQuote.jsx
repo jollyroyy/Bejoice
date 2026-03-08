@@ -916,7 +916,8 @@ const TABS = [
   { id: 'project', icon: '⚙️', label: 'Project Cargo',     sub: 'OOG · Heavy Lift' },
 ];
 
-export default function QuickQuoteSection({ sectionRef }) {
+export default function QuickQuoteSection({ sectionRef, lang = 'en' }) {
+  const ar = lang === 'ar';
   const [activeTab, setActiveTab] = useState('sea');
   const [successType, setSuccessType] = useState(null);
 
@@ -932,14 +933,15 @@ export default function QuickQuoteSection({ sectionRef }) {
         {/* Header */}
         <div className="tools-header">
           <div className="chapter-label" style={{ justifyContent: 'center' }}>
-            Instant Pricing
+            {ar ? 'تسعير فوري' : 'Instant Pricing'}
           </div>
           <h2 className="tools-title">
-            Quick Quote
+            {ar ? 'عرض سعر سريع' : 'Quick Quote'}
           </h2>
           <p className="tools-subtitle">
-            Sea, air, land, customs or project cargo — get a tailored quote in minutes.
-            No calls. No waiting. Just results.
+            {ar
+              ? 'شحن بحري، جوي، بري، تخليص جمركي أو مشاريع — احصل على عرض سعر مخصص في دقائق. بدون مكالمات. بدون انتظار.'
+              : 'Sea, air, land, customs or project cargo — get a tailored quote in minutes. No calls. No waiting. Just results.'}
           </p>
         </div>
 
