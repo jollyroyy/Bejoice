@@ -2,9 +2,35 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from '@studio-freight/lenis';
+import { useCalBooking } from './hooks/useCalBooking';
 import './index.css';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// ── Count-up hook — animates a number from 0 to target on viewport entry ─────
+function useCountUp(target, duration = 1800) {
+  const [value, setValue] = useState(0);
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      obs.disconnect();
+      const start = performance.now();
+      const tick = (now) => {
+        const t = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        setValue(Math.round(eased * target));
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, { threshold: 0.4 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [target, duration]);
+  return [value, ref];
+}
 
 // ============================================
 // CONSTANTS — three-source combined sequence
@@ -42,7 +68,7 @@ const CHAPTERS = [
     id: 'hero',
     label: 'BEJOICE GROUP',
     titleLines: ['Unleash', 'Global Trade.'],
-    body: 'Move cargo faster. Pay less. Bejoice delivers to Saudi Arabia by sea, air, road & customs — with zero delays and a 30-minute quote guarantee.',
+    body: "Saudi Arabia's fastest freight window. Sea, air, land & customs — 30-min quote, zero customs delays.",
     frameStart: 0,
     frameEnd: 149,
     align: 'left',
@@ -107,10 +133,10 @@ const TRANSLATIONS = {
     heroFormPhone: 'Or call us now',
 
     // Trust strip
-    trustISO: 'ISO Certified',
-    trustCustoms: 'Licensed Customs Agents',
-    trustCarriers: 'Global Carrier Partnerships',
-    trustInsurance: 'Cargo Insurance Coverage',
+    trustISO: 'ISO 9001:2015 Certified',
+    trustCustoms: 'ZATCA-Licensed Customs Agents',
+    trustCarriers: '50+ Carrier Partnerships — Maersk, MSC, Emirates SkyCargo',
+    trustInsurance: '100% Cargo Insurance — Zero Loss Record',
 
     // Saudi section
     saudiLabel: 'Saudi Arabia Focus',
@@ -122,9 +148,9 @@ const TRANSLATIONS = {
       'Arabic-speaking support team, aligned with ZATCA regulations',
       'GCC trucking network covering Saudi, UAE, Kuwait, Bahrain, Oman',
     ],
-    saudiStat1Label: 'Global Ports',
-    saudiStat2Label: 'Years in KSA',
-    saudiStat3Label: 'Destinations',
+    saudiStat1Label: 'On-Time Delivery Rate',
+    saudiStat2Label: 'Avg. India → Jeddah Transit',
+    saudiStat3Label: 'Active Trade Lanes',
 
     // Route map
     routeLabel: 'Global Network',
@@ -135,7 +161,7 @@ const TRANSLATIONS = {
     hiwLabel: 'Simple Process',
     hiwTitle: 'How It Works',
     hiwSteps: [
-      { num: '01', icon: '📋', title: 'Get a Quote', desc: 'Fill out our quick form with your origin, destination, cargo type, and weight. We respond within 30 minutes.' },
+      { num: '01', icon: '📋', title: 'Get a Quote', desc: 'Fill out our quick form with your origin, destination, cargo type, and weight. Guaranteed response within 2 hours — or the quote is free.' },
       { num: '02', icon: '🗺️', title: 'We Plan the Route', desc: 'Our logistics specialists engineer the optimal sea, air, or multi-modal route — factoring Saudi customs requirements.' },
       { num: '03', icon: '📡', title: 'Real-time Tracking', desc: 'Track your shipment with your BL or AWB number. Our team provides proactive updates at every checkpoint.' },
     ],
@@ -145,9 +171,9 @@ const TRANSLATIONS = {
     casesTitle: 'Real Cargo.',
     casesTitleAccent: 'Real Results.',
     cases: [
-      { tag: 'Sea Freight', cargo: 'Automotive Parts', route: 'Germany → Jeddah', days: '18 days', detail: 'FCL 40ft HC · 24 tonnes · Port Hamburg to King Abdulaziz Port', color: 'rgba(200,168,78,0.12)' },
-      { tag: 'Sea + Customs', cargo: 'Industrial Machinery', route: 'China → Dammam', days: '22 days', detail: 'Project cargo · 68 CBM · Shenzhen to King Fahd Industrial Port', color: 'rgba(100,140,255,0.1)' },
-      { tag: 'Air Freight', cargo: 'Perishables (Reefer)', route: 'Netherlands → Riyadh', days: '14 days', detail: 'Air reefer · 1,200 kg · AMS to RUH · +4°C cold chain', color: 'rgba(37,200,100,0.1)' },
+      { tag: 'Sea Freight', cargo: 'Automotive Parts', route: 'Germany → Jeddah', days: '21 days', detail: 'FCL 40ft HC · 24 tonnes · Hamburg to King Abdulaziz Port · ZATCA pre-cleared', color: 'rgba(200,168,78,0.12)' },
+      { tag: 'Sea + Customs', cargo: 'Industrial Machinery', route: 'China → Dammam', days: '26 days', detail: 'Project cargo · 68 CBM · Shenzhen to King Fahd Industrial Port · ATA Carnet', color: 'rgba(100,140,255,0.1)' },
+      { tag: 'Air Freight', cargo: 'Pharma — Cold Chain', route: 'Netherlands → Riyadh', days: '3 days', detail: 'GDP-compliant · 800 kg · AMS → RUH · +2–8°C continuous monitoring', color: 'rgba(37,200,100,0.1)' },
     ],
 
     // Client logos
@@ -174,15 +200,13 @@ const TRANSLATIONS = {
     actDividerTitle: 'Now,\nWe Own the Sky.',
     actDividerTitle2: 'The Ground\nIs Ours Too.',
 
-    // Chapters — 7 chapters matching CHAPTERS array
+    // Chapters — keyed by CHAPTERS[].id
     chapters: {
-      world:         { label: 'MARITIME',    titleLines: ['Unleash', 'Global Trade.'],      body: 'Record-breaking speed. Unbeatable cost. Sea. Air. Road. Saudi Arabia — delivered without compromise.' },
-      'port-ops':    { label: 'PORT OPS',    titleLines: ['Port-Ready.', 'Day One.'],        body: 'Jeddah Islamic Port. King Fahd Industrial Port. Dammam Gateway. Pre-berthing clearance standard.' },
-      'cargo-ops':   { label: 'CARGO INTEL', titleLines: ['Tagged. Tracked.', 'Trusted.'],   body: 'Every box scanned. Every pallet staged. Live dashboard from origin to final mile.' },
-      customs:       { label: 'CUSTOMS',     titleLines: ['Cleared Before', 'You Arrive.'],  body: 'ZATCA-aligned. Pre-arrival clearance. HS codes, duty estimates, import permits — done.' },
-      'air-launch':  { label: 'AIR FREIGHT', titleLines: ['Wheels Up.', 'On Time.'],         body: 'Direct uplift to RUH · JED · DMM. Express, cold-chain, oversized — same ruthless precision.' },
-      skyways:       { label: 'HIGH ALTITUDE',titleLines: ['Above Borders.', 'On Schedule.'],body: 'Hub sync: Frankfurt · Dubai · Hong Kong. Express lift for critical, time-sensitive cargo.' },
-      'world-reach': { label: 'ONE PARTNER', titleLines: ['One Partner.', 'Every Mile.'],    body: 'No hand-offs. No surprises. Bejoice Group — your Saudi logistics bridge, globally connected.' },
+      hero:     { label: 'BEJOICE GROUP',  titleLines: ['Unleash', 'Global Trade.'],    body: "Saudi Arabia's fastest freight window. Sea, air, land & customs — 30-min quote, zero customs delays." },
+      maritime: { label: 'OCEAN FREIGHT',  titleLines: ['Masters of', 'the Deep Blue.'], body: 'FCL · LCL · Reefer · OOG. Every vessel type, every trade lane — KSA covered.' },
+      port:     { label: 'PORT & CUSTOMS', titleLines: ['Port-Ready.', 'Pre-Cleared.'],  body: 'Jeddah · Dammam · King Fahd Port. ZATCA-aligned, zero-delay customs clearance.' },
+      air:      { label: 'AIR FREIGHT',    titleLines: ['Wheels Up.', 'On Time.'],       body: 'Direct uplift to RUH · JED · DMM. Express, cold-chain or oversized — same precision.' },
+      cta:      { label: 'ONE PARTNER',    titleLines: ['One Partner.', 'Every Mile.'],  body: 'No hand-offs. No surprises. Bejoice Group — your Saudi logistics bridge.' },
     },
 
     // CTA
@@ -205,10 +229,10 @@ const TRANSLATIONS = {
     heroFormPhone: 'أو اتصل بنا',
 
     // Trust strip
-    trustISO: 'معتمد ISO',
-    trustCustoms: 'وكلاء جمارك مرخصون',
-    trustCarriers: 'شراكات مع ناقلين عالميين',
-    trustInsurance: 'تأمين على البضائع',
+    trustISO: 'معتمد ISO 9001:2015',
+    trustCustoms: 'وكلاء جمارك مرخصون من زاتكا',
+    trustCarriers: '+50 شراكة ناقل — ميرسك، MSC، طيران الإمارات للشحن',
+    trustInsurance: 'تأمين شامل 100% — صفر خسائر',
 
     // Saudi section
     saudiLabel: 'التركيز على المملكة العربية السعودية',
@@ -220,9 +244,9 @@ const TRANSLATIONS = {
       'فريق دعم ناطق بالعربية، متوافق مع لوائح هيئة الزكاة والضريبة والجمارك',
       'شبكة شاحنات تغطي السعودية والإمارات والكويت والبحرين وعُمان',
     ],
-    saudiStat1Label: 'ميناء عالمي',
-    saudiStat2Label: 'سنوات في المملكة',
-    saudiStat3Label: 'وجهة حول العالم',
+    saudiStat1Label: 'معدل التسليم في الوقت المحدد',
+    saudiStat2Label: 'متوسط العبور الهند ← جدة',
+    saudiStat3Label: 'خط تجاري نشط',
 
     // Route map
     routeLabel: 'الشبكة العالمية',
@@ -274,16 +298,11 @@ const TRANSLATIONS = {
 
     // Chapters
     chapters: {
-      world:          { label: 'الشحن الدولي', titleLines: ['أطلق التجارة', 'العالمية.'], body: 'سرعة قياسية. تكلفة لا تُضاهى. جواً · بحراً · براً · جمارك — شريك واحد لكل ميل إلى المملكة.' },
-      'port-ops':     { label: 'المشهد الثاني - تفعيل العمليات المينائية', titleLines: ['كل رحلة تبدأ', 'بدقة كاملة.'], body: 'تم إنشاء الشحنة. اكتمل الفحص. عُبئت بنجاح. تتبع رقمي مُفعّل.' },
-      'ground-sync':   { label: 'المشهد الثالث - مزامنة المستودعات', titleLines: ['مناولة ذكية.', 'معايير عالمية.'], body: 'يتم فحص البضائع ووزمها وتجهيزها للنقل الفوري إلى البوابة السعودية.' },
-      'cargo-approval': { label: 'المشهد الرابع - اعتماد الشحنة وفحصها', titleLines: ['تم الاعتماد.', 'جاهز للمغادرة.'], body: 'الضوء الأخضر لجمارك المملكة. الوثائق المسبقة معتمدة. لا تأخير عند الحدود.' },
-      'sea-freight':  { label: 'المشهد الخامس - التميز البحري', titleLines: ['جمارك مجهزة بالكامل', 'قبل تحرك شحنتك.'], body: 'بوليصة شحن. فاتورة تجارية. قائمة التعبئة. رخصة تصدير. تم التحقق آلياً.' },
-      'air-launch':   { label: 'المشهد السادس - تسريع الشحن الجوي', titleLines: ['تم التخليص قبل', 'أن تتوقف الشحنة.'], body: 'شحنتك جاهزة قبل أن تهبط. شريك جمركي سعودي. مسار سريع للتخليص.' },
-      'global-transit': { label: 'المشهد السابع - لوجستيات النقل الجوي', titleLines: ['عبر الحدود.', 'فوق الأمواج.'], body: 'مزامنة المراكز العالمية. مراقبة الحركة الجوية في الوقت الفعلي. نقل سريع للشحنات الحساسة.' },
-      'sky-precision': { label: 'المشهد الثامن - الدقة الجوية', titleLines: ['في الجو. في الموعد.', 'في كل مرة.'], body: 'رحلات مباشرة إلى الرياض وجدة والدمام. شحن مبرد أو ضخم أو سريع.' },
-      dispatch:       { label: 'المشهد التاسع - بداية الميل الأخير', titleLines: ['المرحلة الأخيرة.', 'توصيل لباب المنزل.'], body: 'شبكة الشحن البري الخليجي. أساطيل مزودة بنظام GPS. من الميناء إلى المستودع.' },
-      'mission-ksa':  { label: 'المشهد العاشر - تمت المهمة بنجاح', titleLines: ['شحن عالمي.', 'بلا متاعب.'], body: 'لا تأخيرات. لا مفاجآت. مجموعة بيجويس — جسرك اللوجستي السعودي.' },
+      hero:     { label: 'مجموعة بيجويس',  titleLines: ['أطلق التجارة', 'العالمية.'],        body: 'أسرع نافذة شحن في المملكة العربية السعودية. بحراً · جواً · براً · جمارك — عرض سعر خلال 30 دقيقة، بلا تأخير جمركي.' },
+      maritime: { label: 'الشحن البحري',    titleLines: ['سادة', 'البحر العميق.'],             body: 'FCL · LCL · مبرد · OOG. كل أنواع السفن، كل خطوط التجارة — المملكة العربية السعودية مغطاة.' },
+      port:     { label: 'الموانئ والجمارك', titleLines: ['جاهز للميناء.', 'مُخلَّص مسبقاً.'], body: 'جدة · الدمام · ميناء الملك فهد. تخليص جمركي متوافق مع زاتكا، بلا تأخير.' },
+      air:      { label: 'الشحن الجوي',     titleLines: ['العجلات ترتفع.', 'في الموعد.'],      body: 'رحلات مباشرة إلى الرياض · جدة · الدمام. شحن سريع أو مبرد أو ضخم — بنفس الدقة.' },
+      cta:      { label: 'شريك واحد',       titleLines: ['شريك واحد.', 'كل الميل.'],           body: 'لا تسليمات متعددة. لا مفاجآت. مجموعة بيجويس — جسرك اللوجستي السعودي.' },
     },
 
     // CTA
@@ -295,7 +314,7 @@ const TRANSLATIONS = {
 // ============================================
 // LOADING SCREEN — Apple minimal
 // ============================================
-function LoadingScreen({ progress, isLoaded }) {
+function LoadingScreen({ progress, isLoaded, onDone }) {
   const screenRef = useRef(null);
 
   useEffect(() => {
@@ -306,7 +325,7 @@ function LoadingScreen({ progress, isLoaded }) {
         ease: 'power3.inOut',
         delay: 0.5,
         onComplete: () => {
-          if (screenRef.current) screenRef.current.style.display = 'none';
+          onDone?.();
         },
       });
     }
@@ -330,105 +349,17 @@ function LoadingScreen({ progress, isLoaded }) {
 // ============================================
 function BJSLogo() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-      {/* Wing emblem */}
-      <svg
-        width="44"
-        height="28"
-        viewBox="0 0 44 28"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <defs>
-          <linearGradient id="wingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#e8d48a" />
-            <stop offset="55%" stopColor="#c8a84e" />
-            <stop offset="100%" stopColor="#a8843e" />
-          </linearGradient>
-          <linearGradient id="wingGradR" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#e8d48a" />
-            <stop offset="55%" stopColor="#c8a84e" />
-            <stop offset="100%" stopColor="#a8843e" />
-          </linearGradient>
-        </defs>
-
-        {/* Left wing — outer feather */}
-        <path
-          d="M22 20 C17 15, 9 10, 1 8 C5 12, 10 15, 16 18 Z"
-          fill="url(#wingGrad)"
-          opacity="0.95"
-        />
-        {/* Left wing — mid feather */}
-        <path
-          d="M22 18 C18 12, 12 7, 5 3 C8 8, 13 12, 18 16 Z"
-          fill="url(#wingGrad)"
-          opacity="0.75"
-        />
-        {/* Left wing — inner feather */}
-        <path
-          d="M22 16 C20 10, 17 5, 14 1 C16 6, 18 11, 21 15 Z"
-          fill="url(#wingGrad)"
-          opacity="0.55"
-        />
-
-        {/* Right wing — outer feather */}
-        <path
-          d="M22 20 C27 15, 35 10, 43 8 C39 12, 34 15, 28 18 Z"
-          fill="url(#wingGradR)"
-          opacity="0.95"
-        />
-        {/* Right wing — mid feather */}
-        <path
-          d="M22 18 C26 12, 32 7, 39 3 C36 8, 31 12, 26 16 Z"
-          fill="url(#wingGradR)"
-          opacity="0.75"
-        />
-        {/* Right wing — inner feather */}
-        <path
-          d="M22 16 C24 10, 27 5, 30 1 C28 6, 26 11, 23 15 Z"
-          fill="url(#wingGradR)"
-          opacity="0.55"
-        />
-
-        {/* Center body — teardrop */}
-        <path
-          d="M22 26 C20 22, 19 19, 22 14 C25 19, 24 22, 22 26 Z"
-          fill="url(#wingGrad)"
-          opacity="0.9"
-        />
-      </svg>
-
-      {/* Wordmark */}
-      <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1, gap: '0.05rem' }}>
-        <span
-          style={{
-            fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: '1.2rem',
-            fontWeight: 400,
-            letterSpacing: '0.38em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.93)',
-            textIndent: '0.38em',
-          }}
-        >
-          Bejoice
-        </span>
-        <span
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: '0.52rem',
-            fontWeight: 500,
-            letterSpacing: '0.45em',
-            textTransform: 'uppercase',
-            color: 'rgba(200,168,78,0.75)',
-            textIndent: '0.45em',
-          }}
-        >
-          Group
-        </span>
-      </div>
-    </div>
+    <img
+      src="/bejoice_logo.png"
+      alt="Bejoice Group of Companies"
+      style={{
+        height: '52px',
+        width: 'auto',
+        objectFit: 'contain',
+        imageRendering: 'high-quality',
+        filter: 'brightness(1.15) drop-shadow(0 0 8px rgba(200,168,78,0.45)) drop-shadow(0 2px 12px rgba(0,0,0,0.6))',
+      }}
+    />
   );
 }
 
@@ -870,6 +801,24 @@ function Header({ onToolsClick, onQuoteClick, lang, toggleLang }) {
               <BJSLogo />
             </button>
           </div>
+          {/* Desktop nav links — hidden on mobile */}
+          <nav className="header-desktop-nav" style={{ pointerEvents: 'auto' }} aria-label="Main navigation">
+            {[
+              { label: lang === 'ar' ? 'الخدمات'   : 'Services', id: 'services-section' },
+              { label: lang === 'ar' ? 'عن بيجويس'  : 'About',    id: 'about-section'   },
+              { label: lang === 'ar' ? 'عملاؤنا'   : 'Clients',  id: 'clients-section' },
+              { label: lang === 'ar' ? 'الأدوات'   : 'Tools',    id: 'tools-section'   },
+            ].map(link => (
+              <button
+                key={link.id}
+                className="header-nav-link"
+                onClick={() => document.getElementById(link.id)?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                {link.label}
+              </button>
+            ))}
+          </nav>
+
           {/* Right controls — all in one pill */}
           <div className="header-inner-pill" style={{ pointerEvents: 'auto' }}>
             {/* Lang toggle */}
@@ -910,7 +859,7 @@ function Header({ onToolsClick, onQuoteClick, lang, toggleLang }) {
 // ============================================
 // ACT DIVIDER — cinematic title between acts
 // ============================================
-function ActDivider({ label, title }) {
+function ActDivider({ label, title, compact = false }) {
   const ref      = useRef(null);
   const labelRef = useRef(null);
   const titleRef = useRef(null);
@@ -939,7 +888,7 @@ function ActDivider({ label, title }) {
     <div
       ref={ref}
       style={{
-        height: '100vh',
+        height: compact ? '45vh' : '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -984,12 +933,30 @@ function ActDivider({ label, title }) {
 // ============================================
 // HERO QUOTE FORM — minimal left-anchored card
 // ============================================
-function HeroQuoteForm({ lang = 'en', onBook }) {
-  const t = TRANSLATIONS[lang];
-  const [origin, setOrigin] = useState('');
-  const [dest, setDest]     = useState('');
+const CARGO_TYPES = [
+  { id: 'sea',      label: '🚢 Sea',     labelAr: '🚢 بحري' },
+  { id: 'air',      label: '✈️ Air',     labelAr: '✈️ جوي' },
+  { id: 'land',     label: '🚛 Land',    labelAr: '🚛 بري' },
+  { id: 'customs',  label: '🏛️ Customs', labelAr: '🏛️ جمارك' },
+];
 
-  const handleSubmit = () => onBook?.();
+function HeroQuoteForm({ lang = 'en', onBook }) {
+  const [cargoType, setCargoType] = useState('sea');
+  const [origin, setOrigin]       = useState('');
+  const [dest, setDest]           = useState('');
+  const [errors, setErrors]       = useState({ origin: false, dest: false });
+  const [shake, setShake]         = useState(false);
+
+  const handleSubmit = () => {
+    const newErrors = { origin: !origin.trim(), dest: !dest.trim() };
+    setErrors(newErrors);
+    if (newErrors.origin || newErrors.dest) {
+      setShake(true);
+      setTimeout(() => setShake(false), 600);
+      return;
+    }
+    onBook?.();
+  };
 
   return (
     <div className="hero-mini-card">
@@ -999,27 +966,58 @@ function HeroQuoteForm({ lang = 'en', onBook }) {
         {lang === 'ar' ? 'عرض مجاني · رد خلال 30 دقيقة' : 'Free quote · 30-min response'}
       </div>
 
+      {/* Cargo type tabs */}
+      <div className="hero-mini-card__tabs">
+        {CARGO_TYPES.map(ct => (
+          <button
+            key={ct.id}
+            className={`hero-mini-card__tab${cargoType === ct.id ? ' hero-mini-card__tab--active' : ''}`}
+            onClick={() => setCargoType(ct.id)}
+            type="button"
+          >
+            {lang === 'ar' ? ct.labelAr : ct.label}
+          </button>
+        ))}
+      </div>
+
       {/* Inputs */}
       <div className="hero-mini-card__fields">
-        <input
-          className="hero-mini-card__input"
-          type="text"
-          placeholder={lang === 'ar' ? 'بلد الشحن' : 'Origin — city or country'}
-          value={origin}
-          onChange={e => setOrigin(e.target.value)}
-        />
+        <div className="hero-mini-card__field-wrap">
+          <input
+            className={`hero-mini-card__input${errors.origin ? ' hero-mini-card__input--error' : ''}`}
+            type="text"
+            placeholder={lang === 'ar' ? 'بلد الشحن' : 'Origin — city or country'}
+            value={origin}
+            onChange={e => { setOrigin(e.target.value); if (e.target.value.trim()) setErrors(prev => ({ ...prev, origin: false })); }}
+          />
+          {errors.origin && (
+            <span className="hero-mini-card__error">
+              {lang === 'ar' ? 'الرجاء إدخال مكان الشحن' : 'Please enter origin'}
+            </span>
+          )}
+        </div>
         <div className="hero-mini-card__arrow">↓</div>
-        <input
-          className="hero-mini-card__input"
-          type="text"
-          placeholder={lang === 'ar' ? 'الوجهة في السعودية' : 'Destination — KSA port or city'}
-          value={dest}
-          onChange={e => setDest(e.target.value)}
-        />
+        <div className="hero-mini-card__field-wrap">
+          <input
+            className={`hero-mini-card__input${errors.dest ? ' hero-mini-card__input--error' : ''}`}
+            type="text"
+            placeholder={lang === 'ar' ? 'الوجهة في السعودية' : 'Destination — KSA port or city'}
+            value={dest}
+            onChange={e => { setDest(e.target.value); if (e.target.value.trim()) setErrors(prev => ({ ...prev, dest: false })); }}
+          />
+          {errors.dest && (
+            <span className="hero-mini-card__error">
+              {lang === 'ar' ? 'الرجاء إدخال الوجهة' : 'Please enter destination'}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Primary CTA */}
-      <button className="hero-mini-card__btn" onClick={handleSubmit}>
+      <button
+        className={`hero-mini-card__btn${shake ? ' hero-mini-card__btn--shake' : ''}`}
+        onClick={handleSubmit}
+      >
         {lang === 'ar' ? 'احجز خبير شحن' : 'Book a Freight Expert'}
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
@@ -1042,17 +1040,23 @@ function HeroQuoteForm({ lang = 'en', onBook }) {
 // ============================================
 // FLOATING STICKY CTA — slides up after hero scroll
 // ============================================
-function FloatingCTA({ onQuoteClick }) {
+function FloatingCTA({ onQuoteClick, lang = 'en' }) {
+  const ar = lang === 'ar';
   const [visible, setVisible] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
+  const [dismissed, setDismissed] = useState(
+    () => sessionStorage.getItem('promoDismissed') === 'true'
+  );
+
+  const dismiss = () => {
+    sessionStorage.setItem('promoDismissed', 'true');
+    setVisible(false);
+    setTimeout(() => setDismissed(true), 400);
+  };
 
   useEffect(() => {
+    if (dismissed) return;
     const HERO_HEIGHT = window.innerHeight * 0.9;
-    const handleScroll = () => {
-      if (!dismissed) {
-        setVisible(window.scrollY > HERO_HEIGHT);
-      }
-    };
+    const handleScroll = () => setVisible(window.scrollY > HERO_HEIGHT);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [dismissed]);
@@ -1063,19 +1067,15 @@ function FloatingCTA({ onQuoteClick }) {
     <div className={`floating-cta${visible ? ' floating-cta--visible' : ''}`} role="complementary" aria-label="Get a quote">
       <div className="floating-cta-inner">
         <div className="floating-cta-text">
-          <span className="floating-cta-headline">Move Cargo Smarter.</span>
-          <span className="floating-cta-sub">Sea · Air · Land · KSA Specialists</span>
+          <span className="floating-cta-headline">{ar ? 'شحن أذكى.' : 'Move Cargo Smarter.'}</span>
+          <span className="floating-cta-sub">{ar ? 'بحري · جوي · بري · متخصصون في السعودية' : 'Sea · Air · Land · KSA Specialists'}</span>
         </div>
         <div className="floating-cta-actions">
           <button className="floating-cta-btn" onClick={onQuoteClick}>
-            Free Quote
+            {ar ? 'عرض مجاني' : 'Free Quote'}
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
-          <button
-            className="floating-cta-dismiss"
-            onClick={() => { setVisible(false); setTimeout(() => setDismissed(true), 400); }}
-            aria-label="Dismiss"
-          >×</button>
+          <button className="floating-cta-dismiss" onClick={dismiss} aria-label="Dismiss">×</button>
         </div>
       </div>
     </div>
@@ -1085,7 +1085,7 @@ function FloatingCTA({ onQuoteClick }) {
 // ============================================
 // CHAPTER SECTION
 // ============================================
-function ChapterSection({ chapter, lang = 'en', onBook }) {
+function ChapterSection({ chapter, lang = 'en', onBook, compact = false }) {
   const sectionRef = useRef(null);
   const blockRef   = useRef(null);
 
@@ -1115,7 +1115,7 @@ function ChapterSection({ chapter, lang = 'en', onBook }) {
     }
 
     const exit = gsap.timeline({
-      scrollTrigger: { trigger: section, start: 'bottom 65%', end: 'bottom 15%', scrub: 1.2 },
+      scrollTrigger: { trigger: section, start: 'bottom 75%', end: 'bottom 35%', scrub: 0.8 },
     });
     exit.to(block, { opacity: 0, y: -24, ease: 'power2.in' });
 
@@ -1169,7 +1169,7 @@ function ChapterSection({ chapter, lang = 'en', onBook }) {
     <section
       ref={sectionRef}
       id={`section-${chapter.id}`}
-      className={`chapter-section chapter-section-${chapter.align} relative z-10`}
+      className={`chapter-section${compact ? ' chapter-section--compact' : ''} chapter-section-${chapter.align} relative z-10`}
     >
       <div ref={blockRef} className="chapter-block" style={{ opacity: 0 }}>
 
@@ -1212,10 +1212,10 @@ function ChapterSection({ chapter, lang = 'en', onBook }) {
               onClick={() => onBook?.()}
             >
               <span className="mini-cta-dot" />
-              Get a Free Quote
+              {lang === 'ar' ? 'احصل على عرض مجاني' : 'Get a Free Quote'}
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
-            <span className="mini-cta-hint">30-min response · No commitment</span>
+            <span className="mini-cta-hint">{lang === 'ar' ? 'رد خلال 30 دقيقة · بدون التزام' : '30-min response · No commitment'}</span>
           </div>
         )}
 
@@ -1251,7 +1251,8 @@ function ChapterSection({ chapter, lang = 'en', onBook }) {
 // ============================================
 // CBM CALCULATOR
 // ============================================
-function CBMCalculator() {
+function CBMCalculator({ lang = 'en' }) {
+  const ar = lang === 'ar';
   const [unit, setUnit]     = useState('cm');
   const [rows, setRows]     = useState([{ l: '', w: '', h: '', qty: '1' }]);
   const [result, setResult] = useState(null);
@@ -1271,13 +1272,11 @@ function CBMCalculator() {
       const qty = parseInt(row.qty) || 1;
       totalCBM += (l * w * h / divisor) * qty;
     }
-
     let container = '';
-    if (totalCBM <= 25)       container = '20ft Standard (≤25 CBM)';
-    else if (totalCBM <= 67)  container = '40ft Standard (≤67 CBM)';
-    else if (totalCBM <= 76)  container = '40ft High Cube (≤76 CBM)';
-    else                       container = `Multiple containers needed`;
-
+    if (totalCBM <= 25)      container = ar ? 'حاوية 20 قدم قياسية (≤25 م³)' : '20ft Standard (≤25 CBM)';
+    else if (totalCBM <= 67) container = ar ? 'حاوية 40 قدم قياسية (≤67 م³)' : '40ft Standard (≤67 CBM)';
+    else if (totalCBM <= 76) container = ar ? 'حاوية 40 قدم مرتفعة (≤76 م³)' : '40ft High Cube (≤76 CBM)';
+    else                     container = ar ? 'مطلوب أكثر من حاوية' : 'Multiple containers needed';
     setResult({ cbm: totalCBM.toFixed(3), container });
   };
 
@@ -1297,35 +1296,30 @@ function CBMCalculator() {
   return (
     <div className="calc-card">
       <div className="calc-card-header">
-        {/* Ship icon */}
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(200,168,78,0.9)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7-7H6a2 2 0 0 0-2 2v12"/>
           <path d="M14 2v6h6"/>
           <path d="M4 12h16"/>
         </svg>
-        <h3 className="calc-title">CBM Calculator</h3>
+        <h3 className="calc-title">{ar ? 'حاسبة CBM' : 'CBM Calculator'}</h3>
       </div>
-      <p className="calc-subtitle">Calculate cubic meters for sea freight containers</p>
+      <p className="calc-subtitle">{ar ? 'احسب الأمتار المكعبة لحاويات الشحن البحري' : 'Calculate cubic meters for sea freight containers'}</p>
 
       {/* Unit toggle */}
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
         {['cm', 'm'].map(u => (
-          <button
-            key={u}
-            onClick={() => setUnit(u)}
-            className={`unit-btn${unit === u ? ' active' : ''}`}
-          >
-            {u === 'cm' ? 'Centimetres' : 'Metres'}
+          <button key={u} onClick={() => setUnit(u)} className={`unit-btn${unit === u ? ' active' : ''}`}>
+            {u === 'cm' ? (ar ? 'سنتيمتر' : 'Centimetres') : (ar ? 'متر' : 'Metres')}
           </button>
         ))}
       </div>
 
       {/* Column headers */}
       <div className="calc-row-header">
-        <span>L ({unit})</span>
-        <span>W ({unit})</span>
-        <span>H ({unit})</span>
-        <span>Qty</span>
+        <span>{ar ? `ط (${unit})` : `L (${unit})`}</span>
+        <span>{ar ? `ع (${unit})` : `W (${unit})`}</span>
+        <span>{ar ? `ا (${unit})` : `H (${unit})`}</span>
+        <span>{ar ? 'الكمية' : 'Qty'}</span>
         <span />
       </div>
 
@@ -1345,26 +1339,20 @@ function CBMCalculator() {
               onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')}
             />
           ))}
-          <button
-            onClick={() => removeRow(i)}
-            className="row-remove-btn"
-            disabled={rows.length === 1}
-          >
-            ×
-          </button>
+          <button onClick={() => removeRow(i)} className="row-remove-btn" disabled={rows.length === 1}>×</button>
         </div>
       ))}
 
       <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.75rem' }}>
-        <button onClick={addRow} className="calc-secondary-btn">+ Add Row</button>
-        <button onClick={calculate} className="calc-primary-btn">Calculate</button>
+        <button onClick={addRow} className="calc-secondary-btn">{ar ? '+ إضافة صف' : '+ Add Row'}</button>
+        <button onClick={calculate} className="calc-primary-btn">{ar ? 'احسب' : 'Calculate'}</button>
       </div>
 
       {result && (
         <div className="calc-result">
           <div className="calc-result-main">
             <span className="calc-result-value">{result.cbm}</span>
-            <span className="calc-result-unit">CBM</span>
+            <span className="calc-result-unit">{ar ? 'م³' : 'CBM'}</span>
           </div>
           <div className="calc-result-note">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(200,168,78,0.7)" strokeWidth="2"><path d="M21 10H3M21 6H3M21 14H3M21 18H3"/></svg>
@@ -1379,7 +1367,8 @@ function CBMCalculator() {
 // ============================================
 // AIR CHARGEABLE WEIGHT CALCULATOR
 // ============================================
-function AirWeightCalculator() {
+function AirWeightCalculator({ lang = 'en' }) {
+  const ar = lang === 'ar';
   const [actual, setActual]   = useState('');
   const [length, setLength]   = useState('');
   const [width, setWidth]     = useState('');
@@ -1438,13 +1427,13 @@ function AirWeightCalculator() {
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(200,168,78,0.9)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-1 0-1.5.5-3.5 2L11 8.2l-8.2 1.8-.6.6 6.4 2.4 2.4 6.4.6-.6z"/>
         </svg>
-        <h3 className="calc-title">Air Chargeable Weight</h3>
+        <h3 className="calc-title">{ar ? 'الوزن المحاسب الجوي' : 'Air Chargeable Weight'}</h3>
       </div>
-      <p className="calc-subtitle">Actual vs volumetric — you pay the higher</p>
+      <p className="calc-subtitle">{ar ? 'الوزن الفعلي مقابل الحجمي — تدفع الأعلى' : 'Actual vs volumetric — you pay the higher'}</p>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
         <div>
-          <label style={labelStyle}>Actual Weight (kg)</label>
+          <label style={labelStyle}>{ar ? 'الوزن الفعلي (كجم)' : 'Actual Weight (kg)'}</label>
           <input
             type="number" min="0" placeholder="0.00"
             value={actual} onChange={e => setActual(e.target.value)}
@@ -1454,7 +1443,7 @@ function AirWeightCalculator() {
           />
         </div>
         <div>
-          <label style={labelStyle}>Qty (pieces)</label>
+          <label style={labelStyle}>{ar ? 'الكمية (قطعة)' : 'Qty (pieces)'}</label>
           <input
             type="number" min="1" placeholder="1"
             value={qty} onChange={e => setQty(e.target.value)}
@@ -1466,7 +1455,10 @@ function AirWeightCalculator() {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
-        {[['Length (cm)', length, setLength], ['Width (cm)', width, setWidth], ['Height (cm)', height, setHeight]].map(([lbl, val, setter]) => (
+        {(ar
+        ? [['الطول (سم)', length, setLength], ['العرض (سم)', width, setWidth], ['الارتفاع (سم)', height, setHeight]]
+        : [['Length (cm)', length, setLength], ['Width (cm)', width, setWidth], ['Height (cm)', height, setHeight]]
+      ).map(([lbl, val, setter]) => (
           <div key={lbl}>
             <label style={labelStyle}>{lbl}</label>
             <input
@@ -1481,28 +1473,30 @@ function AirWeightCalculator() {
       </div>
 
       <button onClick={calculate} className="calc-primary-btn" style={{ width: '100%' }}>
-        Calculate Chargeable Weight
+        {ar ? 'احسب الوزن المحاسب' : 'Calculate Chargeable Weight'}
       </button>
 
       {result && (
         <div className="calc-result" style={{ marginTop: '1rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '0.75rem' }}>
             <div className="calc-mini-stat">
-              <span className="calc-mini-label">Actual</span>
+              <span className="calc-mini-label">{ar ? 'الفعلي' : 'Actual'}</span>
               <span className="calc-mini-value">{result.actual} kg</span>
             </div>
             <div className="calc-mini-stat">
-              <span className="calc-mini-label">Volumetric</span>
+              <span className="calc-mini-label">{ar ? 'الحجمي' : 'Volumetric'}</span>
               <span className="calc-mini-value">{result.volumetric} kg</span>
             </div>
           </div>
           <div className="calc-result-main">
             <span className="calc-result-value">{result.chargeable}</span>
-            <span className="calc-result-unit">kg chargeable</span>
+            <span className="calc-result-unit">{ar ? 'كجم محاسب' : 'kg chargeable'}</span>
           </div>
           <div className="calc-result-note">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(200,168,78,0.7)" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-            Billed on {result.basis} weight
+            {ar
+              ? `الفاتورة على أساس الوزن ${result.basis === 'volumetric' ? 'الحجمي' : 'الفعلي'}`
+              : `Billed on ${result.basis} weight`}
           </div>
         </div>
       )}
@@ -1514,6 +1508,7 @@ function AirWeightCalculator() {
 // TOOLS SECTION
 // ============================================
 function ToolsSection({ sectionRef, lang = 'en' }) {
+  const ar = lang === 'ar';
   return (
     <div ref={sectionRef} id="tools-section" className="tools-section">
       {/* Background texture */}
@@ -1523,22 +1518,23 @@ function ToolsSection({ sectionRef, lang = 'en' }) {
         {/* Header */}
         <div className="tools-header">
           <div className="chapter-label" style={{ justifyContent: 'center' }}>
-            Freight Intelligence
+            {ar ? 'الذكاء اللوجستي' : 'Freight Intelligence'}
           </div>
           <h2 className="tools-title">
-            Calculate.<br />
-            <span className="title-accent">Decide. Ship.</span>
+            {ar ? 'احسب.' : 'Calculate.'}<br />
+            <span className="title-accent">{ar ? 'قرِّر. اشحن.' : 'Decide. Ship.'}</span>
           </h2>
           <p className="tools-subtitle">
-            Instant freight calculations — no signup, no guesswork.
-            Sea or air, get the numbers you need before you book.
+            {ar
+              ? 'حسابات شحن فورية — بدون تسجيل، بدون تخمين. بحراً أو جواً، احصل على الأرقام قبل الحجز.'
+              : 'Instant freight calculations — no signup, no guesswork. Sea or air, get the numbers you need before you book.'}
           </p>
         </div>
 
         {/* Calculator grid */}
         <div className="tools-grid">
-          <CBMCalculator />
-          <AirWeightCalculator />
+          <CBMCalculator lang={lang} />
+          <AirWeightCalculator lang={lang} />
         </div>
 
         {/* Shipment Tracking */}
@@ -1546,8 +1542,9 @@ function ToolsSection({ sectionRef, lang = 'en' }) {
 
         {/* Footer note */}
         <p className="tools-footnote">
-          Calculations are estimates based on standard carrier formulas (volumetric divisor 5000 for air).
-          Final rates confirmed at booking.
+          {ar
+            ? 'الحسابات تقديرية بناءً على معادلات الناقلين القياسية (المقسوم الحجمي 5000 للشحن الجوي). تُؤكَّد الأسعار النهائية عند الحجز.'
+            : 'Calculations are estimates based on standard carrier formulas (volumetric divisor 5000 for air). Final rates confirmed at booking.'}
         </p>
       </div>
     </div>
@@ -1559,13 +1556,29 @@ function ToolsSection({ sectionRef, lang = 'en' }) {
 // ============================================
 function ShipmentTracking({ lang = 'en' }) {
   const t = TRANSLATIONS[lang];
-  const [blNum, setBlNum] = useState('');
-  const [toast, setToast] = useState(false);
+  const [blNum, setBlNum]     = useState('');
+  const [loading, setLoading] = useState(false);
+  const [result, setResult]   = useState(null); // null | 'ok' | 'error'
+  const [inputErr, setInputErr] = useState(false);
 
   const handleTrack = () => {
-    if (!blNum.trim()) return;
-    setToast(true);
-    setTimeout(() => setToast(false), 4500);
+    if (!blNum.trim()) {
+      setInputErr(true);
+      return;
+    }
+    setInputErr(false);
+    setLoading(true);
+    setResult(null);
+
+    // Simulate lookup delay, then redirect to WhatsApp with pre-filled message
+    setTimeout(() => {
+      setLoading(false);
+      setResult('ok');
+      const msg = lang === 'ar'
+        ? `مرحباً، أرغب في تتبع الشحنة: ${blNum.trim()}`
+        : `Hi, I'd like to track shipment: ${blNum.trim()}`;
+      window.open(`https://wa.me/966550000000?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+    }, 1200);
   };
 
   return (
@@ -1582,28 +1595,55 @@ function ShipmentTracking({ lang = 'en' }) {
           type="text"
           placeholder="e.g. MSKU1234567 or 157-12345678"
           value={blNum}
-          onChange={e => setBlNum(e.target.value)}
+          onChange={e => { setBlNum(e.target.value); setInputErr(false); setResult(null); }}
           onKeyDown={e => e.key === 'Enter' && handleTrack()}
           style={{
             flex: 1,
             background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.1)',
+            border: `1px solid ${inputErr ? 'rgba(255,80,80,0.7)' : 'rgba(255,255,255,0.1)'}`,
             borderRadius: '0.45rem',
             padding: '0.6rem 0.9rem',
             color: '#fff',
             fontFamily: "'Inter', sans-serif",
             fontSize: '0.82rem',
             outline: 'none',
+            transition: 'border-color 0.2s',
           }}
           onFocus={e => (e.target.style.borderColor = 'rgba(200,168,78,0.5)')}
-          onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')}
+          onBlur={e => (e.target.style.borderColor = inputErr ? 'rgba(255,80,80,0.7)' : 'rgba(255,255,255,0.1)')}
         />
-        <button onClick={handleTrack} className="calc-primary-btn">{t.trackBtn}</button>
+        <button
+          onClick={handleTrack}
+          className="calc-primary-btn"
+          disabled={loading}
+          style={{ minWidth: '5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
+        >
+          {loading ? (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" style={{ animation: 'spin 0.8s linear infinite' }}>
+              <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+            </svg>
+          ) : t.trackBtn}
+        </button>
       </div>
-      {toast && (
+      {inputErr && (
+        <p style={{ marginTop: '0.4rem', fontSize: '0.68rem', color: 'rgba(255,100,100,0.9)', fontFamily: "'Inter', sans-serif" }}>
+          {lang === 'ar' ? 'الرجاء إدخال رقم البوليصة أو AWB' : 'Please enter a BL or AWB number'}
+        </p>
+      )}
+      {result === 'ok' && (
         <div className="tracking-toast">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(200,168,78,1)" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-          <span>{t.trackToast} WhatsApp: <a href="https://wa.me/966550000000" style={{ color: 'rgba(37,211,102,0.9)', textDecoration: 'none' }}>+966 55 000 0000</a></span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(37,211,102,1)" strokeWidth="2"><path d="M20 6 9 17l-5-5"/></svg>
+          <span>
+            {t.trackToast}{' '}
+            <a
+              href={`https://wa.me/966550000000?text=${encodeURIComponent(lang === 'ar' ? `مرحباً، أرغب في تتبع الشحنة: ${blNum.trim()}` : `Hi, I'd like to track shipment: ${blNum.trim()}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'rgba(37,211,102,0.9)', textDecoration: 'underline' }}
+            >
+              {lang === 'ar' ? 'واتساب' : 'Open WhatsApp'}
+            </a>
+          </span>
         </div>
       )}
     </div>
@@ -1622,7 +1662,7 @@ function TrustStrip({ lang = 'en' }) {
     { icon: '🔒', label: t.trustInsurance },
   ];
   return (
-    <div className="trust-strip">
+    <div id="services-section" className="trust-strip">
       {badges.map(b => (
         <div key={b.label} className="trust-badge">
           <span className="trust-icon">{b.icon}</span>
@@ -1639,12 +1679,12 @@ function TrustStrip({ lang = 'en' }) {
 function SaudiSection({ lang = 'en' }) {
   const t = TRANSLATIONS[lang];
   const stats = [
-    { value: '45+',  label: t.saudiStat1Label },
-    { value: '12+',  label: t.saudiStat2Label },
-    { value: '150+', label: t.saudiStat3Label },
+    { value: '96%',    label: t.saudiStat1Label },
+    { value: '18 Days', label: t.saudiStat2Label },
+    { value: '120+',   label: t.saudiStat3Label },
   ];
   return (
-    <section className="saudi-section">
+    <section id="about-section" className="saudi-section">
       <div className="saudi-inner">
         <div className="saudi-content">
           <div className="chapter-label">{t.saudiLabel}</div>
@@ -1782,7 +1822,7 @@ function HowItWorks({ lang = 'en' }) {
 function CaseStudies({ lang = 'en' }) {
   const t = TRANSLATIONS[lang];
   return (
-    <section className="cases-section">
+    <section id="clients-section" className="cases-section">
       <div className="cases-inner">
         <div className="chapter-label" style={{ justifyContent: 'center' }}>{t.casesLabel}</div>
         <h2 className="cases-title">
@@ -2046,21 +2086,125 @@ function PricingEstimator({ lang = 'en' }) {
 // ============================================
 // CLIENT LOGOS
 // ============================================
-function ClientLogos({ lang = 'en' }) {
-  const t = TRANSLATIONS[lang];
-  const logos = ['Maersk', 'CMA CGM', 'DP World', 'MSC', 'Hapag-Lloyd', 'Emirates SkyCargo', 'Kuehne+Nagel', 'DHL Global'];
+// SVG logo marks for each company
+const LOGOS = {
+  'SPEC':           { svg: <><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M10 16h12M16 10v12" stroke="currentColor" strokeWidth="2"/></>, color: '#c8a84e', tag: 'Oil & Gas' },
+  'Aldahra':        { svg: <><path d="M8 20 L16 8 L24 20 Z" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M12 20 L16 13 L20 20" fill="currentColor" opacity="0.4"/></>, color: '#4ade80', tag: 'Agriculture' },
+  'TotalEnergies':  { svg: <><rect x="7" y="7" width="18" height="18" rx="2" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M11 16 L15 12 L19 16 L23 12" stroke="currentColor" strokeWidth="2" fill="none"/></>, color: '#f87171', tag: 'Energy' },
+  'Bahri':          { svg: <><path d="M8 20 Q16 8 24 20" fill="none" stroke="currentColor" strokeWidth="2.5"/><path d="M6 20 H26" stroke="currentColor" strokeWidth="1.5" opacity="0.5"/></>, color: '#a78bfa', tag: 'Shipping' },
+  'Gutmann':        { svg: <><rect x="9" y="9" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2"/><rect x="13" y="13" width="6" height="6" fill="currentColor" opacity="0.6"/></>, color: '#fb923c', tag: 'Industrial' },
+  'Petrochem':      { svg: <><path d="M16 6 L26 22 H6 Z" fill="none" stroke="currentColor" strokeWidth="2"/><circle cx="16" cy="17" r="3" fill="currentColor" opacity="0.5"/></>, color: '#38bdf8', tag: 'Chemicals' },
+  'Samsung':        { svg: <><ellipse cx="16" cy="16" rx="10" ry="10" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M11 16 L15 20 L21 12" stroke="currentColor" strokeWidth="2.5" fill="none"/></>, color: '#60a5fa', tag: 'Electronics' },
+  'NAFFCO':         { svg: <><path d="M8 24 L16 8 L24 24" fill="none" stroke="currentColor" strokeWidth="2"/><line x1="11" y1="19" x2="21" y2="19" stroke="currentColor" strokeWidth="2"/></>, color: '#f87171', tag: 'Safety' },
+  'Trosten':        { svg: <><circle cx="16" cy="16" r="9" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M12 13 Q16 10 20 13 Q20 19 16 22 Q12 19 12 13Z" fill="currentColor" opacity="0.4"/></>, color: '#34d399', tag: 'HVAC' },
+  'Radius Global':  { svg: <><circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" strokeWidth="1.5"/><circle cx="16" cy="16" r="5" fill="none" stroke="currentColor" strokeWidth="1.5"/><line x1="16" y1="6" x2="16" y2="26" stroke="currentColor" strokeWidth="1" opacity="0.5"/><line x1="6" y1="16" x2="26" y2="16" stroke="currentColor" strokeWidth="1" opacity="0.5"/></>, color: '#38bdf8', tag: 'Logistics' },
+  'AquaChemie':     { svg: <><path d="M16 6 C16 6 8 14 8 19 C8 23.4 11.6 27 16 27 C20.4 27 24 23.4 24 19 C24 14 16 6 16 6Z" fill="none" stroke="currentColor" strokeWidth="2" transform="scale(0.75) translate(5,4)"/></>, color: '#22d3ee', tag: 'Chemicals' },
+  'Kenwood':        { svg: <><rect x="7" y="12" width="18" height="8" rx="1" fill="none" stroke="currentColor" strokeWidth="2"/><circle cx="11" cy="16" r="2" fill="currentColor" opacity="0.6"/><circle cx="21" cy="16" r="2" fill="currentColor" opacity="0.6"/></>, color: '#f87171', tag: 'Electronics' },
+  'MG Motors':      { svg: <><path d="M7 20 L7 14 L16 8 L25 14 L25 20 Z" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M13 20 L13 15 L16 12 L19 15 L19 20" fill="none" stroke="currentColor" strokeWidth="1.5"/></>, color: '#f87171', tag: 'Automotive' },
+  'Hyundai':        { svg: <><path d="M8 16 C8 11.6 11.6 8 16 8 C20.4 8 24 11.6 24 16 C24 20.4 20.4 24 16 24 C11.6 24 8 20.4 8 16Z" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M11 16 L16 12 L21 16" stroke="currentColor" strokeWidth="2" fill="none"/></>, color: '#60a5fa', tag: 'Automotive' },
+  'L&T':            { svg: <><rect x="8" y="8" width="7" height="16" rx="1" fill="none" stroke="currentColor" strokeWidth="2"/><rect x="17" y="8" width="7" height="16" rx="1" fill="none" stroke="currentColor" strokeWidth="2"/><line x1="8" y1="16" x2="15" y2="16" stroke="currentColor" strokeWidth="1.5"/></>, color: '#fbbf24', tag: 'Engineering' },
+  'Nuroil':         { svg: <><path d="M16 7 C16 7 10 13 10 18 C10 21.3 12.7 24 16 24 C19.3 24 22 21.3 22 18 C22 13 16 7 16 7Z" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M16 18 C14.3 18 13 16.7 13 15" stroke="currentColor" strokeWidth="1.5" opacity="0.6"/></>, color: '#fb923c', tag: 'Oil & Gas' },
+  'DP World':       { svg: <><rect x="6" y="14" width="20" height="6" rx="1" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M9 14 L9 10 L23 10 L23 14" fill="none" stroke="currentColor" strokeWidth="2"/><line x1="12" y1="10" x2="12" y2="14" stroke="currentColor" strokeWidth="1.5"/><line x1="16" y1="10" x2="16" y2="14" stroke="currentColor" strokeWidth="1.5"/><line x1="20" y1="10" x2="20" y2="14" stroke="currentColor" strokeWidth="1.5"/></>, color: '#c8a84e', tag: 'Ports' },
+  'Maersk':         { svg: <><path d="M6 18 Q16 8 26 18" fill="none" stroke="currentColor" strokeWidth="2.5"/><rect x="9" y="18" width="14" height="5" rx="1" fill="none" stroke="currentColor" strokeWidth="2"/></>, color: '#42b0d5', tag: 'Shipping' },
+  'MSC':            { svg: <><path d="M6 20 L10 12 L16 20 L22 12 L26 20" fill="none" stroke="currentColor" strokeWidth="2.5"/><line x1="6" y1="22" x2="26" y2="22" stroke="currentColor" strokeWidth="1.5" opacity="0.5"/></>, color: '#fbbf24', tag: 'Shipping' },
+  'Hapag-Lloyd':    { svg: <><rect x="7" y="10" width="18" height="12" rx="2" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M7 16 H25" stroke="currentColor" strokeWidth="1.5" opacity="0.5"/><circle cx="11" cy="13" r="1.5" fill="currentColor" opacity="0.6"/></>, color: '#f97316', tag: 'Shipping' },
+  'Emirates SkyCargo': { svg: <><path d="M6 18 L14 10 L26 14 L22 18 Z" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M14 10 L14 18" stroke="currentColor" strokeWidth="1.5" opacity="0.5"/><path d="M6 20 L26 20" stroke="currentColor" strokeWidth="1" opacity="0.3"/></>, color: '#f87171', tag: 'Air Cargo' },
+  'CMA CGM':        { svg: <><path d="M8 20 Q8 10 16 10 Q24 10 24 20" fill="none" stroke="currentColor" strokeWidth="2.5"/><line x1="8" y1="20" x2="24" y2="20" stroke="currentColor" strokeWidth="2"/><line x1="14" y1="10" x2="14" y2="20" stroke="currentColor" strokeWidth="1" opacity="0.4"/><line x1="18" y1="10" x2="18" y2="20" stroke="currentColor" strokeWidth="1" opacity="0.4"/></>, color: '#38bdf8', tag: 'Shipping' },
+  'DHL':            { svg: <><path d="M6 14 L26 14" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/><path d="M6 19 L20 19" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/><path d="M20 19 L26 14" stroke="currentColor" strokeWidth="2.5"/></>, color: '#fde047', tag: 'Express' },
+  'Kuehne+Nagel':   { svg: <><circle cx="12" cy="16" r="5" fill="none" stroke="currentColor" strokeWidth="2"/><circle cx="20" cy="16" r="5" fill="none" stroke="currentColor" strokeWidth="2"/><line x1="6" y1="22" x2="26" y2="22" stroke="currentColor" strokeWidth="1.5" opacity="0.4"/></>, color: '#38bdf8', tag: 'Logistics' },
+};
+
+function HcStatBar({ lang }) {
+  const ar = lang === 'ar';
+  const [clients, clientsRef] = useCountUp(200);
+  const [industries, industriesRef] = useCountUp(24);
   return (
-    <section className="logos-section">
-      <div className="chapter-label" style={{ justifyContent: 'center', marginBottom: '2rem' }}>{t.logosLabel}</div>
-      <div className="logos-track-wrap">
-        <div className="logos-fade-left" />
-        <div className="logos-track">
-          {[...logos, ...logos].map((l, i) => (
-            <div key={i} className="logo-chip">{l}</div>
-          ))}
-        </div>
-        <div className="logos-fade-right" />
+    <div className="hc-stat-bar">
+      <div className="hc-stat-item" ref={clientsRef}>
+        <span className="hc-stat-val">{clients}<sup>+</sup></span>
+        <span className="hc-stat-lbl">{ar ? 'عميل راضٍ' : 'Satisfied Clients'}</span>
       </div>
+      <div className="hc-stat-divider" />
+      <div className="hc-stat-item" ref={industriesRef}>
+        <span className="hc-stat-val">{industries}</span>
+        <span className="hc-stat-lbl">{ar ? 'صناعة' : 'Industries Served'}</span>
+      </div>
+      <div className="hc-stat-divider" />
+      <div className="hc-stat-item">
+        <span className="hc-stat-val">KSA <span style={{fontSize:'0.6em', opacity:0.7}}>& GCC</span></span>
+        <span className="hc-stat-lbl">{ar ? 'تغطية إقليمية' : 'Regional Coverage'}</span>
+      </div>
+    </div>
+  );
+}
+
+function ClientLogos({ lang = 'en' }) {
+  const row1 = ['SPEC','Aldahra','TotalEnergies','Bahri','Gutmann','Petrochem','Samsung','NAFFCO'];
+  const row2 = ['Trosten','Radius Global','AquaChemie','Kenwood','MG Motors','Hyundai','L&T','Nuroil'];
+  const row3 = ['DP World','Maersk','MSC','Hapag-Lloyd','Emirates SkyCargo','CMA CGM','DHL','Kuehne+Nagel'];
+
+  const LogoCard = ({ name }) => {
+    const info = LOGOS[name] || { svg: null, color: '#c8a84e', tag: 'Partner' };
+    return (
+      <div className="hc-card" style={{ '--brand': info.color }}>
+        <div className="hc-card-topbar" />
+        <div className="hc-card-body">
+          <div className="hc-card-icon" style={{ color: info.color }}>
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {info.svg}
+            </svg>
+          </div>
+          <div className="hc-card-text">
+            <span className="hc-card-name">{name}</span>
+            <span className="hc-card-tag">{info.tag}</span>
+          </div>
+        </div>
+        <div className="hc-card-shimmer" />
+      </div>
+    );
+  };
+
+  const MarqueeRow = ({ items, reverse = false, speed = 30 }) => (
+    <div className="hc-row-wrap">
+      <div className={`hc-track ${reverse ? 'hc-track--rtl' : 'hc-track--ltr'}`}
+           style={{ '--speed': `${speed}s` }}>
+        {[...items, ...items, ...items].map((name, i) => <LogoCard key={i} name={name} />)}
+      </div>
+    </div>
+  );
+
+  return (
+    <section className="hc-section">
+      {/* Animated mesh background */}
+      <div className="hc-mesh" aria-hidden="true" />
+
+      {/* Header */}
+      <div className="hc-header">
+        <div className="hc-eyebrow">
+          <span className="hc-eyebrow-line" />
+          <span>{lang === 'ar' ? 'شركاؤنا' : 'TRUSTED BY INDUSTRY LEADERS'}</span>
+          <span className="hc-eyebrow-line" />
+        </div>
+        <h2 className="hc-headline">
+          {lang === 'ar' ? 'موثوق به من قِبل' : 'Trusted by'}{' '}
+          <span className="hc-headline-gold">{lang === 'ar' ? 'قادة الصناعة' : 'Industry Leaders'}</span>
+        </h2>
+        <p className="hc-desc">
+          {lang === 'ar'
+            ? 'شركات عالمية رائدة تثق في بيجويس لتحريك بضائعها حول العالم'
+            : 'Global enterprises that trust Bejoice to move what matters'}
+        </p>
+      </div>
+
+      {/* Three alternating marquee rows */}
+      <div className="hc-marquees">
+        <MarqueeRow items={row1} reverse={false} speed={35} />
+        <MarqueeRow items={row2} reverse={true}  speed={28} />
+        <MarqueeRow items={row3} reverse={false} speed={40} />
+      </div>
+
+      {/* Bottom stat bar — animated counters */}
+      <HcStatBar lang={lang} />
     </section>
   );
 }
@@ -2227,165 +2371,6 @@ function ActIndicator({ currentAct }) {
   );
 }
 
-// ============================================
-// BOOKING MODAL — Calendly calendar embed
-// ============================================
-// Replace this URL with your actual Calendly link
-const CAL_USERNAME = 'bejoicegroup';
-const CAL_EVENT    = 'freight-expert';
-const CAL_URL      = `https://cal.com/${CAL_USERNAME}/${CAL_EVENT}`;
-
-// ── Cal.com inline embed — uses official Cal JS SDK ──────────────────────────
-function CalEmbed({ username, eventSlug }) {
-  const containerRef = useRef(null);
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    // Inject Cal SDK script once
-    const scriptId = 'cal-sdk';
-    if (!document.getElementById(scriptId)) {
-      const s = document.createElement('script');
-      s.id = scriptId;
-      s.async = true;
-      s.src = 'https://app.cal.com/embed/embed.js';
-      document.head.appendChild(s);
-    }
-    // Wait for Cal to load then init inline embed
-    const init = () => {
-      if (typeof window.Cal === 'undefined') return setTimeout(init, 100);
-      window.Cal('init', { origin: 'https://cal.com' });
-      window.Cal('inline', {
-        elementOrSelector: el,
-        calLink: `${username}/${eventSlug}`,
-        config: { theme: 'dark' },
-      });
-    };
-    init();
-    return () => { el.innerHTML = ''; };
-  }, [username, eventSlug]);
-  return (
-    <div ref={containerRef} style={{ width:'100%', height:'100%', minHeight:'580px' }} />
-  );
-}
-
-function BookingModal({ open, onClose, lang }) {
-  const overlayRef = useRef(null);
-  const panelRef   = useRef(null);
-
-  // Lock body scroll when open
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [open]);
-
-  // ESC to close
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [open, onClose]);
-
-  // Animate in/out
-  useEffect(() => {
-    const overlay = overlayRef.current;
-    const panel   = panelRef.current;
-    if (!overlay || !panel) return;
-    if (open) {
-      overlay.style.display = 'flex';
-      gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' });
-      gsap.fromTo(panel,   { opacity: 0, y: 32, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'power3.out' });
-    } else {
-      gsap.to(panel,   { opacity: 0, y: 20, scale: 0.97, duration: 0.25, ease: 'power2.in' });
-      gsap.to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.in',
-        onComplete: () => { if (overlay) overlay.style.display = 'none'; }
-      });
-    }
-  }, [open]);
-
-  return (
-    <div
-      ref={overlayRef}
-      onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
-      style={{
-        display: 'none',
-        position: 'fixed', inset: 0,
-        background: 'rgba(0,0,0,0.72)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        zIndex: 2000,
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '1rem',
-      }}
-    >
-      <div
-        ref={panelRef}
-        style={{
-          background: '#0d0d14',
-          border: '1px solid rgba(200,168,78,0.18)',
-          borderRadius: '1.2rem',
-          width: '100%',
-          maxWidth: '780px',
-          maxHeight: '90vh',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          boxShadow: '0 32px 80px rgba(0,0,0,0.7)',
-        }}
-      >
-        {/* Modal header */}
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '1.1rem 1.5rem',
-          borderBottom: '1px solid rgba(255,255,255,0.07)',
-          flexShrink: 0,
-        }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
-            <span style={{
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: '1.35rem', letterSpacing: '0.08em',
-              color: '#fff',
-            }}>
-              {lang === 'ar' ? 'احجز خبير الشحن' : 'Book a Freight Expert'}
-            </span>
-            <span style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: '0.65rem', letterSpacing: '0.1em',
-              color: 'rgba(200,168,78,0.7)',
-            }}>
-              {lang === 'ar'
-                ? 'اختر الوقت المناسب — رد مضمون خلال 30 دقيقة'
-                : 'Pick a time — guaranteed response within 30 minutes'}
-            </span>
-          </div>
-          <button
-            onClick={onClose}
-            style={{
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: '50%',
-              width: 34, height: 34,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', color: 'rgba(255,255,255,0.5)',
-              fontSize: '1rem', lineHeight: 1,
-              transition: 'all 0.2s',
-              flexShrink: 0,
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = '#fff'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = 'rgba(255,255,255,0.5)'; }}
-            aria-label="Close"
-          >✕</button>
-        </div>
-
-        {/* Cal.com official inline embed — loads via their SDK script */}
-        <div style={{ flex: 1, minHeight: 0, overflow: 'hidden auto', position: 'relative' }}>
-          {open && <CalEmbed username={CAL_USERNAME} eventSlug={CAL_EVENT} />}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // ============================================
 // MAIN APP
@@ -2398,13 +2383,13 @@ export default function App() {
   const quoteSectionRef    = useRef(null);
   const [loadProgress, setLoadProgress] = useState(0);
   const [isLoaded, setIsLoaded]         = useState(false);
+  const [showLoader, setShowLoader]     = useState(true);
   const [currentAct, setCurrentAct]     = useState(1);
   const [lang, setLang]                 = useState('en');
-  const [bookingOpen, setBookingOpen]   = useState(false);
   const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
 
-  const openBooking  = useCallback(() => setBookingOpen(true),  []);
-  const closeBooking = useCallback(() => setBookingOpen(false), []);
+  const { openCalPopup } = useCalBooking('sudeshna-pal-ruww5f/freight-consultation');
+  const openBooking = openCalPopup;
 
   // Prevent browser from restoring scroll position on refresh
   useEffect(() => {
@@ -2463,9 +2448,8 @@ export default function App() {
     ctx.fillStyle = '#050508';
     ctx.fillRect(0, 0, cw, ch);
 
-    const scale = isPortrait
-      ? Math.min(cw / iw, ch / ih)
-      : Math.max(cw / iw, ch / ih);
+    // Force cover for scrollytelling backgrounds to avoid black bars
+    const scale = Math.max(cw / iw, ch / ih);
     const dw = iw * scale;
     const dh = ih * scale;
 
@@ -2656,7 +2640,7 @@ export default function App() {
         trigger: '#scroll-container',
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 0.5,
+        scrub: 0.1,
       },
       onUpdate: () => {
         const frame = Math.round(frameObjRef.current.frame);
@@ -2672,9 +2656,24 @@ export default function App() {
       }
     });
 
+    // Fade canvas out as scroll-container bottom approaches viewport bottom
+    // so post-scroll sections emerge cleanly with no frozen-frame dead zone
+    const fadeOut = gsap.to('.canvas-container', {
+      opacity: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#scroll-container',
+        start: 'bottom 80%',
+        end: 'bottom top',
+        scrub: true,
+      },
+    });
+
     return () => {
       tween.scrollTrigger?.kill();
       tween.kill();
+      fadeOut.scrollTrigger?.kill();
+      fadeOut.kill();
     };
   }, [isLoaded, drawFrame]);
 
@@ -2689,13 +2688,13 @@ export default function App() {
   // ── LENIS SMOOTH SCROLL ──────────────────────────────────────────────────────
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.4,
+      duration: 0.6,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 0.8,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 1.2,
+      touchMultiplier: 2.0,
     });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => { lenis.raf(time * 1000); });
@@ -2706,91 +2705,44 @@ export default function App() {
   // ── RENDER ───────────────────────────────────────────────────────────────────
   return (
     <>
-      <LoadingScreen progress={loadProgress} isLoaded={isLoaded} />
+      {showLoader && <LoadingScreen progress={loadProgress} isLoaded={isLoaded} onDone={() => setShowLoader(false)} />}
 
       {/* Fixed canvas — all frames paint here */}
       <div className="canvas-container">
         <canvas ref={canvasRef} />
       </div>
 
-      {/* DEBUG — frame counter, remove after identifying the misspelled frame */}
-      <div
-        id="debug-frame"
-        style={{
-          position: 'fixed',
-          bottom: '1rem',
-          right: '1rem',
-          zIndex: 9999,
-          background: 'rgba(0,0,0,0.75)',
-          color: '#c8a84e',
-          fontFamily: 'monospace',
-          fontSize: '0.85rem',
-          padding: '0.35rem 0.7rem',
-          borderRadius: '0.3rem',
-          pointerEvents: 'none',
-        }}
-      >
-        frame: <span id="debug-frame-num">0</span>
-      </div>
-
-      <Header onToolsClick={scrollToTools} onQuoteClick={openBooking} lang={lang} toggleLang={toggleLang} />
+<Header onToolsClick={scrollToTools} onQuoteClick={openBooking} lang={lang} toggleLang={toggleLang} />
       <ActIndicator currentAct={currentAct} />
 
       <div id="scroll-container" className="relative z-10">
-        {/* Opening spacer — small so hero text is visible from the start */}
-        <div style={{ height: '10vh' }} />
-
         {/* Chapter 0 — Hero */}
         <ChapterSection chapter={CHAPTERS[0]} lang={lang} onBook={openBooking} />
 
-        {/* Act Divider 1 */}
-        <ActDivider
-          label={lang === 'ar' ? "الشحن البحري" : "OCEAN FREIGHT"}
-          title={lang === 'ar' ? 'البحر.\nملعبنا.' : 'The Ocean.\nOur Arena.'}
-        />
-
         {/* Chapters 1–2 — Maritime & Port */}
         {CHAPTERS.slice(1, 3).map(ch => (
-          <ChapterSection key={ch.id} chapter={ch} lang={lang} />
+          <ChapterSection key={ch.id} chapter={ch} lang={lang} compact />
         ))}
 
-        {/* Act Divider 2 */}
-        <ActDivider
-          label={lang === 'ar' ? "الشحن الجوي" : "AIR FREIGHT"}
-          title={TRANSLATIONS[lang].actDividerTitle}
-        />
-
-        {/* Chapters 3–4 — Air & CTA */}
-        {CHAPTERS.slice(3).map(ch => (
-          <ChapterSection key={ch.id} chapter={ch} lang={lang} onBook={openBooking} />
-        ))}
-
-        {/* Closing spacer — extra room so last frames breathe before page continues */}
-        <div style={{ height: '60vh' }} />
+        {/* Chapter 4 — CTA (air chapter skipped to avoid overlap with frame sequence) */}
+        <ChapterSection chapter={CHAPTERS[4]} lang={lang} onBook={openBooking} compact />
       </div>
 
-      {/* Post-scroll sections — testimonials first, right after last frame */}
-      <Testimonials lang={lang} />
+      {/* Post-scroll sections — tight, no dead space */}
       <TrustStrip lang={lang} />
-      <SaudiSection lang={lang} />
-      <RouteMap lang={lang} />
       <HowItWorks lang={lang} />
-      <PricingEstimator lang={lang} />
       <CaseStudies lang={lang} />
       <ClientLogos lang={lang} />
-
-      {/* Tools section — below scroll, normal page flow */}
       <ToolsSection sectionRef={toolsSectionRef} lang={lang} />
 
       <SiteFooter lang={lang} />
       <WhatsAppButton />
       <ProgressBar />
 
-      {/* Booking modal — Calendly calendar */}
-      <BookingModal open={bookingOpen} onClose={closeBooking} lang={lang} />
+      {/* Cal.com popup — opened via useCalBooking hook */}
 
       {/* Floating sticky CTA bar — slides in after hero */}
-      <FloatingCTA onQuoteClick={openBooking} />
+      <FloatingCTA onQuoteClick={openBooking} lang={lang} />
 
       {/* Veo watermark cover — masks AI video branding bottom-right of canvas */}
       <div className="veo-cover" aria-hidden="true" />

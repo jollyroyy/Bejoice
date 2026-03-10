@@ -1,0 +1,201 @@
+/* src/styles/scrollytelling.css
+   Apple-style video scrubbing — full scrollytelling system styles */
+
+/* ── Container & sticky wrapper ─────────────────────────────────────────── */
+.scrolly-container {
+  position: relative;
+  width: 100%;
+}
+
+.scrolly-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+/* ── Poster image ────────────────────────────────────────────────────────── */
+.scrolly-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.35s ease;
+  will-change: opacity;
+  z-index: 1;
+}
+.scrolly-poster--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Canvas ──────────────────────────────────────────────────────────────── */
+.scrolly-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  will-change: transform;   /* GPU layer promotion */
+  z-index: 2;
+}
+.scrolly-canvas--visible {
+  opacity: 1;
+}
+
+/* ── Dark overlay ────────────────────────────────────────────────────────── */
+.scrolly-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.58) 0%,
+    rgba(0, 0, 0, 0.22) 55%,
+    transparent 100%
+  );
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ── Text overlay ────────────────────────────────────────────────────────── */
+.scrolly-text {
+  position: absolute;
+  bottom: 15vh;
+  z-index: 4;
+  max-width: 540px;
+  animation: scrolly-fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.scrolly-text--left   { left: 6vw; }
+.scrolly-text--right  { right: 6vw; left: auto; text-align: right; }
+.scrolly-text--center { left: 50%; transform: translateX(-50%); text-align: center; }
+
+@keyframes scrolly-fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Center variant needs override due to transform conflict */
+.scrolly-text--center {
+  animation: scrolly-fade-up-center 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes scrolly-fade-up-center {
+  from { opacity: 0; transform: translateX(-50%) translateY(28px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── Eyebrow ─────────────────────────────────────────────────────────────── */
+.scrolly-eyebrow {
+  display: block;
+  font-size: clamp(0.6rem, 0.9vw, 0.72rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: #c8a84e;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+/* ── Headline ────────────────────────────────────────────────────────────── */
+.scrolly-headline {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 6.5vw, 6rem);
+  font-weight: 400; /* Bebas Neue is already heavy */
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  color: #fff;
+  margin: 0 0 1.1rem;
+  text-transform: uppercase;
+}
+.scrolly-headline__line {
+  display: block;
+}
+
+/* ── Body ────────────────────────────────────────────────────────────────── */
+.scrolly-body {
+  font-size: clamp(0.85rem, 1.3vw, 1rem);
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.65;
+  max-width: 420px;
+  margin: 0;
+}
+
+/* ── CTA button (chapter: cta) ───────────────────────────────────────────── */
+.scrolly-cta-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.75rem 2rem;
+  background: #c8a84e;
+  color: #0a0a0f;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: background 0.2s, transform 0.15s;
+}
+.scrolly-cta-btn:hover {
+  background: #e8d48a;
+  transform: translateY(-2px);
+}
+
+/* ── Gold progress bar ───────────────────────────────────────────────────── */
+.scrolly-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: #c8a84e;
+  z-index: 5;
+  transition: width 0.06s linear;
+}
+
+/* ── Chapter dots ────────────────────────────────────────────────────────── */
+.scrolly-dots {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  z-index: 5;
+}
+.scrolly-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.28);
+  transition: background 0.3s, transform 0.25s;
+}
+.scrolly-dot--active {
+  background: #c8a84e;
+  transform: scale(1.5);
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .scrolly-text {
+    left: 5vw !important;
+    right: 5vw !important;
+    bottom: 12vh;
+    max-width: 100%;
+    text-align: left !important;
+    transform: none !important;
+    animation: scrolly-fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+  }
+  .scrolly-text--center {
+    left: 5vw !important;
+    transform: none !important;
+    animation: scrolly-fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+  }
+  .scrolly-dots { display: none; }
+  .scrolly-body { max-width: 100%; }
+}

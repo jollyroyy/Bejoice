@@ -1,12 +1,82 @@
 # CLAUDE.md — Bejoice Scroll Site
 
 ## Project Overview
-Cinematic two-act scrollytelling site for Bejoice Group (Saudi logistics).
-400-frame scroll animation driven by two image sequences: **Globe → Sea** and **Sea → Flight**.
-Immersive parallax, mouse/gyro tracking, ambient drift, vignette, and GSAP chapter text overlays.
+Cinematic scrollytelling site for Bejoice Group (Saudi logistics).
+**Migration in progress:** JPEG frame sequences → Apple-style video scrubbing on canvas.
 Below the scroll: **TrustStrip → SaudiSection → RouteMap → HowItWorks → Quick Quote → CaseStudies → ClientLogos → Freight Tools → SiteFooter**.
 
 **Stack:** React 19 · Vite · GSAP + ScrollTrigger · Lenis · Tailwind CSS 4
+
+---
+
+## Video Scrubbing Architecture (NEW — replaces JPEG sequences)
+
+### Frame sources (current)
+| Folder | Frames | Global index |
+|--------|--------|-------------|
+| `public/frames-hero/` | 300 | 0–299 |
+| `public/frames-new/`  | 176 | 300–475 |
+| `public/frames-mid/`  |  76 | 476–551 |
+| **Total**             | **552** | — |
+
+### Video files needed in `public/`
+```
+hero.webm        — VP9, CRF 18, 1920px wide  (~8–12 MB, near-lossless)
+hero.mp4         — H.264, CRF 18, -tune stillimage (~8–12 MB, Safari fallback)
+hero-poster.webp — First frame as WebP, ~30 KB (instant first paint)
+```
+
+### Encode commands (run once from project root, requires ffmpeg in PATH)
+```bash
+# WebM (VP9) — two-pass, CRF 18 near-lossless
+ffmpeg -framerate 30 -i public/frames-hero/ezgif-frame-%03d.jpg \
+  -c:v libvpx-vp9 -crf 18 -b:v 0 -vf "scale=1920:-2" -pix_fmt yuv420p \
+  -row-mt 1 -pass 1 -an -f null /dev/null && \
+ffmpeg -framerate 30 -i public/frames-hero/ezgif-frame-%03d.jpg \
+  -c:v libvpx-vp9 -crf 18 -b:v 0 -vf "scale=1920:-2" -pix_fmt yuv420p \
+  -row-mt 1 -pass 2 -an public/hero.webm
+
+# MP4 (H.264) — Safari fallback, -tune stillimage for frame-by-frame content
+ffmpeg -framerate 30 -i public/frames-hero/ezgif-frame-%03d.jpg \
+  -c:v libx264 -crf 18 -preset veryslow -tune stillimage \
+  -vf "scale=1920:-2" -pix_fmt yuv420p -movflags +faststart -an \
+  public/hero.mp4
+
+# Poster — first frame as WebP (~30KB)
+ffmpeg -i public/frames-hero/ezgif-frame-001.jpg \
+  -vf "scale=1920:-2" -quality 85 public/hero-poster.webp
+```
+
+> **Note:** Commands above only encode `frames-hero` (300 frames). For the full 552-frame sequence, concatenate all three frame sets into a single ffmpeg input list first, or encode each set separately and concatenate the videos.
+
+### New files created
+```
+src/hooks/useVideoScrubber.js         — Core engine: video + canvas + scroll driver
+src/components/ScrollytellingHero.jsx — Drop-in scrolly section with chapters
+src/styles/scrollytelling.css         — All scrolly UI styles
+public/sw.js                          — Service worker: video cache-first, SW cache repeat visits
+```
+
+### Chapter → progress mapping (552 frames total)
+| Chapter | Frames | Progress |
+|---------|--------|---------|
+| hero     | 0–149   | 0.00–0.27 |
+| maritime | 150–299 | 0.27–0.54 |
+| port     | 300–430 | 0.54–0.78 |
+| air      | 431–513 | 0.78–0.93 |
+| cta      | 514–551 | 0.93–1.00 |
+
+### Canvas quality rules
+- `ctx.imageSmoothingQuality = 'high'` always
+- `canvas.width/height` set in **physical pixels** (`w * dpr`)
+- `ctx.setTransform(dpr, 0, 0, dpr, 0, 0)` — NOT `ctx.scale()` (avoids cumulative scale bug)
+- `desynchronized: true` on context — lower compositing latency
+- DPR capped at 2 — no 3x on high-end Android
+
+### Integration into App.jsx
+Replace the existing canvas/JPEG scroll section with `<ScrollytellingHero />`.
+Import `scrollytelling.css` in App.jsx or index.css.
+The post-scroll sections (TrustStrip, SaudiSection, etc.) remain unchanged below.
 
 ---
 

@@ -1,18 +1,87 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Bejoice Group — The Invisible Art of Global Logistics. Premium freight forwarding for Saudi Arabia's elite importers and exporters." />
-    <meta name="theme-color" content="#0a0a0f" />
-    <title>Bejoice Group | The Invisible Art of Global Logistics</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Bejoice Group — Faster transit times, full customs clearance, and door-to-door freight across Saudi Arabia. Sea, air, and land freight solutions for KSA importers and exporters." />
+  <meta name="theme-color" content="#0a0a0f" />
+  <title>Bejoice | Deliver Fast. Clear Faster.</title>
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://bejoiceshipping.com//" />
+
+  <!-- Open Graph — WhatsApp, LinkedIn, Facebook sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bejoiceshipping.com//" />
+  <meta property="og:title" content="Bejoice | Freight Forwarding to Saudi Arabia — Sea, Air &amp; Land" />
+  <meta property="og:description"
+    content="Fastest transit times to KSA. Full customs clearance, door-to-door delivery, 30-min quote guarantee. Sea · Air · Land · Project Cargo." />
+  <meta property="og:image" content="https://bejoiceshipping.com/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="ar_SA" />
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bejoice | Freight Forwarding to Saudi Arabia" />
+  <meta name="twitter:description" content="30-min quote. Zero delays. Sea, Air &amp; Land to KSA." />
+  <meta name="twitter:image" content="https://bejoiceshipping.com/og-image.jpg" />
+
+  <!-- Preload poster — renders < 200ms, ~30KB -->
+  <link rel="preload" as="image" href="/hero-poster.webp" fetchpriority="high" />
+
+  <!-- Preload video — starts downloading alongside HTML -->
+  <link rel="preload" as="fetch" href="/hero.webm" crossorigin />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://wa.me" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Inline critical CSS — paints the hero shell before any JS loads -->
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: #0a0a0f;
+      color: #fff;
+      font-family: system-ui, sans-serif
+    }
+
+    .scrolly-sticky {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: #000
+    }
+
+    .scrolly-poster {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
