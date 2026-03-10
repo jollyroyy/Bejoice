@@ -349,17 +349,64 @@ function LoadingScreen({ progress, isLoaded, onDone }) {
 // ============================================
 function BJSLogo() {
   return (
-    <img
-      src="/bejoice_logo.png"
-      alt="Bejoice Group of Companies"
-      style={{
-        height: '52px',
-        width: 'auto',
-        objectFit: 'contain',
-        imageRendering: 'high-quality',
-        filter: 'brightness(1.15) drop-shadow(0 0 8px rgba(200,168,78,0.45)) drop-shadow(0 2px 12px rgba(0,0,0,0.6))',
-      }}
-    />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0, lineHeight: 1 }}>
+
+      {/* ── WINGS — original PNG, dark box removed via screen blend ──
+          Container clips the bottom "GROUP OF COMPANIES" banner from the PNG
+          so we can render it ourselves at 3× the size below             */}
+      <div style={{ overflow: 'hidden', height: '52px' }}>
+        <img
+          src="/bejoice_logo.png"
+          alt=""
+          aria-hidden="true"
+          style={{
+            height: '78px',          /* full image; bottom 26px (group text) is clipped */
+            width: 'auto',
+            display: 'block',
+            mixBlendMode: 'screen',  /* dark background → fully transparent            */
+            filter: [
+              'brightness(1.55)',
+              'contrast(1.2)',
+              'drop-shadow(0 0 7px rgba(200,168,78,0.65))',
+              'drop-shadow(0 0 18px rgba(200,168,78,0.3))',
+            ].join(' '),
+          }}
+        />
+      </div>
+
+      {/* ── BEJOICE — large, glowing, impossible to miss ── */}
+      <span style={{
+        color: '#f5e49a',
+        fontSize: '20px',
+        fontWeight: '900',
+        letterSpacing: '6px',
+        fontFamily: "'Bebas Neue', 'Inter', sans-serif",
+        lineHeight: 1,
+        marginTop: '-4px',
+        textShadow: [
+          '0 0 8px rgba(245,228,154,1)',
+          '0 0 18px rgba(200,168,78,0.9)',
+          '0 0 36px rgba(200,168,78,0.5)',
+        ].join(', '),
+      }}>
+        BEJOICE
+      </span>
+
+      {/* ── GROUP OF COMPANIES — 3× readable real HTML text ── */}
+      <span style={{
+        color: '#c8a84e',
+        fontSize: '9px',
+        fontWeight: '700',
+        letterSpacing: '3.5px',
+        fontFamily: "'Inter', sans-serif",
+        lineHeight: 1,
+        marginTop: '5px',
+        textShadow: '0 0 8px rgba(200,168,78,0.5)',
+      }}>
+        GROUP OF COMPANIES
+      </span>
+
+    </div>
   );
 }
 
@@ -703,7 +750,7 @@ function MenuDrawer({ open, onClose, onQuoteClick, onBook, lang, toggleLang }) {
             style={{ width:'100%', padding:'1rem', background:'linear-gradient(135deg,#c8a84e,#a8843e)', border:'none', borderRadius:'0.75rem', color:'#050508', fontFamily:"'Bebas Neue',sans-serif", fontSize:'1.05rem', letterSpacing:'0.18em', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:'0.6rem', transition:'all 0.2s', boxShadow:'0 4px 20px rgba(200,168,78,0.25)' }}
             onMouseEnter={e=>{e.currentTarget.style.background='linear-gradient(135deg,#e8d48a,#c8a84e)';e.currentTarget.style.boxShadow='0 6px 28px rgba(200,168,78,0.4)';}} onMouseLeave={e=>{e.currentTarget.style.background='linear-gradient(135deg,#c8a84e,#a8843e)';e.currentTarget.style.boxShadow='0 4px 20px rgba(200,168,78,0.25)';}}>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            {ar?'احجز خبير شحن':'Book a Freight Expert'}
+            {ar?'اتصل بخبير شحن':'Call a Freight Expert'}
           </button>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:'0.9rem' }}>
             <button onClick={toggleLang} style={{ fontFamily:"'Inter',sans-serif", fontSize:'0.58rem', fontWeight:700, letterSpacing:'0.16em', color:'rgba(255,255,255,0.4)', background:'none', border:'1px solid rgba(255,255,255,0.1)', borderRadius:'2rem', cursor:'pointer', padding:'0.25rem 0.65rem', display:'flex', gap:'0.25rem' }}>
@@ -777,7 +824,7 @@ function Header({ onToolsClick, onQuoteClick, lang, toggleLang }) {
 
   useEffect(() => {
     if (!headerRef.current) return;
-    gsap.fromTo(headerRef.current, { opacity: 0 }, { opacity: 1, duration: 1.4, ease: 'power2.out', delay: 1.8 });
+    gsap.set(headerRef.current, { opacity: 1 });
     const onScroll = () => {
       if (!headerRef.current) return;
       headerRef.current.classList.toggle('scrolled', window.scrollY > 40);
@@ -832,7 +879,7 @@ function Header({ onToolsClick, onQuoteClick, lang, toggleLang }) {
             {/* Book CTA */}
             <button onClick={onQuoteClick} className="header-book-btn">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              {lang === 'ar' ? 'احجز خبير شحن' : 'Book a Freight Expert'}
+              {lang === 'ar' ? 'اتصل بخبير شحن' : 'Call a Freight Expert'}
             </button>
             {/* Divider */}
             <div style={{ width: 1, height: 22, background: 'rgba(255,255,255,0.1)', flexShrink: 0 }} />
@@ -1018,7 +1065,7 @@ function HeroQuoteForm({ lang = 'en', onBook }) {
         className={`hero-mini-card__btn${shake ? ' hero-mini-card__btn--shake' : ''}`}
         onClick={handleSubmit}
       >
-        {lang === 'ar' ? 'احجز خبير شحن' : 'Book a Freight Expert'}
+        {lang === 'ar' ? 'اتصل بخبير شحن' : 'Call a Freight Expert'}
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
 
@@ -1141,7 +1188,7 @@ function ChapterSection({ chapter, lang = 'en', onBook, compact = false }) {
         id={`section-${chapter.id}`}
         className="chapter-section chapter-section-hero-row relative z-10"
       >
-        <div ref={blockRef} className="chapter-hero-row-inner" style={{ opacity: 0 }}>
+        <div ref={blockRef} className="chapter-hero-row-inner" style={{ opacity: 1 }}>
           {/* LEFT — text content */}
           <div className="chapter-hero-left">
             <h2 className="section-title" style={{ whiteSpace: 'pre-line' }}>
@@ -1171,7 +1218,7 @@ function ChapterSection({ chapter, lang = 'en', onBook, compact = false }) {
       id={`section-${chapter.id}`}
       className={`chapter-section${compact ? ' chapter-section--compact' : ''} chapter-section-${chapter.align} relative z-10`}
     >
-      <div ref={blockRef} className="chapter-block" style={{ opacity: 0 }}>
+      <div ref={blockRef} className="chapter-block" style={{ opacity: 1 }}>
 
         {/* Title — Bebas Neue display, with optional gold accent on first line */}
         <h2
@@ -2381,9 +2428,9 @@ export default function App() {
   const frameObjRef        = useRef({ frame: 0 });
   const toolsSectionRef    = useRef(null);
   const quoteSectionRef    = useRef(null);
-  const [loadProgress, setLoadProgress] = useState(0);
-  const [isLoaded, setIsLoaded]         = useState(false);
-  const [showLoader, setShowLoader]     = useState(true);
+  const [loadProgress, setLoadProgress] = useState(100);
+  const [isLoaded, setIsLoaded]         = useState(true);
+  const [showLoader, setShowLoader]     = useState(false);
   const [currentAct, setCurrentAct]     = useState(1);
   const [lang, setLang]                 = useState('en');
   const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
@@ -2573,7 +2620,7 @@ export default function App() {
 
     // Load first 40 frames before unlocking (hero chapter),
     // then stream the remaining 436 in sequential batches.
-    const CRITICAL = 40;
+    const CRITICAL = 1;
     let critLoaded = 0;
     let totalLoaded = 0;
 
@@ -2581,9 +2628,7 @@ export default function App() {
       if (cancelled) return;
       critLoaded++;
       totalLoaded++;
-      setLoadProgress((totalLoaded / TOTAL_FRAMES) * 100);
       if (critLoaded === CRITICAL) {
-        setIsLoaded(true);
         loadRest();
       }
     };
@@ -2640,7 +2685,7 @@ export default function App() {
         trigger: '#scroll-container',
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 0.1,
+        scrub: 1.5,
       },
       onUpdate: () => {
         const frame = Math.round(frameObjRef.current.frame);
@@ -2688,13 +2733,13 @@ export default function App() {
   // ── LENIS SMOOTH SCROLL ──────────────────────────────────────────────────────
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 0.6,
+      duration: 1.4,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.2,
-      touchMultiplier: 2.0,
+      wheelMultiplier: 0.7,
+      touchMultiplier: 1.2,
     });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => { lenis.raf(time * 1000); });

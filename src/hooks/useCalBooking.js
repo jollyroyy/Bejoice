@@ -18,8 +18,8 @@ export function useCalBooking(
   brandColor = "#1e3a5f"
 ) {
   useEffect(() => {
-    // Inject Cal.com embed script only once
-    if (window.Cal) return;
+    // Already initialized in index.html — skip
+    if (window.Cal && window.Cal.ns && window.Cal.ns[namespace]) return;
 
     (function (C, A, L) {
       let p = function (a, ar) { a.q.push(ar); };
@@ -61,8 +61,12 @@ export function useCalBooking(
   }, [calLink, namespace, brandColor]);
 
   // Returns the function to call on button click
+  // Uses pre-rendered inline overlay (window.__openCal) for instant open — no network fetch on click
   const openCalPopup = () => {
-    if (window.Cal && window.Cal.ns && window.Cal.ns[namespace]) {
+    if (window.__openCal) {
+      window.__openCal();
+    } else if (window.Cal && window.Cal.ns && window.Cal.ns[namespace]) {
+      // Fallback to modal if overlay not ready
       window.Cal.ns[namespace]("modal", {
         calLink,
         config: { layout: "month_view" },

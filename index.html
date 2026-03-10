@@ -41,6 +41,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="dns-prefetch" href="https://wa.me" />
+  <link rel="preconnect" href="https://app.cal.com" crossorigin />
+  <link rel="dns-prefetch" href="https://app.cal.com" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
 
@@ -81,6 +83,73 @@
 
 <body>
   <div id="root"></div>
+  <!-- Cal.com — initialize early so embed.js starts downloading immediately -->
+  <script>
+    (function (C, A, L) {
+      let p = function (a, ar) { a.q.push(ar); };
+      let d = C.document;
+      C.Cal = C.Cal || function () {
+        let cal = C.Cal; let ar = arguments;
+        if (!cal.loaded) {
+          cal.ns = {}; cal.q = cal.q || [];
+          d.head.appendChild(d.createElement("script")).src = A;
+          cal.loaded = true;
+        }
+        if (ar[0] === L) {
+          const api = function () { p(api, arguments); };
+          const ns = ar[1]; api.q = api.q || [];
+          typeof ns === "string" ? (cal.ns[ns] = api) && p(api, ar) : p(cal, ar);
+          return;
+        }
+        p(cal, ar);
+      };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+    Cal("init", "freight", { origin: "https://app.cal.com" });
+    Cal.ns["freight"]("ui", {
+      theme: "dark",
+      styles: { branding: { brandColor: "#1e3a5f" } },
+      hideEventTypeDetails: false,
+      layout: "month_view",
+    });
+  </script>
+
+  <!-- Hidden overlay — Cal inline embed pre-renders here so open is instant -->
+  <div id="cal-overlay" style="display:none;position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,0.78);align-items:center;justify-content:center;">
+    <div id="cal-embed" style="position:relative;width:min(920px,96vw);height:min(680px,92vh);background:#0f1623;border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.6);">
+      <button id="cal-close-btn" style="position:absolute;top:12px;right:14px;z-index:10;background:rgba(255,255,255,0.1);border:none;color:#fff;font-size:20px;line-height:1;width:32px;height:32px;border-radius:50%;cursor:pointer;">✕</button>
+    </div>
+  </div>
+
+  <script>
+    // Render Cal inline into the hidden overlay as soon as DOM is ready
+    document.addEventListener('DOMContentLoaded', function () {
+      Cal.ns["freight"]("inline", {
+        elementOrSelector: "#cal-embed",
+        calLink: "sudeshna-pal-ruww5f/freight-consultation",
+        layout: "month_view",
+      });
+
+      var overlay = document.getElementById('cal-overlay');
+      var closeBtn = document.getElementById('cal-close-btn');
+
+      // Close on backdrop click or X button
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) overlay.style.display = 'none';
+      });
+      closeBtn.addEventListener('click', function () {
+        overlay.style.display = 'none';
+      });
+
+      // Global open/close used by React buttons
+      window.__openCal = function () {
+        overlay.style.display = 'flex';
+      };
+      window.__closeCal = function () {
+        overlay.style.display = 'none';
+      };
+    });
+  </script>
+
   <script type="module" src="/src/main.jsx"></script>
 </body>
 

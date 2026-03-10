@@ -60,7 +60,7 @@ export default function GlobeText() {
       }}
     >
       <div ref={blockRef} style={{ opacity: 0 }}>
-        <h1 style={{
+        <h2 style={{
           fontFamily: "'Syne', sans-serif",
           fontSize: 'clamp(2.5rem, 7vw, 6rem)',
           fontWeight: 900,
@@ -71,7 +71,7 @@ export default function GlobeText() {
           textShadow: '0 0 60px rgba(0,0,0,0.6)',
         }}>
           The World Moves
-        </h1>
+        </h2>
         <p style={{
           fontFamily: "'Inter', sans-serif",
           fontSize: 'clamp(0.85rem, 1.4vw, 1.15rem)',

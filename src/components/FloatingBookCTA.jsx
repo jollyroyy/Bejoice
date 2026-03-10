@@ -32,7 +32,7 @@ export default function FloatingBookCTA() {
     <div style={containerStyle}>
       <button onClick={openCalPopup} id="floating-book-btn" style={buttonStyle} aria-label="Book a call with a freight expert">
         <span style={{ fontSize: "18px" }}>📅</span>
-        <span style={textStyle}>Book a Freight Expert</span>
+        <span style={textStyle}>Call a Freight Expert</span>
         <span style={badgeStyle}>FREE</span>
       </button>
     </div>

@@ -2,7 +2,7 @@
 
 ## Project Overview
 Cinematic scrollytelling site for Bejoice Group (Saudi logistics).
-**Migration in progress:** JPEG frame sequences → Apple-style video scrubbing on canvas.
+Three-act JPEG frame animation (649 total frames) with parallax, i18n (EN/AR), and Cal.com booking.
 Below the scroll: **TrustStrip → SaudiSection → RouteMap → HowItWorks → Quick Quote → CaseStudies → ClientLogos → Freight Tools → SiteFooter**.
 
 **Stack:** React 19 · Vite · GSAP + ScrollTrigger · Lenis · Tailwind CSS 4
@@ -325,10 +325,14 @@ Loaded from Google Fonts in `index.html`.
 src/App.jsx                          Main orchestration — scroll, canvas, chapters, tools, i18n
 src/QuickQuote.jsx                   5-tab Quick Quote multi-step form
 src/index.css                        All styles — scroll, tools, quick quote, responsive
-public/globe-sea/                    200 JPEG frames — Act 1 (Globe → Sea)
-public/sea-flight/                   200 JPEG frames — Act 2 (Sea → Flight)
-public/frames/                       161 legacy warehouse frames (unused)
-public/ship-frames/                  40 legacy ship frames (unused)
+src/hooks/useCalBooking.js           Cal.com hook — uses window.__openCal for instant open
+src/components/BookExpertButton.jsx  Reusable "Call a Freight Expert" button (4 variants)
+src/components/FloatingBookCTA.jsx   Fixed bottom-right pill CTA (appears after 400px scroll)
+public/final_gif/                    150 JPEG frames — Act 1 (Globe → Sea)
+public/flight/                       200 JPEG frames — Act 2 (Sea → Flight)
+public/delivery/                     299 JPEG frames — Act 3 (Final Mile / KSA delivery)
+public/sw.js                         Service worker — video cache-first strategy
+index.html                           Cal.com inline embed pre-rendered in hidden overlay
 ```
 
 ---
@@ -353,6 +357,17 @@ Both zips are in `C:/Users/ASUS/Desktop/Interactive Websit for Bejoice/`.
 
 ---
 
+## Cal.com Booking System
+
+- **Cal link:** `sudeshna-pal-ruww5f/freight-consultation`
+- **Button label:** "Call a Freight Expert" (Arabic: "اتصل بخبير شحن")
+- **Architecture:** Cal inline embed pre-rendered in `#cal-overlay` hidden div in `index.html` on `DOMContentLoaded` — clicking any button calls `window.__openCal()` which just toggles `display:flex`, zero network fetch on click
+- **Hook:** `useCalBooking.js` checks `window.__openCal` first, falls back to `Cal.ns["freight"]("modal", ...)` if overlay not ready
+- **Namespace:** `"freight"` — used in `Cal("init", "freight", ...)` and `Cal.ns["freight"](...)`
+- To change the Cal.com link, update in: `index.html` (2 places), `src/App.jsx`, `src/components/BookExpertButton.jsx`, `src/components/FloatingBookCTA.jsx`
+
+---
+
 ## Known Gotchas
 
 - Body strings in CHAPTERS array must use **double quotes or template literals** — never single quotes with apostrophes (parser error)
@@ -364,3 +379,4 @@ Both zips are in `C:/Users/ASUS/Desktop/Interactive Websit for Bejoice/`.
 - `sharedInputCls` and `labelCls` are plain JS objects (not CSS classes) — defined at top of `QuickQuote.jsx`
 - `lang` state is in `App`, NOT in `Header` — pass `lang` and `toggleLang` as props to Header
 - All TRANSLATIONS strings must be kept in sync between `en` and `ar` keys — same key structure required
+- Cal.com overlay `#cal-overlay` uses `display:flex` (not `block`) so the inner div centres correctly via flexbox

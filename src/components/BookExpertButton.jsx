@@ -1,5 +1,5 @@
 // components/BookExpertButton.jsx
-// Reusable "Book a Freight Expert" button — drops into any section
+// Reusable "Call a Freight Expert" button — drops into any section
 // Usage: <BookExpertButton />  or  <BookExpertButton variant="ghost" label="Talk to Us" />
 
 import { useCalBooking } from "../hooks/useCalBooking";
@@ -12,7 +12,7 @@ import { useCalBooking } from "../hooks/useCalBooking";
 const CAL_LINK = "sudeshna-pal-ruww5f/freight-consultation";
 
 export default function BookExpertButton({
-  label = "Book a Freight Expert",
+  label = "Call a Freight Expert",
   variant = "primary",   // "primary" | "ghost" | "hero" | "header"
   className = "",
 }) {
