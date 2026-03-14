@@ -118,7 +118,7 @@ export function ScrollytellingHero() {
                 document.getElementById('quick-quote-section')?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              Get a Free Quote — 30 min
+              Start Your AI-Powered Shipment →
             </a>
           )}
         </div>

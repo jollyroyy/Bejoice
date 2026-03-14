@@ -210,8 +210,8 @@ const TRANSLATIONS = {
     },
 
     // CTA
-    ctaButton: 'Activate AI-Optimized Shipping',
-    ctaSub: 'Sea · Air · Land · Customs — All AI-Powered',
+    ctaButton: 'Start Your AI-Powered Shipment',
+    ctaSub: 'Sea · Air · Land · Customs — All AI-Powered · Free Quote in 15 Min',
   },
 
   ar: {
@@ -306,8 +306,8 @@ const TRANSLATIONS = {
     },
 
     // CTA
-    ctaButton: 'فعّل الشحن المحسّن بالذكاء الآن',
-    ctaSub: 'بحري · جوي · بري · جمارك — كلها مدعومة بالذكاء',
+    ctaButton: 'ابدأ شحنتك المدعومة بالذكاء الآن',
+    ctaSub: 'بحري · جوي · بري · جمارك — بالذكاء · سعر مجاني خلال 15 دقيقة',
   },
 };
 
