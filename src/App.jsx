@@ -2277,6 +2277,40 @@ function ToolsSection({ sectionRef, lang = 'en', onCalcOpen }) {
 // ============================================
 // SHIPMENT TRACKING
 // ============================================
+// ============================================
+// TRACKING SECTION — prominent standalone block
+// ============================================
+function TrackingSection({ lang = 'en' }) {
+  const ar = lang === 'ar';
+  return (
+    <section style={{
+      background: 'linear-gradient(160deg, #0d1b30 0%, #080c14 60%, #0a0f1a 100%)',
+      borderTop: '1px solid rgba(200,168,78,0.2)',
+      borderBottom: '1px solid rgba(200,168,78,0.2)',
+      padding: '4rem 1.5rem',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      {/* Gold radial glow bg */}
+      <div style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:'60%', paddingBottom:'40%', background:'radial-gradient(ellipse, rgba(200,168,78,0.07) 0%, transparent 70%)', pointerEvents:'none' }} />
+      <div style={{ maxWidth: 640, margin: '0 auto', position: 'relative' }}>
+        <div style={{ textAlign:'center', marginBottom:'2rem' }}>
+          <span style={{ fontFamily:"'Inter',sans-serif", fontSize:'0.7rem', fontWeight:800, letterSpacing:'0.25em', textTransform:'uppercase', color:'#c8a84e', display:'block', marginBottom:'0.75rem' }}>
+            {ar ? 'تتبع فوري' : 'LIVE TRACKING'}
+          </span>
+          <h2 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'clamp(2.2rem,5vw,3.5rem)', color:'#fff', letterSpacing:'0.04em', lineHeight:1.1, margin:0 }}>
+            {ar ? 'أين شحنتك الآن؟' : 'Where Is Your Shipment?'}
+          </h2>
+          <p style={{ fontFamily:"'Inter',sans-serif", fontSize:'0.95rem', color:'rgba(255,255,255,0.55)', marginTop:'0.75rem', lineHeight:1.6 }}>
+            {ar ? 'أدخل رقم بوليصة الشحن أو AWB للحصول على تحديث فوري.' : 'Enter your BL or AWB number for an instant status update via WhatsApp.'}
+          </p>
+        </div>
+        <ShipmentTracking lang={lang} />
+      </div>
+    </section>
+  );
+}
+
 function ShipmentTracking({ lang = 'en' }) {
   const t = TRANSLATIONS[lang];
   const [blNum, setBlNum]     = useState('');
@@ -2471,7 +2505,7 @@ function TrustStrip({ lang = 'en' }) {
     { icon: '🔒', label: t.trustInsurance },
   ];
   return (
-    <div id="services-section" className="trust-strip">
+    <div id="services-section" className="trust-strip" data-contrast="dark">
       {badges.map(b => (
         <div key={b.label} className="trust-badge">
           <span className="trust-icon">{b.icon}</span>
@@ -2605,7 +2639,7 @@ function RouteMap({ lang = 'en' }) {
 function HowItWorks({ lang = 'en' }) {
   const t = TRANSLATIONS[lang];
   return (
-    <section className="hiw-section">
+    <section className="hiw-section" data-contrast="dark">
       <div className="hiw-inner">
         <div className="chapter-label" style={{ justifyContent: 'center' }}>{t.hiwLabel}</div>
         <h2 className="hiw-title">{t.hiwTitle}</h2>
@@ -2631,7 +2665,7 @@ function HowItWorks({ lang = 'en' }) {
 function CaseStudies({ lang = 'en' }) {
   const t = TRANSLATIONS[lang];
   return (
-    <section id="clients-section" className="cases-section">
+    <section id="clients-section" className="cases-section" data-contrast="dark">
       <div className="cases-inner">
         <div className="chapter-label" style={{ justifyContent: 'center' }}>{t.casesLabel}</div>
         <h2 className="cases-title">
@@ -2983,7 +3017,7 @@ function ClientLogos({ lang = 'en' }) {
   );
 
   return (
-    <section className="hc-section">
+    <section className="hc-section" data-contrast="dark">
       {/* Animated mesh background */}
       <div className="hc-mesh" aria-hidden="true" />
 
@@ -3518,6 +3552,22 @@ export default function App() {
     return () => lenis.destroy();
   }, []);
 
+  // ── Dynamic section contrast: flip text colors based on bg brightness ──────
+  useEffect(() => {
+    const sections = document.querySelectorAll('[data-contrast]');
+    if (!sections.length) return;
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const theme = entry.target.getAttribute('data-contrast');
+          document.documentElement.setAttribute('data-site-theme', theme);
+        }
+      });
+    }, { threshold: 0.4 });
+    sections.forEach(s => obs.observe(s));
+    return () => obs.disconnect();
+  }, []);
+
   // ── RENDER ───────────────────────────────────────────────────────────────────
   return (
     <>
@@ -3549,11 +3599,12 @@ export default function App() {
       <HowItWorks lang={lang} />
       <CaseStudies lang={lang} />
       <ClientLogos lang={lang} />
+      <TrackingSection lang={lang} />
       <ToolsSection sectionRef={toolsSectionRef} lang={lang} onCalcOpen={() => setCalcOpen(true)} />
 
       <SiteFooter lang={lang} />
 
-      <StickyTracker lang={lang} />
+
       <AIAssistant lang={lang} />
       <WhatsAppButton />
       <ProgressBar />
