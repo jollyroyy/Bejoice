@@ -14,7 +14,7 @@ const CHAPTERS = [
     id: 'hero',
     from: 0.00, to: 0.27,
     eyebrow: 'BEJOICE AI ENGINE',
-    headline: 'NEVER STOP.\nACTIVATE AI OPTIMIZED SHIPPING.',
+    headline: 'ACTIVATE AI OPTIMIZED SHIPPING.',
     body: 'Wars, storms, port strikes — none of it stops your cargo. AI predicts every disruption, reroutes in seconds, and delivers at the lowest cost.',
     align: 'left',
     isHero: true,

@@ -67,7 +67,7 @@ const CHAPTERS = [
   {
     id: 'hero',
     label: 'BEJOICE AI ENGINE',
-    titleLines: ['Never Stop.', 'Activate AI Optimized Shipping.'],
+    titleLines: ['Activate AI Optimized Shipping.'],
     body: "Wars, storms, port strikes — none of it stops your cargo. Our AI predicts every disruption, reroutes in seconds, and delivers at the lowest cost. Every time.",
     frameStart: 0,
     frameEnd: 149,
@@ -202,7 +202,7 @@ const TRANSLATIONS = {
 
     // Chapters
     chapters: {
-      hero:     { label: 'BEJOICE AI ENGINE',  titleLines: ['Never Stop.', 'Activate AI Optimized Shipping.'],    body: "Wars, storms, port strikes — none of it stops your cargo. Our AI predicts every disruption, reroutes in seconds, and delivers at the lowest cost. Every time." },
+      hero:     { label: 'BEJOICE AI ENGINE',  titleLines: ['Activate AI Optimized Shipping.'],    body: "Wars, storms, port strikes — none of it stops your cargo. Our AI predicts every disruption, reroutes in seconds, and delivers at the lowest cost. Every time." },
       maritime: { label: 'AI SEA INTELLIGENCE',  titleLines: ['Dynamic Routes.', 'Zero Halts.'], body: 'Red Sea closed? AI finds the next best lane in 4 minutes. FCL · LCL · Reefer — every route optimized for cost and speed, even mid-voyage.' },
       port:     { label: 'INSTANT CLEARANCE AI', titleLines: ['Hours Not Days.', 'Zero Delays.'],  body: 'Direct ZATCA digital integration. AI pre-classifies your HS codes, predicts duty rates, and clears your cargo before the vessel berths.' },
       air:      { label: 'PRECISION AIR AI',    titleLines: ['Wheels Up.', 'On Your Terms.'],       body: 'AI books the best uplift to RUH · JED · DMM based on live cargo space, fuel price, and weather — cutting air freight cost by up to 22%.' },
