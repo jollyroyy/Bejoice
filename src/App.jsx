@@ -66,9 +66,9 @@ const FRAME_URL = (i) => {
 const CHAPTERS = [
   {
     id: 'hero',
-    label: 'BEJOICE INTELLIGENCE',
-    titleLines: ['Beyond Crisis.', 'Always On Time.'],
-    body: "Global trade is shifting. We bypass turmoil to protect your ROI and guarantee delivery when the world stops.",
+    label: 'BJS OMNI-MIND',
+    titleLines: ['Global Trade.', 'AI Optimized.'],
+    body: "Europe defined trade history. We define its future. AI isn't a tool; it's a certainty. Every route. Every cost. Optimized.",
     frameStart: 0,
     frameEnd: 149,
     align: 'left',
@@ -120,9 +120,9 @@ const CHAPTERS = [
 const TRANSLATIONS = {
   en: {
     // Header
-    navQuote: 'Secure Proof',
-    navTools: 'Crisis Center',
-    navContact: 'Support AI',
+    navQuote: 'AI Data Quote',
+    navTools: 'Supply Chain Intel',
+    navContact: 'Consult AI Expert',
 
     // Hero form
     heroFormOrigin: 'From (Global Hub)',
@@ -161,9 +161,9 @@ const TRANSLATIONS = {
     hiwLabel: 'The Bejoice Method',
     hiwTitle: 'Why We Win',
     hiwSteps: [
-      { num: '01', icon: '⚡', title: 'Instant Optimization', desc: 'Our AI engineers the lowest-cost, highest-safety route in seconds.' },
-      { num: '02', icon: '🛡️', title: 'Crisis Mitigation', desc: 'We actively bypass global disruptions to protect your business timeline.' },
-      { num: '03', icon: '🤝', title: 'Transparent Care', desc: 'Real-time updates and human-led care for every single shipment.' },
+      { num: '01', icon: '⚡', title: 'Predictive Data Intelligence', desc: 'Our AI enhances data value by engineering the most resilient, high-ROI routes in milliseconds.' },
+      { num: '02', icon: '🛡️', title: 'AI-Optimized Resilience', desc: 'Turning trillions of data points into a conflict-proof supply chain that protects your assets.' },
+      { num: '03', icon: '🤝', title: 'Total Data Transparency', desc: 'A crystalline view of your cargo enabled by Bejoice Omni-Mind AI sensors.' },
     ],
 
     // Case studies
@@ -180,7 +180,7 @@ const TRANSLATIONS = {
     logosLabel: 'Partner Carriers',
 
     // Tracking widget
-    trackTitle: 'Global Real-time Tracking',
+    trackTitle: 'AI-Optimized Supply Chain Intel',
     trackPlaceholder: 'Enter BL / AWB / Tracking ID',
     trackBtn: 'Locate',
     trackToast: 'Synchronizing with satellite data... Updates coming in 30 seconds.',
@@ -202,7 +202,7 @@ const TRANSLATIONS = {
 
     // Chapters — updated for consistency with constants
     chapters: {
-      hero:     { label: 'BJS OMNI-MIND',  titleLines: ['Beyond Crisis.', 'Always On Time.'],    body: "Trade lines shift. Markets break. We bypass global turmoil to protect your ROI and guarantee delivery when the world stops." },
+      hero:     { label: 'AI OMNI-MIND',  titleLines: ['Global Trade.', 'AI Optimized.'],    body: "Europe defined trade history. We are defining its future. AI is the new global agreement for certainty. Every route. Every cost. Optimized." },
       maritime: { label: 'SECURE SEA LANES',  titleLines: ['Lower Costs.', 'Safer Lanes.'], body: 'Dynamic re-routing that bypasses conflict zones. FCL and LCL solutions that adapt in real-time to keep your business moving.' },
       port:     { label: 'UNSTOPPABLE CLEARANCE', titleLines: ['Zero Delays.', 'Lightning Fast.'],  body: 'Direct ZATCA hooks. We clear your cargo in hours, not days, keeping you light years ahead of the competition.' },
       air:      { label: 'THE SKY CORRIDOR',    titleLines: ['Surgical Precision.', 'No Friction.'],       body: 'When speed is your competitive edge, we own the sky. Direct Riyadh uplift for your most critical assets.' },
@@ -216,9 +216,9 @@ const TRANSLATIONS = {
 
   ar: {
     // Header
-    navQuote: 'إثبات الأمان',
-    navTools: 'مركز الأزمات',
-    navContact: 'ذكاء الدعم',
+    navQuote: 'اقتباس بيانات الذكاء',
+    navTools: 'استخبارات التوريد',
+    navContact: 'استشر خبير الذكاء',
 
     // Hero form
     heroFormOrigin: 'من (مركز عالمي)',
@@ -257,9 +257,9 @@ const TRANSLATIONS = {
     hiwLabel: 'منهجية بيجويس',
     hiwTitle: 'لماذا نتفوق؟',
     hiwSteps: [
-      { num: '01', icon: '⚡', title: 'تحسين فوري', desc: 'ذكاء اصطناعي يصمم لك المسار الأقل تكلفة والأكثر أماناً في ثوانٍ.' },
-      { num: '02', icon: '🛡️', title: 'تخفيف المخاطر', desc: 'نتجاوز الاضطرابات العالمية بفعالية لحماية الجدول الزمني لأعمالك.' },
-      { num: '03', icon: '🤝', title: 'عناية شفافة', desc: 'تحديثات مباشرة وعناية بشرية فائقة لكل شحنة دون استثناء.' },
+      { num: '01', icon: '⚡', title: 'ذكاء البيانات التنبؤي', desc: 'ذكاؤنا يعزز قيمة البيانات عبر هندسة أكثر المسارات مرونة وأعلى عائداً استثمارياً في أجزاء من الثانية.' },
+      { num: '02', icon: '🛡️', title: 'مرونة محسنة بالذكاء', desc: 'تحويل تريليونات من نقاط البيانات إلى سلسلة توريد محصنة ضد الصراعات تحمي أصولكم.' },
+      { num: '03', icon: '🤝', title: 'شفافية البيانات المطلقة', desc: 'رؤية بلورية لشحنتكم مدعومة بمستشعرات ذكاء Bejoice Omni-Mind.' },
     ],
 
     // Case studies
@@ -276,7 +276,7 @@ const TRANSLATIONS = {
     logosLabel: 'شركاؤنا الناقلون',
 
     // Tracking widget
-    trackTitle: 'تتبع عالمي في الوقت الفعلي',
+    trackTitle: 'استخبارات سلاسل التوريد المحسنة بالذكاء الاصطناعي',
     trackPlaceholder: 'أدخل رقم الشحنة / AWB / رقم التتبع',
     trackBtn: 'تحديد الموقع',
     trackToast: 'جاري المزامنة مع بيانات الأقمار الصناعية... التحديثات قادمة خلال 30 ثانية.',
@@ -298,7 +298,7 @@ const TRANSLATIONS = {
 
     // Chapters
     chapters: {
-      hero:     { label: 'ذكاء OMNI-MIND',  titleLines: ['تجاوز الأزمات.', 'دائماً في الموعد.'],    body: "التجارة العالمية تتغير. نحن نتجاوز الاضطرابات لحماية أرباحك وضمان التسليم عندما يتوقف العالم." },
+      hero:     { label: 'ذكاء عقل أومني',  titleLines: ['تجارة عالمية.', 'محسنة بالذكاء.'],    body: "أوروبا صنعت تاريخ التجارة. نحن نصنع مستقبلها. الذكاء الاصطناعي هو اليقين الجديد. كل مسار. كل تكلفة. مثالية." },
       maritime: { label: 'مسارات آمنة',  titleLines: ['تكاليف أقل.', 'أمان أكثر.'], body: 'توجيه ديناميكي يتجاوز مناطق الصراع. نقوم بتأمين شحناتك في الوقت الفعلي لضمان استمرارية أعمالك.' },
       port:     { label: 'تخليص ذكي', titleLines: ['صفر تأخير.', 'سرعة البرق.'],  body: 'ربط رقمي مباشر مع زاتكا. ننهي إجراءاتك في ساعات، ليس أياماً، لتبقى دائماً في الصدارة.' },
       air:      { label: 'ممر السماء',    titleLines: ['دقة جراحية.', 'بلا عوائق.'],       body: 'عندما تدعو الحاجة للسرعة القصوى، نحن نملك الأجواء. وصول مباشر إلى الرياض وجدة لأهم أصولك.' },
@@ -321,9 +321,9 @@ function LoadingScreen({ progress, isLoaded, onDone }) {
     if (isLoaded && screenRef.current) {
       gsap.to(screenRef.current, {
         opacity: 0,
-        duration: 1.4,
-        ease: 'power3.inOut',
-        delay: 0.5,
+        duration: 0.3,
+        ease: 'power2.out',
+        delay: 0,
         onComplete: () => {
           onDone?.();
         },
@@ -390,7 +390,9 @@ function BJSLogo() {
               height: '78px',
               width: 'auto',
               display: 'block',
+              imageRendering: '-webkit-optimize-contrast',
               filter: 'drop-shadow(0 0 10px rgba(200,168,78,0.4))',
+              transform: 'translateZ(0)',
             }}
           />
         )}
@@ -869,8 +871,8 @@ function Header({ onToolsClick, onQuoteClick, lang, toggleLang, airOpen, setAirO
       {/* Floating pill — left side, background hugs content */}
       <header
         ref={headerRef}
-        className="header-glass fixed top-0 left-0 w-full z-50 opacity-0"
-        style={{ pointerEvents: 'none', background: 'transparent' }}
+        className="header-glass fixed top-0 left-0 w-full z-50"
+        style={{ pointerEvents: 'none', background: 'transparent', opacity: 1 }}
       >
         <div style={{ padding: '0.9rem 1.4rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           {/* Logo — left */}
@@ -1141,7 +1143,7 @@ function RollingNumber({ value, suffix = '', duration = 2.5 }) {
 
     return () => clearTimeout(timer);
   }, [value, suffix, duration]);
-  return <span ref={ref} style={{ opacity: 0, filter: 'blur(10px)', display: 'inline-block' }}>0{suffix}</span>;
+  return <span ref={ref} style={{ opacity: 0, filter: 'blur(10px)', display: 'inline-block', transform: 'translateZ(0)', willChange: 'opacity, transform', WebkitFontSmoothing: 'antialiased' }}>0{suffix}</span>;
 }
 
 function HeroTrustBar({ lang }) {
@@ -1757,22 +1759,13 @@ function ChapterSection({ chapter, lang = 'en', onBook, compact = false }) {
 
     let enter = null;
     if (chapter.isHero) {
-      // Hero: visible immediately, no scroll entry
+      // Hero: visible immediately, no animation delay
       block.style.opacity = '1';
-      gsap.fromTo(
-        Array.from(block.children),
-        { opacity: 0, y: 28 },
-        { opacity: 1, y: 0, ease: 'power3.out', stagger: 0.1, duration: 1, delay: 1.6 }
-      );
+      gsap.set(Array.from(block.children), { opacity: 1, y: 0 });
     } else {
-      enter = gsap.timeline({
-        scrollTrigger: { trigger: section, start: 'top 75%', end: 'top 25%', scrub: 1.2 },
-      });
-      enter.fromTo(
-        block,
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, ease: 'power3.out' }
-      );
+      // Non-hero: start visible, only exit animation remains
+      block.style.opacity = '1';
+      gsap.set(block, { opacity: 1, y: 0 });
     }
 
     const exit = gsap.timeline({
@@ -3200,8 +3193,17 @@ export default function App() {
     const ddw = dw;
     const ddh = dh;
 
+    // ── HDR & Sharpening — enhances perceived resolution ──────────────────────
+    const contrast = 1.05;
+    const brightness = 1.02;
+    const saturate = 1.08;
+    ctx.filter = `contrast(${contrast}) brightness(${brightness}) saturate(${saturate})`;
+    
     // ── Base draw ──────────────────────────────────────────────────────────────
     ctx.drawImage(img, dx, dy, ddw, ddh);
+
+    // Reset filter for effects
+    ctx.filter = 'none';
 
     // ── HDR-like enhancement passes ────────────────────────────────────────────
     // Pass 1: soft-light at 18% — lifts midtone saturation and perceived depth
