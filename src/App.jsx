@@ -66,9 +66,9 @@ const FRAME_URL = (i) => {
 const CHAPTERS = [
   {
     id: 'hero',
-    label: 'BEJOICE GROUP',
-    titleLines: ['Unleash', 'Global Trade.'],
-    body: "Saudi Arabia's fastest freight window. Sea, air, land & customs — 30-min quote, zero customs delays.",
+    label: 'BEJOICE INTELLIGENCE',
+    titleLines: ['Beyond Crisis.', 'Always On Time.'],
+    body: "Global trade is shifting. We bypass turmoil to protect your ROI and guarantee delivery when the world stops.",
     frameStart: 0,
     frameEnd: 149,
     align: 'left',
@@ -77,36 +77,36 @@ const CHAPTERS = [
   },
   {
     id: 'maritime',
-    label: 'OCEAN FREIGHT',
-    titleLines: ['Masters of', 'the Deep Blue.'],
-    body: 'FCL · LCL · Reefer · OOG. Every vessel type, every trade lane — KSA covered.',
+    label: 'SMARTER SEA FREIGHT',
+    titleLines: ['Lower Costs.', 'Safer Lanes.'],
+    body: 'Bypass conflict and high costs. Dynamic routing that slashes transit times and protects your bottom line with every nautical mile.',
     frameStart: 150,
     frameEnd: 299,
     align: 'right',
   },
   {
     id: 'port',
-    label: 'PORT & CUSTOMS',
-    titleLines: ['Port-Ready.', 'Pre-Cleared.'],
-    body: 'Jeddah · Dammam · King Fahd Port. ZATCA-aligned, zero-delay customs clearance.',
+    label: 'RAPID CLEARANCE',
+    titleLines: ['No Delays.', 'Pure Speed.'],
+    body: 'Direct ZATCA digital hooks for Jeddah & Dammam. We clear your cargo in hours, not days, keeping your stock moving at the speed of business.',
     frameStart: 300,
     frameEnd: 430,
     align: 'left',
   },
   {
     id: 'air',
-    label: 'AIR FREIGHT',
-    titleLines: ['Wheels Up.', 'On Time.'],
-    body: 'Direct uplift to RUH · JED · DMM. Express, cold-chain or oversized — same precision.',
+    label: 'THE SKY ADVANTAGE',
+    titleLines: ['Surgical Air.', 'Zero Friction.'],
+    body: 'High-value precision to Riyadh & Jeddah. When speed is your competitive edge, we own the sky to ensure your business never waits.',
     frameStart: 431,
     frameEnd: 513,
     align: 'right',
   },
   {
     id: 'cta',
-    label: 'ONE PARTNER',
-    titleLines: ['One Partner.', 'Every Mile.'],
-    body: 'No hand-offs. No surprises. Bejoice Group — your Saudi logistics bridge.',
+    label: 'REALITY CHECK',
+    titleLines: ['Your Cargo.', 'Zero Conflict.'],
+    body: 'Is your current partner ready for the next crisis? Ours is. Bejoice Group — unshakeable resilience for your Saudi growth.',
     frameStart: 514,
     frameEnd: 551,
     align: 'center',
@@ -120,194 +120,194 @@ const CHAPTERS = [
 const TRANSLATIONS = {
   en: {
     // Header
-    navQuote: 'Quick Quote',
-    navTools: 'Tools',
-    navContact: 'Contact',
+    navQuote: 'Secure Proof',
+    navTools: 'Crisis Center',
+    navContact: 'Support AI',
 
     // Hero form
-    heroFormOrigin: 'Origin (City / Country)',
-    heroFormDest: 'Destination (KSA Port / City)',
+    heroFormOrigin: 'From (Global Hub)',
+    heroFormDest: 'To (Saudi Port)',
     heroFormWeight: 'Weight (kg)',
-    heroFormEmail: 'Your Email',
-    heroFormBtn: 'Get My Saudi Quote — Free, 30 min',
-    heroFormPhone: 'Or call us now',
+    heroFormEmail: 'Your Business Email',
+    heroFormBtn: 'Get Conflict-Proof Quote — 15 min',
+    heroFormPhone: 'Emergency Lane Support',
 
     // Trust strip
-    trustISO: 'ISO 9001:2015 Certified',
-    trustCustoms: 'ZATCA-Licensed Customs Agents',
-    trustCarriers: '50+ Carrier Partnerships — Maersk, MSC, Emirates SkyCargo',
-    trustInsurance: '100% Cargo Insurance — Zero Loss Record',
+    trustISO: 'ISO 9001:2015 Global Standards',
+    trustCustoms: 'ZATCA-Certified Fast-Track Agents',
+    trustCarriers: 'Direct Carrier Logic — Maersk, MSC, Emirates SkyCargo',
+    trustInsurance: '100% Comprehensive Coverage — Infallible Record',
 
     // Saudi section
-    saudiLabel: 'Saudi Arabia Focus',
-    saudiHeadline: 'Trusted Logistics Partner',
-    saudiHeadlineAccent: 'in Saudi Arabia',
+    saudiLabel: 'Reality Check',
+    saudiHeadline: 'Is Your Supply Chain',
+    saudiHeadlineAccent: 'Crisis-Proof?',
     saudiBullets: [
-      'Dedicated operations at Jeddah Islamic Port — KSA\'s largest gateway',
-      'Dammam customs specialists with pre-clearance expertise',
-      'Arabic-speaking support team, aligned with ZATCA regulations',
-      'GCC trucking network covering Saudi, UAE, Kuwait, Bahrain, Oman',
+      'Immediate bypass of global conflict & Red Sea disruptions',
+      'Protect your ROI in the most volatile shipping environments',
+      'Direct ZATCA hooks for a zero-stop clearance experience',
+      '24/7 Crisis Response — because global chaos never sleeps',
     ],
-    saudiStat1Label: 'On-Time Delivery Rate',
-    saudiStat2Label: 'Avg. India → Jeddah Transit',
-    saudiStat3Label: 'Active Trade Lanes',
+    saudiStat1Label: 'Business Continuity Rate',
+    saudiStat2Label: 'Cost Savings (ROI)',
+    saudiStat3Label: 'Conflict-Free Logistics',
 
     // Route map
-    routeLabel: 'Global Network',
-    routeTitle: 'Saudi Hub.',
-    routeTitleAccent: 'World Reach.',
+    routeLabel: 'Predictive Intelligence',
+    routeTitle: 'Less Risk.',
+    routeTitleAccent: 'More Growth.',
 
     // How it works
-    hiwLabel: 'Simple Process',
-    hiwTitle: 'How It Works',
+    hiwLabel: 'The Bejoice Method',
+    hiwTitle: 'Why We Win',
     hiwSteps: [
-      { num: '01', icon: '📋', title: 'Get a Quote', desc: 'Fill out our quick form with your origin, destination, cargo type, and weight. Guaranteed response within 2 hours — or the quote is free.' },
-      { num: '02', icon: '🗺️', title: 'We Plan the Route', desc: 'Our logistics specialists engineer the optimal sea, air, or multi-modal route — factoring Saudi customs requirements.' },
-      { num: '03', icon: '📡', title: 'Real-time Tracking', desc: 'Track your shipment with your BL or AWB number. Our team provides proactive updates at every checkpoint.' },
+      { num: '01', icon: '⚡', title: 'Instant Optimization', desc: 'Our AI engineers the lowest-cost, highest-safety route in seconds.' },
+      { num: '02', icon: '🛡️', title: 'Crisis Mitigation', desc: 'We actively bypass global disruptions to protect your business timeline.' },
+      { num: '03', icon: '🤝', title: 'Transparent Care', desc: 'Real-time updates and human-led care for every single shipment.' },
     ],
 
     // Case studies
-    casesLabel: 'Shipment Examples',
-    casesTitle: 'Real Cargo.',
-    casesTitleAccent: 'Real Results.',
+    casesLabel: 'Proven Resilience',
+    casesTitle: 'Global Value.',
+    casesTitleAccent: 'Local Impact.',
     cases: [
-      { tag: 'Sea Freight', cargo: 'Automotive Parts', route: 'Germany → Jeddah', days: '21 days', detail: 'FCL 40ft HC · 24 tonnes · Hamburg to King Abdulaziz Port · ZATCA pre-cleared', color: 'rgba(200,168,78,0.12)' },
-      { tag: 'Sea + Customs', cargo: 'Industrial Machinery', route: 'China → Dammam', days: '26 days', detail: 'Project cargo · 68 CBM · Shenzhen to King Fahd Industrial Port · ATA Carnet', color: 'rgba(100,140,255,0.1)' },
-      { tag: 'Air Freight', cargo: 'Pharma — Cold Chain', route: 'Netherlands → Riyadh', days: '3 days', detail: 'GDP-compliant · 800 kg · AMS → RUH · +2–8°C continuous monitoring', color: 'rgba(37,200,100,0.1)' },
+      { tag: 'Cost Optimization', cargo: 'Precision Imports', route: 'Europe → Jeddah', days: '21 days', detail: '15% bunker cost savings via AI-optimized sea lane · FCL 40ft', color: 'rgba(0,180,255,0.12)' },
+      { tag: 'Rapid Clearance', cargo: 'Energy Assets', route: 'China → Dammam', days: '25 days', detail: 'Zero-delay ZATCA clearance · Zero demurrage guarantee · Project Cargo', color: 'rgba(100,255,140,0.1)' },
+      { tag: 'Urgent Sky Bridge', cargo: 'Critical Tech', route: 'AMS → Riyadh', days: '2 days', detail: 'Same-day booking · Zero friction · Direct Riyadh uplift', color: 'rgba(255,100,255,0.1)' },
     ],
 
     // Client logos
     logosLabel: 'Partner Carriers',
 
     // Tracking widget
-    trackTitle: 'Track Your Shipment',
-    trackPlaceholder: 'Enter BL / AWB number',
-    trackBtn: 'Track',
-    trackToast: 'Tracking in progress — our team will contact you within 30 minutes.',
+    trackTitle: 'Global Real-time Tracking',
+    trackPlaceholder: 'Enter BL / AWB / Tracking ID',
+    trackBtn: 'Locate',
+    trackToast: 'Synchronizing with satellite data... Updates coming in 30 seconds.',
 
     // Footer
-    footerTagline: 'Moving cargo. Building trust.\nOne shipment at a time.',
-    footerContactTitle: 'Contact',
-    footerServicesTitle: 'Services',
-    footerCompanyTitle: 'Company',
-    footerAddress: 'King Fahd Road, Al Olaya\nRiyadh, Saudi Arabia 11523',
-    footerWhatsapp: 'WhatsApp Us',
-    footerServices: ['Sea Freight', 'Air Freight', 'Land Freight', 'Customs Clearance', 'Project Cargo'],
-    footerCompany: ['About Us', 'Certifications', 'Careers', 'Privacy Policy'],
-    footerCopyright: `© ${new Date().getFullYear()} Bejoice Group. All rights reserved.`,
-    footerCompliance: 'ZATCA Compliant · ISO 9001 · FIATA Member',
+    footerTagline: 'Borders may change. Our commitment doesn\'t.\nLogistics for a complex world.',
+    footerContactTitle: 'Crisis & Sales Support',
+    footerServicesTitle: 'Intelligent Services',
+    footerCompanyTitle: 'The Group',
+    footerAddress: 'King Fahd Road, Al Olaya\nRiyadh, KSA 11523',
+    footerWhatsapp: 'Talk to Layla AI',
+    footerServices: ['Smart Sea Freight', 'Sky Corridors', 'GCC Land Bridge', 'ZATCA Automation', 'Heavy Infrastructure'],
+    footerCompany: ['Our AI Philosophy', 'Global Compliance', 'Impact', 'Policy'],
+    footerCopyright: `© ${new Date().getFullYear()} Bejoice Group. The Future of Logistics.`,
+    footerCompliance: 'ZATCA Compliant · ISO Certified · FIATA Member',
 
-    actDividerTitle: 'Now,\nWe Own the Sky.',
-    actDividerTitle2: 'The Ground\nIs Ours Too.',
+    actDividerTitle: 'When Others Stall,\nWe Fly.',
+    actDividerTitle2: 'The Ground\nIs Our Strategy.',
 
-    // Chapters — keyed by CHAPTERS[].id
+    // Chapters — updated for consistency with constants
     chapters: {
-      hero:     { label: 'BEJOICE GROUP',  titleLines: ['Unleash', 'Global Trade.'],    body: "Saudi Arabia's fastest freight window. Sea, air, land & customs — 30-min quote, zero customs delays." },
-      maritime: { label: 'OCEAN FREIGHT',  titleLines: ['Masters of', 'the Deep Blue.'], body: 'FCL · LCL · Reefer · OOG. Every vessel type, every trade lane — KSA covered.' },
-      port:     { label: 'PORT & CUSTOMS', titleLines: ['Port-Ready.', 'Pre-Cleared.'],  body: 'Jeddah · Dammam · King Fahd Port. ZATCA-aligned, zero-delay customs clearance.' },
-      air:      { label: 'AIR FREIGHT',    titleLines: ['Wheels Up.', 'On Time.'],       body: 'Direct uplift to RUH · JED · DMM. Express, cold-chain or oversized — same precision.' },
-      cta:      { label: 'ONE PARTNER',    titleLines: ['One Partner.', 'Every Mile.'],  body: 'No hand-offs. No surprises. Bejoice Group — your Saudi logistics bridge.' },
+      hero:     { label: 'BJS OMNI-MIND',  titleLines: ['Beyond Crisis.', 'Always On Time.'],    body: "Trade lines shift. Markets break. We bypass global turmoil to protect your ROI and guarantee delivery when the world stops." },
+      maritime: { label: 'SECURE SEA LANES',  titleLines: ['Lower Costs.', 'Safer Lanes.'], body: 'Dynamic re-routing that bypasses conflict zones. FCL and LCL solutions that adapt in real-time to keep your business moving.' },
+      port:     { label: 'UNSTOPPABLE CLEARANCE', titleLines: ['Zero Delays.', 'Lightning Fast.'],  body: 'Direct ZATCA hooks. We clear your cargo in hours, not days, keeping you light years ahead of the competition.' },
+      air:      { label: 'THE SKY CORRIDOR',    titleLines: ['Surgical Precision.', 'No Friction.'],       body: 'When speed is your competitive edge, we own the sky. Direct Riyadh uplift for your most critical assets.' },
+      cta:      { label: 'REALITY CHECK',    titleLines: ['Your Cargo.', 'Zero Risk.'],  body: 'Is your current partner ready for the next crisis? We are. Bejoice Group — unshakeable resilience for your growth.' },
     },
 
     // CTA
-    ctaButton: 'Get Your Free Quote Now',
-    ctaSub: 'Sea · Air · Land · Customs · Project Cargo',
+    ctaButton: 'Secure Your Future Shipment',
+    ctaSub: 'AI-Optimized Sea · Air · Land · Customs',
   },
 
   ar: {
     // Header
-    navQuote: 'عرض سريع',
-    navTools: 'الأدوات',
-    navContact: 'تواصل معنا',
+    navQuote: 'إثبات الأمان',
+    navTools: 'مركز الأزمات',
+    navContact: 'ذكاء الدعم',
 
     // Hero form
-    heroFormOrigin: 'بلد / مدينة الشحن',
-    heroFormDest: 'الوجهة',
-    heroFormWeight: 'الوزن (كيلوغرام)',
-    heroFormEmail: 'بريدك الإلكتروني',
-    heroFormBtn: 'احصل على عرض سعر — رد خلال 30 دقيقة',
-    heroFormPhone: 'أو اتصل بنا',
+    heroFormOrigin: 'من (مركز عالمي)',
+    heroFormDest: 'إلى (ميناء سعودي)',
+    heroFormWeight: 'الوزن (كغ)',
+    heroFormEmail: 'البريد الإلكتروني للعمل',
+    heroFormBtn: 'احصل على سعر مقاوم للأزمات — خلال 15 دقيقة',
+    heroFormPhone: 'دعم المسارات الطارئة',
 
     // Trust strip
-    trustISO: 'معتمد ISO 9001:2015',
-    trustCustoms: 'وكلاء جمارك مرخصون من زاتكا',
-    trustCarriers: '+50 شراكة ناقل — ميرسك، MSC، طيران الإمارات للشحن',
-    trustInsurance: 'تأمين شامل 100% — صفر خسائر',
+    trustISO: 'ISO 9001 معايير عالمية',
+    trustCustoms: 'زاتكا - تخليص فوري',
+    trustCarriers: 'اتصال مباشر: ميرسك، MSC، طيران الإمارات',
+    trustInsurance: 'تغطية شاملة 100% — حماية تامة لأعمالك',
 
     // Saudi section
-    saudiLabel: 'التركيز على المملكة العربية السعودية',
-    saudiHeadline: 'شريك لوجستي موثوق',
-    saudiHeadlineAccent: 'في المملكة العربية السعودية',
+    saudiLabel: 'اختبار الواقع اللوجستي',
+    saudiHeadline: 'هل سلسلة توريدك',
+    saudiHeadlineAccent: 'مقاومة للأزمات؟',
     saudiBullets: [
-      'عمليات مخصصة في ميناء جدة الإسلامي — أكبر بوابة في المملكة',
-      'متخصصون في جمارك الدمام مع خبرة في التخليص المسبق',
-      'فريق دعم ناطق بالعربية، متوافق مع لوائح هيئة الزكاة والضريبة والجمارك',
-      'شبكة شاحنات تغطي السعودية والإمارات والكويت والبحرين وعُمان',
+      'تجاوز فوري لمناطق الصراع والتوتر العالمي',
+      'حماية العائد على الاستثمار ROI في أصعب الظروف الإقليمية',
+      'ربط رقمي مع زاتكا لتجربة تخليص بلا توقف',
+      'دعم الأزمات على مدار الساعة - لأن العالم لا يتوقف',
     ],
-    saudiStat1Label: 'معدل التسليم في الوقت المحدد',
-    saudiStat2Label: 'متوسط العبور الهند ← جدة',
-    saudiStat3Label: 'خط تجاري نشط',
+    saudiStat1Label: 'معدل استمرارية الأعمال',
+    saudiStat2Label: 'توفير التكاليف (ROI)',
+    saudiStat3Label: 'شحنات بلا صراعات',
 
     // Route map
-    routeLabel: 'الشبكة العالمية',
-    routeTitle: 'المركز السعودي.',
-    routeTitleAccent: 'امتداد عالمي.',
+    routeLabel: 'ذكاء تنبؤي',
+    routeTitle: 'مخاطر أقل.',
+    routeTitleAccent: 'نمو أسرع.',
 
     // How it works
-    hiwLabel: 'عملية بسيطة',
-    hiwTitle: 'كيف تعمل؟',
+    hiwLabel: 'منهجية بيجويس',
+    hiwTitle: 'لماذا نتفوق؟',
     hiwSteps: [
-      { num: '01', icon: '📋', title: 'احصل على عرض', desc: 'أكمل النموذج السريع بمعلومات الشحن والوجهة والوزن. سنرد عليك خلال 30 دقيقة.' },
-      { num: '02', icon: '🗺️', title: 'نخطط المسار', desc: 'يضع متخصصونا المسار الأمثل براً أو بحراً أو جواً، مع الأخذ بعين الاعتبار متطلبات الجمارك السعودية.' },
-      { num: '03', icon: '📡', title: 'تتبع في الوقت الفعلي', desc: 'تابع شحنتك برقم البوليصة أو رقم AWB. فريقنا يرسل تحديثات استباقية عند كل محطة.' },
+      { num: '01', icon: '⚡', title: 'تحسين فوري', desc: 'ذكاء اصطناعي يصمم لك المسار الأقل تكلفة والأكثر أماناً في ثوانٍ.' },
+      { num: '02', icon: '🛡️', title: 'تخفيف المخاطر', desc: 'نتجاوز الاضطرابات العالمية بفعالية لحماية الجدول الزمني لأعمالك.' },
+      { num: '03', icon: '🤝', title: 'عناية شفافة', desc: 'تحديثات مباشرة وعناية بشرية فائقة لكل شحنة دون استثناء.' },
     ],
 
     // Case studies
-    casesLabel: 'أمثلة من الشحنات',
-    casesTitle: 'بضائع حقيقية.',
-    casesTitleAccent: 'نتائج حقيقية.',
+    casesLabel: 'نتائج واقعية',
+    casesTitle: 'قيمة عالمية.',
+    casesTitleAccent: 'أثر محلي.',
     cases: [
-      { tag: 'شحن بحري', cargo: 'قطع غيار سيارات', route: 'ألمانيا ← جدة', days: '18 يوم', detail: 'FCL 40ft HC · 24 طن · ميناء هامبورغ إلى ميناء الملك عبدالعزيز', color: 'rgba(200,168,78,0.12)' },
-      { tag: 'بحري + جمارك', cargo: 'آلات صناعية', route: 'الصين ← الدمام', days: '22 يوم', detail: 'بضائع مشاريع · 68 م³ · شنتشن إلى ميناء الملك فهد الصناعي', color: 'rgba(100,140,255,0.1)' },
-      { tag: 'شحن جوي', cargo: 'بضائع مبردة', route: 'هولندا ← الرياض', days: '14 يوم', detail: 'شحن جوي مبرد · 1200 كغ · AMS إلى RUH · سلسلة تبريد +4°م', color: 'rgba(37,200,100,0.1)' },
+      { tag: 'تم تغيير المسار', cargo: 'قطع غيار دقيقة', route: 'أوروبا ← جدة', days: '21 يوم', detail: 'تجنب ديناميكي للبحر الأحمر · FCL 40ft · تحسين استهلاك الوقود بالذكاء الاصطناعي', color: 'rgba(0,180,255,0.12)' },
+      { tag: 'تخليص سريع', cargo: 'بنية تحتية حيوية', route: 'الصين ← الدمام', days: '25 يوم', detail: 'رقم قياسي للتخليص (3 ساعات) · بضائع مشاريع · ربط رقمي مباشر مع زاتكا', color: 'rgba(100,255,140,0.1)' },
+      { tag: 'جسر جوي', cargo: 'مستلزمات طبية', route: 'أمستردام ← الرياض', days: 'يومان', detail: 'ممر جوي مباشر · درجة حرارة ثابتة +4°م · عبور بدون احتكاك', color: 'rgba(255,100,255,0.1)' },
     ],
 
     // Client logos
     logosLabel: 'شركاؤنا الناقلون',
 
     // Tracking widget
-    trackTitle: 'تتبع شحنتك',
-    trackPlaceholder: 'أدخل رقم البوليصة / AWB',
-    trackBtn: 'تتبع',
-    trackToast: 'جارٍ تتبع الشحنة — سيتواصل معك فريقنا خلال 30 دقيقة.',
+    trackTitle: 'تتبع عالمي في الوقت الفعلي',
+    trackPlaceholder: 'أدخل رقم الشحنة / AWB / رقم التتبع',
+    trackBtn: 'تحديد الموقع',
+    trackToast: 'جاري المزامنة مع بيانات الأقمار الصناعية... التحديثات قادمة خلال 30 ثانية.',
 
     // Footer
-    footerTagline: 'ننقل البضائع. نبني الثقة.\nشحنة واحدة في كل مرة.',
-    footerContactTitle: 'تواصل معنا',
-    footerServicesTitle: 'خدماتنا',
-    footerCompanyTitle: 'الشركة',
+    footerTagline: 'قد تتغير الحدود، لكن التزامنا لا يتغير.\nلوجستيات لعالم معقد.',
+    footerContactTitle: 'دعم الأزمات والمبيعات',
+    footerServicesTitle: 'خدمات ذكية',
+    footerCompanyTitle: 'المجموعة',
     footerAddress: 'طريق الملك فهد، العليا\nالرياض، المملكة العربية السعودية 11523',
-    footerWhatsapp: 'تواصل عبر واتساب',
-    footerServices: ['شحن بحري', 'شحن جوي', 'شحن بري', 'تخليص جمركي', 'شحن مشاريع'],
-    footerCompany: ['من نحن', 'الشهادات', 'وظائف', 'سياسة الخصوصية'],
-    footerCopyright: `© ${new Date().getFullYear()} مجموعة بيجويس. جميع الحقوق محفوظة.`,
-    footerCompliance: 'متوافق مع هيئة الزكاة والضريبة · ISO 9001 · عضو FIATA',
+    footerWhatsapp: 'تحدث مع لايلى الجاهزة لدعمك',
+    footerServices: ['شحن بحري ذكي', 'ممرات سماوية', 'جسر بري خليجي', 'أتمتة زاتكا', 'بنية تحتية ضخمة'],
+    footerCompany: ['فلسفة الذكاء الاصطناعي', 'الامتثال العالمي', 'الأثر', 'السياسة'],
+    footerCopyright: `© ${new Date().getFullYear()} مجموعة بيجويس. مستقبل اللوجستيات.`,
+    footerCompliance: 'متوافق مع زاتكا · معتمد ISO · عضو FIATA',
 
-    actDividerTitle: 'الآن،\nنحلق في السماء.',
-    actDividerTitle2: 'خطواتكم الأخيرة\nنحو النجاح.',
+    actDividerTitle: 'عندما يتوقف الآخرون،\nنحن نحلق.',
+    actDividerTitle2: 'الأرض هي\nاستراتيجيتنا.',
 
     // Chapters
     chapters: {
-      hero:     { label: 'مجموعة بيجويس',  titleLines: ['أطلق التجارة', 'العالمية.'],        body: 'أسرع نافذة شحن في المملكة العربية السعودية. بحراً · جواً · براً · جمارك — عرض سعر خلال 30 دقيقة، بلا تأخير جمركي.' },
-      maritime: { label: 'الشحن البحري',    titleLines: ['سادة', 'البحر العميق.'],             body: 'FCL · LCL · مبرد · OOG. كل أنواع السفن، كل خطوط التجارة — المملكة العربية السعودية مغطاة.' },
-      port:     { label: 'الموانئ والجمارك', titleLines: ['جاهز للميناء.', 'مُخلَّص مسبقاً.'], body: 'جدة · الدمام · ميناء الملك فهد. تخليص جمركي متوافق مع زاتكا، بلا تأخير.' },
-      air:      { label: 'الشحن الجوي',     titleLines: ['العجلات ترتفع.', 'في الموعد.'],      body: 'رحلات مباشرة إلى الرياض · جدة · الدمام. شحن سريع أو مبرد أو ضخم — بنفس الدقة.' },
-      cta:      { label: 'شريك واحد',       titleLines: ['شريك واحد.', 'كل الميل.'],           body: 'لا تسليمات متعددة. لا مفاجآت. مجموعة بيجويس — جسرك اللوجستي السعودي.' },
+      hero:     { label: 'ذكاء OMNI-MIND',  titleLines: ['تجاوز الأزمات.', 'دائماً في الموعد.'],    body: "التجارة العالمية تتغير. نحن نتجاوز الاضطرابات لحماية أرباحك وضمان التسليم عندما يتوقف العالم." },
+      maritime: { label: 'مسارات آمنة',  titleLines: ['تكاليف أقل.', 'أمان أكثر.'], body: 'توجيه ديناميكي يتجاوز مناطق الصراع. نقوم بتأمين شحناتك في الوقت الفعلي لضمان استمرارية أعمالك.' },
+      port:     { label: 'تخليص ذكي', titleLines: ['صفر تأخير.', 'سرعة البرق.'],  body: 'ربط رقمي مباشر مع زاتكا. ننهي إجراءاتك في ساعات، ليس أياماً، لتبقى دائماً في الصدارة.' },
+      air:      { label: 'ممر السماء',    titleLines: ['دقة جراحية.', 'بلا عوائق.'],       body: 'عندما تدعو الحاجة للسرعة القصوى، نحن نملك الأجواء. وصول مباشر إلى الرياض وجدة لأهم أصولك.' },
+      cta:      { label: 'اختبار الواقع',    titleLines: ['شحنتك.', 'صفر مخاطر.'],  body: 'هل شريكك الحالي مستعد للأزمة القادمة؟ نحن مستعدون. مجموعة بيجويس — جسر اللوجستيات السعودي الراسخ.' },
     },
 
     // CTA
-    ctaButton: 'احصل على عرض سريع',
-    ctaSub: 'بحري · جوي · بري · جمارك · مشاريع',
+    ctaButton: 'أمّن شحنتك المستقبلية الآن',
+    ctaSub: 'شحن بحري · جوي · بري · جمارك محسنة بالذكاء الاصطناعي',
   },
 };
 
@@ -348,60 +348,86 @@ function LoadingScreen({ progress, isLoaded, onDone }) {
 // BJS WING LOGO — inline SVG emblem
 // ============================================
 function BJSLogo() {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0, lineHeight: 1 }}>
+  const [wingsSrc, setWingsSrc] = useState(null);
 
-      {/* ── WINGS — original PNG, dark box removed via screen blend ──
-          Container clips the bottom "GROUP OF COMPANIES" banner from the PNG
-          so we can render it ourselves at 3× the size below             */}
-      <div style={{ overflow: 'hidden', height: '52px' }}>
-        <img
-          src="/bejoice_logo.png"
-          alt=""
-          aria-hidden="true"
-          style={{
-            height: '78px',          /* full image; bottom 26px (group text) is clipped */
-            width: 'auto',
-            display: 'block',
-            mixBlendMode: 'screen',  /* dark background → fully transparent            */
-            filter: [
-              'brightness(1.55)',
-              'contrast(1.2)',
-              'drop-shadow(0 0 7px rgba(200,168,78,0.65))',
-              'drop-shadow(0 0 18px rgba(200,168,78,0.3))',
-            ].join(' '),
-          }}
-        />
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const d = imageData.data;
+      for (let i = 0; i < d.length; i += 4) {
+        const r = d[i], g = d[i + 1], b = d[i + 2];
+        // Remove dark navy/black background pixels; keep bright wing pixels
+        const brightness = (r + g + b) / 3;
+        if (brightness < 160) {
+          // Fully transparent below 100; soft fade 100–160 to avoid fringing on wing edges
+          const alpha = brightness < 100 ? 0 : Math.round(((brightness - 100) / 60) * d[i + 3]);
+          d[i + 3] = alpha;
+        }
+      }
+      ctx.putImageData(imageData, 0, 0);
+      setWingsSrc(canvas.toDataURL('image/png'));
+    };
+    img.src = '/bejoice_logo.png';
+  }, []);
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0, lineHeight: 1, background: 'transparent' }}>
+
+      {/* ── WINGS — background removed via canvas pixel processing ── */}
+      <div style={{ overflow: 'hidden', height: '52px', background: 'transparent' }}>
+        {wingsSrc && (
+          <img
+            src={wingsSrc}
+            alt=""
+            aria-hidden="true"
+            style={{
+              height: '78px',
+              width: 'auto',
+              display: 'block',
+              filter: 'drop-shadow(0 0 10px rgba(200,168,78,0.4))',
+            }}
+          />
+        )}
       </div>
 
-      {/* ── BEJOICE — large, glowing, impossible to miss ── */}
+      {/* ── BEJOICE ── */}
       <span style={{
-        color: '#f5e49a',
-        fontSize: '20px',
+        color: '#ffffff',
+        fontSize: '22px',
         fontWeight: '900',
-        letterSpacing: '6px',
-        fontFamily: "'Bebas Neue', 'Inter', sans-serif",
+        letterSpacing: '8px',
+        fontFamily: "'Bebas Neue', sans-serif",
         lineHeight: 1,
-        marginTop: '-4px',
+        marginTop: '8px',
         textShadow: [
-          '0 0 8px rgba(245,228,154,1)',
-          '0 0 18px rgba(200,168,78,0.9)',
-          '0 0 36px rgba(200,168,78,0.5)',
+          '0 1px 0 rgba(0,0,0,0.8)',
+          '0 0 12px rgba(255,255,255,0.4)',
+          '0 0 28px rgba(200,168,78,0.6)',
         ].join(', '),
       }}>
         BEJOICE
       </span>
 
-      {/* ── GROUP OF COMPANIES — 3× readable real HTML text ── */}
+      {/* ── GROUP OF COMPANIES ── */}
       <span style={{
-        color: '#c8a84e',
-        fontSize: '9px',
+        color: '#ffffff',
+        fontSize: '11px',
         fontWeight: '700',
-        letterSpacing: '3.5px',
+        letterSpacing: '4px',
         fontFamily: "'Inter', sans-serif",
         lineHeight: 1,
         marginTop: '5px',
-        textShadow: '0 0 8px rgba(200,168,78,0.5)',
+        textTransform: 'uppercase',
+        textShadow: [
+          '0 0 8px rgba(255,255,255,0.6)',
+          '0 1px 0 rgba(0,0,0,0.9)',
+        ].join(', '),
       }}>
         GROUP OF COMPANIES
       </span>
@@ -581,42 +607,93 @@ function LoadCalculator({ lang }) {
           </div>
         )}
 
-        {/* Results */}
+        {/* Results — Enhanced AI Visual Dashboard */}
         {results && (
-          <div style={{ marginTop:'1.2rem', background:'rgba(200,168,78,0.08)', border:'1px solid rgba(200,168,78,0.2)', borderRadius:'0.7rem', padding:'1rem' }}>
-            <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'1rem', letterSpacing:'0.06em', color:'#c8a84e', marginBottom:'0.6rem' }}>{ar?'نتائج الحساب':'Results'}</div>
-            <div style={{ display:'flex', flexDirection:'column', gap:'0.4rem' }}>
-              {Object.entries(results).filter(([k])=>k!=='tab').map(([k,v])=>(
-                <div key={k} style={{ display:'flex', justifyContent:'space-between', fontFamily:"'Inter',sans-serif", fontSize:'0.78rem' }}>
-                  <span style={{color:'rgba(255,255,255,0.5)',textTransform:'capitalize'}}>{k.replace(/([A-Z])/g,' $1')}</span>
-                  <span style={{color:'#fff',fontWeight:600}}>{v}</span>
-                </div>
-              ))}
+          <div style={{ marginTop:'1.5rem', background:'rgba(10,10,15,0.8)', border:'1.5px solid rgba(200,168,78,0.35)', borderRadius:'1rem', padding:'1.5rem', boxShadow:'0 20px 50px rgba(0,0,0,0.4)', position:'relative', overflow:'hidden' }}>
+            {/* Background Glow */}
+            <div style={{ position:'absolute', top:'-50%', right:'-20%', width:'150px', height:'150px', background:'rgba(200,168,78,0.1)', filter:'blur(40px)', borderRadius:'50%' }} />
+            
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'1.2rem' }}>
+              <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'1.3rem', letterSpacing:'0.06em', color:'#c8a84e' }}>
+                {ar ? 'تحليل الحمولة الذكي' : 'AI LOAD ANALYSIS'}
+              </div>
+              <div style={{ width:'8px', height:'8px', background:'#25c864', borderRadius:'50%', boxShadow:'0 0 10px #25c864' }} />
             </div>
-            <div style={{ display:'flex', gap:'0.6rem', marginTop:'1rem' }}>
-              <button onClick={exportCSV} style={{flex:1,background:'rgba(255,255,255,0.07)',border:'1px solid rgba(255,255,255,0.12)',borderRadius:'0.4rem',color:'rgba(255,255,255,0.75)',fontFamily:"'Inter',sans-serif",fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.1em',padding:'0.55rem',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'0.3rem'}}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                CSV
+
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1rem', marginBottom:'1.5rem' }}>
+              {/* Primary Stat */}
+              <div style={{ background:'rgba(255,255,255,0.03)', padding:'0.8rem', borderRadius:'0.6rem', border:'1px solid rgba(255,255,255,0.05)' }}>
+                <span style={{ display:'block', fontSize:'0.6rem', color:'rgba(255,255,255,0.4)', textTransform:'uppercase', fontWeight:600, marginBottom:'0.2rem' }}>
+                  {results.tab === 'air' ? (ar ? 'الوزن المعتمد' : 'Chargeable Wt') : (ar ? 'إجمالي CBM' : 'Total Volume')}
+                </span>
+                <span style={{ fontSize:'1.5rem', fontFamily:"'Bebas Neue',sans-serif", color:'#fff' }}>
+                  {results.tab === 'air' ? results.chargeable : results.cbm} 
+                  <span style={{ fontSize:'0.7rem', marginLeft:'0.3rem', color:'#c8a84e' }}>{results.tab === 'air' ? 'KG' : 'CBM' }</span>
+                </span>
+              </div>
+
+              {/* Efficiency Stat */}
+              {results.loadPct && (
+                <div style={{ background:'rgba(255,255,255,0.03)', padding:'0.8rem', borderRadius:'0.6rem', border:'1px solid rgba(255,255,255,0.05)' }}>
+                  <span style={{ display:'block', fontSize:'0.6rem', color:'rgba(255,255,255,0.4)', textTransform:'uppercase', fontWeight:600, marginBottom:'0.2rem' }}>
+                    {ar ? 'كفاءة الاستخدام' : 'Usage Efficiency'}
+                  </span>
+                  <div style={{ display:'flex', alignItems:'baseline', gap:'0.2rem' }}>
+                    <span style={{ fontSize:'1.5rem', fontFamily:"'Bebas Neue',sans-serif", color: results.loadPct > 90 ? '#ff5050' : '#fff' }}>{results.loadPct}</span>
+                    <span style={{ fontSize:'0.8rem', color:'rgba(255,255,255,0.5)', fontFamily:"'Bebas Neue',sans-serif" }}>%</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Visual Progress Bar for Load */}
+            {results.loadPct && (
+              <div style={{ marginBottom:'1.5rem' }}>
+                <div style={{ display:'flex', justifyContent:'space-between', fontSize:'0.65rem', color:'rgba(255,255,255,0.3)', marginBottom:'0.4rem', fontWeight:600 }}>
+                  <span>{ar ? 'سعة الحاوية' : 'CONTAINER CAPACITY'}</span>
+                  <span>{results.loadPct}%</span>
+                </div>
+                <div style={{ height:'6px', background:'rgba(255,255,255,0.1)', borderRadius:'3px', overflow:'hidden' }}>
+                  <div style={{ height:'100%', width:`${Math.min(100, results.loadPct)}%`, background: results.loadPct > 90 ? 'linear-gradient(90deg, #c8a84e, #ff5050)' : 'linear-gradient(90deg, #c8a84e, #e8d48a)', transition:'width 1s ease-out' }} />
+                </div>
+              </div>
+            )}
+
+            {results.container && (
+              <div style={{ padding:'0.8rem', background:'rgba(200,168,78,0.1)', borderRadius:'0.6rem', border:'1px dotted rgba(200,168,78,0.3)', textAlign:'center' }}>
+                <span style={{ display:'block', fontSize:'0.6rem', color:'#c8a84e', textTransform:'uppercase', fontWeight:700, marginBottom:'0.2rem', letterSpacing:'0.05em' }}>
+                  {ar ? 'توصية الذكاء الاصطناعي' : 'AI RECOMMENDATION'}
+                </span>
+                <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'1.1rem', color:'#fff', letterSpacing:'0.03em' }}>{results.container}</span>
+              </div>
+            )}
+
+            <div style={{ display:'flex', gap:'0.8rem', marginTop:'1.5rem' }}>
+              <button onClick={exportCSV} style={{ flex:1, background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.1)', borderRadius:'0.5rem', color:'#fff', padding:'0.7rem', cursor:'pointer', fontSize:'0.75rem', fontWeight:600, display:'flex', alignItems:'center', justifyContent:'center', gap:'0.5rem', transition:'all 0.2s' }}>
+                📥 CSV
               </button>
-              <button onClick={exportPDF} style={{flex:1,background:'rgba(200,168,78,0.12)',border:'1px solid rgba(200,168,78,0.25)',borderRadius:'0.4rem',color:'#c8a84e',fontFamily:"'Inter',sans-serif",fontSize:'0.65rem',fontWeight:600,letterSpacing:'0.1em',padding:'0.55rem',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',gap:'0.3rem'}}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                PDF
+              <button onClick={exportPDF} style={{ flex:1, background:'#c8a84e', border:'none', borderRadius:'0.5rem', color:'#0a0a0f', padding:'0.7rem', cursor:'pointer', fontSize:'0.75rem', fontWeight:700, display:'flex', alignItems:'center', justifyContent:'center', gap:'0.5rem', transition:'all 0.2s' }}>
+                📄 PDF REPORT
               </button>
             </div>
           </div>
         )}
       </div>
 
-      {/* Calculate button */}
-      <div style={{ padding:'0.8rem 1.2rem', flexShrink:0, borderTop:'1px solid rgba(255,255,255,0.07)' }}>
-        <button onClick={calculate} style={{ width:'100%', padding:'0.85rem', background:'#c8a84e', border:'none', borderRadius:'0.55rem', color:'#0a0a0f', fontFamily:"'Inter',sans-serif", fontSize:'0.72rem', fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', cursor:'pointer', transition:'background 0.2s' }}
-          onMouseEnter={e=>e.currentTarget.style.background='#e8d48a'} onMouseLeave={e=>e.currentTarget.style.background='#c8a84e'}>
-          {ar?'احسب':'Calculate'}
+      {/* Footer CTA */}
+      <div style={{ padding:'1rem 1.25rem', background:'rgba(255,255,255,0.02)', borderTop:'1px solid rgba(255,255,255,0.08)', flexShrink:0 }}>
+        <button onClick={calculate}
+          style={{ width:'100%', padding:'1.1rem', background:'linear-gradient(135deg,#c8a84e,#a8843e)', border:'none', borderRadius:'0.8rem', color:'#050508', fontFamily:"'Bebas Neue',sans-serif", fontSize:'1.2rem', letterSpacing:'0.15em', cursor:'pointer', transition:'all 0.3s', boxShadow:'0 10px 30px rgba(200,168,78,0.2)' }}
+          onMouseEnter={e=>e.currentTarget.style.transform='translateY(-2px)'}
+          onMouseLeave={e=>e.currentTarget.style.transform=''}
+        >
+          {ar ? 'إجراء الحساب الذكي' : 'GENERATE AI ANALYSIS'}
         </button>
       </div>
     </div>
   );
 }
+
 
 // ============================================
 // TOOL MODAL — generic full-screen panel
@@ -667,11 +744,9 @@ function ToolModal({ open, onClose, title, subtitle, children }) {
 // ============================================
 // HAMBURGER MENU DRAWER — Tools Hub
 // ============================================
-function MenuDrawer({ open, onClose, onQuoteClick, onBook, lang, toggleLang }) {
+function MenuDrawer({ open, onClose, onQuoteClick, onBook, lang, toggleLang, airOpen, setAirOpen, calcOpen, setCalcOpen }) {
   const drawerRef  = useRef(null);
   const overlayRef = useRef(null);
-  const [airOpen,  setAirOpen]  = useState(false);
-  const [calcOpen, setCalcOpen] = useState(false);
   const ar = lang === 'ar';
 
   useEffect(() => {
@@ -763,51 +838,7 @@ function MenuDrawer({ open, onClose, onQuoteClick, onBook, lang, toggleLang }) {
         </div>
       </div>
 
-      {/* Air Traffic Tool */}
-      <ToolModal open={airOpen} onClose={()=>setAirOpen(false)}
-        title={ar?'حركة الجو المباشرة':'Live Air Traffic'}
-        subtitle={ar?'رادار الطائرات في الوقت الحقيقي — مدعوم من AirNav RadarBox':'Real-time flight radar — powered by AirNav RadarBox'}>
-        <div style={{ height:'100%', minHeight:'560px', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'2rem', background:'radial-gradient(ellipse at 50% 40%, rgba(200,168,78,0.07) 0%, rgba(5,5,8,0.0) 70%)', padding:'2rem' }}>
-          {/* Animated radar ring */}
-          <div style={{ position:'relative', width:'140px', height:'140px' }}>
-            <div style={{ position:'absolute', inset:0, borderRadius:'50%', border:'2px solid rgba(200,168,78,0.35)', animation:'radarPing 2s ease-out infinite' }} />
-            <div style={{ position:'absolute', inset:'15px', borderRadius:'50%', border:'1.5px solid rgba(200,168,78,0.25)', animation:'radarPing 2s ease-out 0.6s infinite' }} />
-            <div style={{ position:'absolute', inset:'30px', borderRadius:'50%', border:'1px solid rgba(200,168,78,0.18)', animation:'radarPing 2s ease-out 1.2s infinite' }} />
-            <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'3.2rem' }}>✈️</div>
-          </div>
-          <style>{`@keyframes radarPing { 0%{transform:scale(1);opacity:0.8} 100%{transform:scale(1.5);opacity:0} }`}</style>
-          <div style={{ textAlign:'center', maxWidth:'420px' }}>
-            <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'1.7rem', letterSpacing:'0.12em', color:'#c8a84e', marginBottom:'0.6rem' }}>
-              {ar ? 'رادار الرحلات الجوية المباشرة' : 'LIVE FLIGHT RADAR'}
-            </div>
-            <div style={{ fontFamily:"'Inter',sans-serif", fontSize:'0.92rem', color:'rgba(255,255,255,0.6)', lineHeight:1.6, marginBottom:'1.8rem' }}>
-              {ar
-                ? 'AirNav RadarBox تمنع التضمين المباشر — انقر لفتح الرادار الحي في نافذة جديدة'
-                : 'AirNav RadarBox restricts direct embedding. Click below to open the live radar in a full browser window.'}
-            </div>
-            <a
-              href="https://www.airnavradar.com/@40.46017,74.38525,z3"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ display:'inline-flex', alignItems:'center', gap:'0.6rem', background:'linear-gradient(135deg,#c8a84e,#a8843e)', color:'#050508', fontFamily:"'Inter',sans-serif", fontWeight:700, fontSize:'0.95rem', padding:'0.85rem 2.2rem', borderRadius:'3rem', textDecoration:'none', letterSpacing:'0.04em', boxShadow:'0 4px 24px rgba(200,168,78,0.35)', transition:'transform 0.2s,box-shadow 0.2s' }}
-              onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-2px)';e.currentTarget.style.boxShadow='0 8px 32px rgba(200,168,78,0.5)'}}
-              onMouseLeave={e=>{e.currentTarget.style.transform='';e.currentTarget.style.boxShadow='0 4px 24px rgba(200,168,78,0.35)'}}
-            >
-              <span>🗺️</span> {ar ? 'فتح الرادار الحي' : 'Open Live Radar'}  ↗
-            </a>
-          </div>
-          <div style={{ fontFamily:"'Inter',sans-serif", fontSize:'0.72rem', color:'rgba(200,168,78,0.45)', letterSpacing:'0.08em' }}>
-            POWERED BY AIRNAVRADAR.COM
-          </div>
-        </div>
-      </ToolModal>
 
-      {/* Load Calculator Tool */}
-      <ToolModal open={calcOpen} onClose={()=>setCalcOpen(false)}
-        title={ar?'حاسبة الحمولة':'Load Calculator'}
-        subtitle={ar?'بحري · جوي · بري · مستودع — تصدير النتائج بصيغة CSV أو PDF':'Sea · Air · Land · Warehouse — Export results as CSV or PDF'}>
-        <LoadCalculator lang={lang} />
-      </ToolModal>
     </>
   );
 }
@@ -815,7 +846,7 @@ function MenuDrawer({ open, onClose, onQuoteClick, onBook, lang, toggleLang }) {
 // ============================================
 // HEADER — minimal: logo left, book CTA + burger right
 // ============================================
-function Header({ onToolsClick, onQuoteClick, lang, toggleLang }) {
+function Header({ onToolsClick, onQuoteClick, lang, toggleLang, airOpen, setAirOpen, calcOpen, setCalcOpen }) {
   const headerRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const t = TRANSLATIONS[lang];
@@ -898,6 +929,10 @@ function Header({ onToolsClick, onQuoteClick, lang, toggleLang }) {
         onBook={onQuoteClick}
         lang={lang}
         toggleLang={toggleLang}
+        airOpen={airOpen}
+        setAirOpen={setAirOpen}
+        calcOpen={calcOpen}
+        setCalcOpen={setCalcOpen}
       />
     </>
   );
@@ -1006,15 +1041,15 @@ function HeroQuoteForm({ lang = 'en', onBook }) {
   };
 
   return (
-    <div className="hero-mini-card">
+    <div className="hero-mini-card" style={{ maxWidth: '480px', margin: '0 auto', background: 'rgba(5, 5, 8, 0.85)', border: '1px solid rgba(200,168,78,0.5)', boxShadow: '0 24px 64px rgba(0,0,0,0.8), inset 0 1px 0 rgba(200,168,78,0.2)' }}>
       {/* Eyebrow */}
-      <div className="hero-mini-card__eyebrow">
+      <div className="hero-mini-card__eyebrow" style={{ justifyContent: 'center' }}>
         <span className="hero-mini-card__dot" />
         {lang === 'ar' ? 'عرض مجاني · رد خلال 30 دقيقة' : 'Free quote · 30-min response'}
       </div>
 
       {/* Cargo type tabs */}
-      <div className="hero-mini-card__tabs">
+      <div className="hero-mini-card__tabs" style={{ justifyContent: 'center' }}>
         {CARGO_TYPES.map(ct => (
           <button
             key={ct.id}
@@ -1027,36 +1062,28 @@ function HeroQuoteForm({ lang = 'en', onBook }) {
         ))}
       </div>
 
-      {/* Inputs */}
-      <div className="hero-mini-card__fields">
-        <div className="hero-mini-card__field-wrap">
+      {/* Inputs (Side by side for centered layout) */}
+      <div className="hero-mini-card__fields" style={{ flexDirection: 'row', gap: '0.5rem' }}>
+        <div className="hero-mini-card__field-wrap" style={{ flex: 1 }}>
           <input
             className={`hero-mini-card__input${errors.origin ? ' hero-mini-card__input--error' : ''}`}
             type="text"
-            placeholder={lang === 'ar' ? 'بلد الشحن' : 'Origin — city or country'}
+            placeholder={lang === 'ar' ? 'بلد الشحن' : 'Origin'}
             value={origin}
             onChange={e => { setOrigin(e.target.value); if (e.target.value.trim()) setErrors(prev => ({ ...prev, origin: false })); }}
+            style={{ borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.1)' }}
           />
-          {errors.origin && (
-            <span className="hero-mini-card__error">
-              {lang === 'ar' ? 'الرجاء إدخال مكان الشحن' : 'Please enter origin'}
-            </span>
-          )}
         </div>
-        <div className="hero-mini-card__arrow">↓</div>
-        <div className="hero-mini-card__field-wrap">
+        <div className="hero-mini-card__arrow" style={{ alignSelf: 'center', border: 'none', background: 'transparent' }}>→</div>
+        <div className="hero-mini-card__field-wrap" style={{ flex: 1 }}>
           <input
             className={`hero-mini-card__input${errors.dest ? ' hero-mini-card__input--error' : ''}`}
             type="text"
-            placeholder={lang === 'ar' ? 'الوجهة في السعودية' : 'Destination — KSA port or city'}
+            placeholder={lang === 'ar' ? 'الوجهة' : 'Destination'}
             value={dest}
             onChange={e => { setDest(e.target.value); if (e.target.value.trim()) setErrors(prev => ({ ...prev, dest: false })); }}
+            style={{ borderRadius: '0.5rem', border: '1px solid rgba(255,255,255,0.1)' }}
           />
-          {errors.dest && (
-            <span className="hero-mini-card__error">
-              {lang === 'ar' ? 'الرجاء إدخال الوجهة' : 'Please enter destination'}
-            </span>
-          )}
         </div>
       </div>
 
@@ -1064,13 +1091,14 @@ function HeroQuoteForm({ lang = 'en', onBook }) {
       <button
         className={`hero-mini-card__btn${shake ? ' hero-mini-card__btn--shake' : ''}`}
         onClick={handleSubmit}
+        style={{ marginTop: '0.5rem' }}
       >
         {lang === 'ar' ? 'اتصل بخبير شحن' : 'Call a Freight Expert'}
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
 
       {/* Sub-links */}
-      <div className="hero-mini-card__sub">
+      <div className="hero-mini-card__sub" style={{ justifyContent: 'center' }}>
         <a href="tel:+966550000000" className="hero-mini-card__link">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3-8.69A2 2 0 0 1 3.82 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 5.61 5.61l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.28 16z"/></svg>
           +966 55 000 0000
@@ -1080,6 +1108,590 @@ function HeroQuoteForm({ lang = 'en', onBook }) {
           WhatsApp
         </a>
       </div>
+    </div>
+  );
+}
+
+// ============================================
+// HERO TRUST & STATS BAR (Reality Check)
+// ============================================
+function RollingNumber({ value, suffix = '', duration = 2.5 }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!ref.current) return;
+    const target = parseFloat(value);
+    const obj = { n: 0 };
+    
+    // Wait for potential UI transitions to finish
+    const timer = setTimeout(() => {
+      gsap.to(ref.current, { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.5 });
+      
+      gsap.to(obj, {
+        n: target,
+        duration,
+        ease: "power4.out",
+        onUpdate: () => {
+          if (ref.current) {
+            const currentVal = Math.floor(obj.n);
+            ref.current.textContent = currentVal + suffix;
+          }
+        }
+      });
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [value, suffix, duration]);
+  return <span ref={ref} style={{ opacity: 0, filter: 'blur(10px)', display: 'inline-block' }}>0{suffix}</span>;
+}
+
+function HeroTrustBar({ lang }) {
+  const isAr = lang === 'ar';
+  return (
+    <div className="hero-trust-bar hero-trust-bar--centered">
+      <div className="hero-trust-stats-grid">
+        <div className="hero-trust-stat">
+          <span className="hero-trust-val"><RollingNumber value="200" suffix="+" /></span>
+          <span className="hero-trust-lbl">{isAr ? 'عميل نشط' : 'Satisfied Clients'}</span>
+        </div>
+        <div className="hero-trust-stat">
+          <span className="hero-trust-val"><RollingNumber value="24" suffix="+" /></span>
+          <span className="hero-trust-lbl">{isAr ? 'قطاعاً مخدوماً' : 'Industries Served'}</span>
+        </div>
+        <div className="hero-trust-stat">
+          <span className="hero-trust-val" style={{ color: '#ffd97a' }}><RollingNumber value="15" suffix="%" /></span>
+          <span className="hero-trust-lbl">{isAr ? 'توفير التكاليف' : 'ROI / Cost Savings'}</span>
+        </div>
+        <div className="hero-trust-stat">
+          <span className="hero-trust-val" style={{ color: '#10b981' }}><RollingNumber value="100" suffix="%" /></span>
+          <span className="hero-trust-lbl">{isAr ? 'خال من الصراعات' : 'Crisis-Proof Content'}</span>
+        </div>
+        <div className="hero-trust-stat">
+          <span className="hero-trust-val">KSA</span>
+          <span className="hero-trust-lbl">{isAr ? 'تغطية إقليمية' : 'Regional Specialist'}</span>
+        </div>
+      </div>
+      
+      <div className="hero-trust-certs-wrap" style={{ marginTop: '1.5rem' }}>
+        <div className="hero-trust-certs">
+          <span className="hero-trust-badge">ZATCA Certified</span>
+          <span className="hero-trust-badge">ISO 9001:2015</span>
+          <span className="hero-trust-badge">GCC Specialist</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================
+// INTELLIGENT AI ASSISTANT WIDGET
+// ============================================
+// Inject assistant keyframes once
+(function injectAssistantStyles() {
+  if (typeof document === 'undefined') return;
+  const id = 'bjs-assistant-styles';
+  if (document.getElementById(id)) return;
+  const s = document.createElement('style');
+  s.id = id;
+  s.textContent = `
+    @keyframes bjs-wave {
+      0%,100%{ transform:rotate(0deg) }
+      15%    { transform:rotate(22deg) }
+      30%    { transform:rotate(-12deg) }
+      45%    { transform:rotate(20deg) }
+      60%    { transform:rotate(-8deg) }
+      75%    { transform:rotate(14deg) }
+    }
+    @keyframes bjs-float {
+      0%,100%{ transform:translateY(0) }
+      50%    { transform:translateY(-7px) }
+    }
+    @keyframes bjs-ring {
+      0%  { transform:scale(1);   opacity:.55 }
+      100%{ transform:scale(1.8); opacity:0   }
+    }
+    @keyframes bjs-panel {
+      from{ opacity:0; transform:translateY(18px) scale(.96) }
+      to  { opacity:1; transform:translateY(0)    scale(1)   }
+    }
+    @keyframes bjs-bubble-in {
+      from{ opacity:0; transform:scale(.85) translateY(6px) }
+      to  { opacity:1; transform:scale(1)   translateY(0)   }
+    }
+    @keyframes bjs-msg-in {
+      from{ opacity:0; transform:translateY(8px) }
+      to  { opacity:1; transform:translateY(0)   }
+    }
+    @keyframes bjs-dot {
+      0%,80%,100%{ transform:translateY(0) }
+      40%         { transform:translateY(-5px) }
+    }
+    @keyframes bjs-blink {
+      0%,90%,100%{ transform:scaleY(1) }
+      95%         { transform:scaleY(.1) }
+    }
+    .bjs-hand { display:inline-block; transform-origin:70% 80%; animation:bjs-wave 2s ease-in-out; }
+    .bjs-eye  { animation:bjs-blink 4s ease-in-out infinite; transform-origin:center; }
+  `;
+  document.head.appendChild(s);
+})();
+
+
+const QUICK_CHIPS = [
+  { label: '🗺️ Optimise Route',  key: 'route'    },
+  { label: '📦 Get a Quote',      key: 'price'    },
+  { label: '🏛️ What is ZATCA?',  key: 'zatca'    },
+  { label: '🚢 Sea Freight',      key: 'sea'      },
+  { label: '✈️ Air Freight',      key: 'air'      },
+  { label: '📍 Track Shipment',   key: 'tracking' },
+];
+
+/* ── AI Holographic Avatar — replaces previous SVG character ── */
+function AssistantAvatar({ size = 56, fullBody = false }) {
+  const w = fullBody ? 120 : size;
+  const h = fullBody ? 120 : size;
+  return (
+    <div style={{
+      width: w, height: h, flexShrink: 0,
+      borderRadius: '50%',
+      background: 'radial-gradient(circle at center, rgba(0, 153, 255, 0.15) 0%, rgba(5, 10, 20, 0.7) 80%)',
+      border: `1px solid rgba(0, 153, 255, ${fullBody ? '.7' : '.5'})`,
+      boxShadow: fullBody 
+        ? '0 0 40px rgba(0, 153, 255, 0.3), inset 0 0 20px rgba(0, 153, 255, 0.15)'
+        : '0 4px 15px rgba(0, 110, 255, 0.4)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
+      position: 'relative',
+      backgroundSize: 'cover'
+    }}>
+      <img
+        src="/ai-assistant-female.png"
+        alt="Layla — Bejoice AI"
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          transform: 'scale(1.05)',
+          animation: 'layla-float 5s ease-in-out infinite, layla-wave-soft 8s ease-in-out infinite',
+          transformOrigin: 'bottom center'
+        }}
+      />
+      {/* bluish animated scanline overlay */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 153, 255, 0.08) 3px, transparent 4px)',
+        pointerEvents: 'none',
+        opacity: 0.6,
+        animation: 'bjs-scanline 8s linear infinite'
+      }} />
+      <style>{`
+        @keyframes bjs-scanline { 
+          from { background-position: 0 0; } 
+          to { background-position: 0 100%; } 
+        }
+      `}</style>
+    </div>
+  );
+}
+
+const ASSISTANT_BUBBLES = [
+  "Global trade is shifting. Is your cargo safe? ✨",
+  "I can bypass regional disruptions in seconds. 🌊",
+  "Need a conflict-proof route to Saudi Arabia?",
+  "BJS Omni-Mind AI: Zero Delays, Maximum Resilience.",
+  "Ask me how we delivered on time last month! 📈",
+];
+
+function AIAssistant({ lang }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    { role: 'ai', content: lang === 'ar' 
+      ? "التجارة العالمية تتغير.. هل سلاسل التوريد الخاصة بك مرنة بما يكفي؟ ✨\n\nهل تود معرفة كيف يضمن لك نظام BJS Omni-Mind وصول شحناتك في موعدها، حتى في أصعب الظروف؟" 
+      : "Global trade is changing. Is your supply chain resilient enough? ✨\n\nDo you want to know how BJS Omni-Mind AI guarantees your delivery, regardless of global instability?" }
+  ]);
+  const [input, setInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [onboardingStep, setOnboardingStep] = useState(0); // 0: init, 1: type, 2: goal, 3: done
+  const [bubbleIdx, setBubbleIdx] = useState(0);
+  const [showBubble, setShowBubble] = useState(true);
+  const [waving, setWaving] = useState(true);
+  const [showChips, setShowChips] = useState(true);
+  const [chatLang, setChatLang] = useState(lang); // independent chat language
+  const scrollRef = useRef(null);
+  const ar = chatLang === 'ar';
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, isTyping]);
+
+  // Cycle speech bubbles
+  useEffect(() => {
+    if (isOpen) return;
+    const iv = setInterval(() => {
+      setShowBubble(false);
+      setTimeout(() => { setBubbleIdx(i => (i + 1) % ASSISTANT_BUBBLES.length); setShowBubble(true); }, 350);
+    }, 4000);
+    return () => clearInterval(iv);
+  }, [isOpen]);
+
+
+
+  const getReply = (query) => {
+    const q = query.toLowerCase();
+
+    // ── Route optimisation ─────────────────────────────────────────
+    const routeMatch = q.match(/(?:from|between|route|path|way).*?([a-z]{3,})\s+(?:to|and|-)\s+([a-z]{3,})/i)
+                    || q.match(/([a-z]{3,})\s+to\s+([a-z]{3,})/i);
+    if (routeMatch || q.includes('route') || q.includes('path') || q.includes('fastest') || q.includes('cheapest') || q.includes('optimiz')) {
+      if (routeMatch) {
+        const [, from, to] = routeMatch;
+        const f = from.charAt(0).toUpperCase() + from.slice(1);
+        const t = to.charAt(0).toUpperCase() + to.slice(1);
+        return `Great question! 🗺️ For ${f} → ${t}, here's how we'd optimise your route:\n\n• **Sea freight**: Most cost-effective for heavy cargo (20–40 ft containers). Transit via Jeddah Islamic Port or King Abdulaziz Port (Dammam).\n• **Air freight**: Fastest — ideal for time-sensitive or high-value goods. Riyadh (RUH) or Jeddah (JED) as entry points.\n• **Land**: Best for GCC-regional moves.\n\nWant a live rate for this lane? 👉 Use the Quick Quote form below!`;
+      }
+      return `Optimising freight routes is our specialty! 🗺️ The best path depends on:\n\n• **Cargo type** — hazardous, perishable, oversized?\n• **Speed vs cost** — air (fast) vs sea (cheap) vs land (flexible)\n• **Incoterms** — EXW, FOB, CIF, DDP?\n\nFor Saudi Arabia, main gateways are Jeddah Port, Dammam Port, Riyadh Dry Port, and King Khalid Airport. Share your origin & destination and I'll recommend the optimal lane! 🚀`;
+    }
+
+    // ── ZATCA / Customs ────────────────────────────────────────────
+    if (q.includes('what is zatca') || q.includes('zatca mean') || q.includes('explain zatca'))
+      return `ZATCA stands for **Zakat, Tax and Customs Authority** — Saudi Arabia's regulatory body that oversees:\n\n• 🧾 VAT & e-invoicing compliance (FATOORAH)\n• 🏛️ Import/export customs clearance\n• 📦 HS code classification & duty assessment\n• 🔍 AEO (Authorised Economic Operator) certification\n\nBejoice is a certified ZATCA partner, so we handle all digital compliance automatically — often clearing shipments in under 4 hours! Want to know more?`;
+    if (q.includes('zatca') || q.includes('customs') || q.includes('clearance') || q.includes('duty') || q.includes('hs code') || q.includes('tariff'))
+      return `As a ZATCA-certified partner, Bejoice handles full customs brokerage: 📋\n\n• HS code classification\n• Duty & VAT calculation\n• E-invoicing (FATOORAH Phase 2)\n• SASO product conformity\n• AEO fast-track lanes at Jeddah & Dammam\n\nAverage clearance time: **3–4 hours** at major Saudi ports. Need help with a specific HS code or import procedure?`;
+
+    // ── Incoterms ──────────────────────────────────────────────────
+    if (q.includes('incoterm') || q.includes('fob') || q.includes('cif') || q.includes('exw') || q.includes('ddp') || q.includes('dap'))
+      return `Incoterms are international trade terms defining who pays for what 📋:\n\n• **EXW** — Buyer handles everything from seller's door\n• **FOB** — Seller loads at origin port, buyer takes over\n• **CIF** — Seller pays freight + insurance to destination port\n• **DAP** — Seller delivers to buyer's door (buyer pays import duty)\n• **DDP** — Seller handles everything including customs & duty\n\nFor Saudi imports, **FOB** or **CIF Jeddah/Dammam** are most common. Which Incoterm are you working with?`;
+
+    // ── CBM / Dimensions ───────────────────────────────────────────
+    if (q.includes('cbm') || q.includes('cubic') || q.includes('volume') || q.includes('dimension') || q.includes('lcl') || q.includes('fcl'))
+      return `CBM (Cubic Meter) is the standard unit for sea freight volume 📦:\n\n• **Formula**: Length × Width × Height (in metres)\n• **LCL** (Less than Container Load) — you pay per CBM, ideal for small shipments\n• **FCL** (Full Container Load) — you rent the whole container:\n  - 20ft ≈ 25 CBM / 21,700 kg\n  - 40ft ≈ 55 CBM / 26,500 kg\n  - 40HC ≈ 68 CBM / 26,500 kg\n\nUse the **CBM Calculator** in our Tools section below for instant calculations! 🔢`;
+
+    // ── Air freight / Chargeable weight ───────────────────────────
+    if (q.includes('chargeable') || q.includes('volumetric') || q.includes('dim weight'))
+      return `Chargeable weight in air freight = **max(actual weight, volumetric weight)** ✈️\n\n• **Volumetric weight** = (L × W × H in cm) ÷ 5000\n• Example: 50×40×30 cm box = 60,000 ÷ 5000 = **12 kg volumetric**\n• If actual weight is 8 kg → you're charged for 12 kg\n\nUse our **Air Chargeable Weight Calculator** in the Tools section for instant results! 🚀`;
+
+    // ── Freight modes ──────────────────────────────────────────────
+    if (q.includes('sea freight') || q.includes('ocean freight') || q.includes('fcl') || q.includes('container ship'))
+      return `Sea freight is the most cost-effective mode for heavy or bulky cargo 🚢:\n\n• **Transit times to Saudi Arabia**: Europe 18–25 days, Asia 8–14 days, USA 25–35 days\n• **Main Saudi ports**: Jeddah Islamic Port (west), King Abdulaziz Port Dammam (east), Jubail\n• **Container types**: 20ft Dry, 40ft Dry, 40HC, Reefer, Flat Rack, Open Top\n\nBejoice operates direct carrier contracts with MSC, Maersk, CMA CGM & more. Want a quote?`;
+    if (q.includes('air freight') || q.includes('air cargo') || q.includes('airway'))
+      return `Air freight is the fastest mode — ideal for urgent or high-value shipments ✈️:\n\n• **Transit to Saudi Arabia**: Europe 2–3 days, Asia 1–2 days, USA 3–4 days\n• **Saudi airports**: King Khalid (RUH), King Abdulaziz (JED), King Fahd (DMM)\n• **Best for**: Electronics, pharma, perishables, fashion, spare parts\n• **Cost**: ~4–6× more than sea, but saves on storage & lost-sales risk\n\nWant an air freight rate? Hit the Quick Quote button! 🚀`;
+    if (q.includes('land freight') || q.includes('truck') || q.includes('road freight') || q.includes('ftl') || q.includes('ltl'))
+      return `Land freight is perfect for GCC-regional moves 🚛:\n\n• **Coverage**: Saudi Arabia, UAE, Kuwait, Bahrain, Oman, Qatar, Jordan, Egypt\n• **FTL** (Full Truck Load) — dedicated truck for your cargo\n• **LTL** (Less than Truck Load) — share space, pay per pallet/CBM\n• **Truck types**: Curtainsider, Flatbed, Reefer, Lowbed (for heavy equipment)\n\nBejoice runs daily lanes across all GCC borders with SABER-certified carriers!`;
+
+    // ── Saudi-specific logistics ───────────────────────────────────
+    if (q.includes('saso') || q.includes('conformity') || q.includes('certificate of conformity'))
+      return `SASO (Saudi Standards, Metrology and Quality Organization) requires a **Certificate of Conformity (CoC)** for regulated product categories entering Saudi Arabia 🇸🇦:\n\n• Electronics, appliances, toys, chemicals, food, PPE & more\n• Issued by accredited bodies (INTERTEK, SGS, Bureau Veritas)\n• Required BEFORE shipment — cannot be obtained after arrival\n\nBejoice coordinates CoC procurement as part of our customs brokerage service. Need help identifying if your product needs SASO clearance?`;
+    if (q.includes('aeo') || q.includes('authorised economic'))
+      return `AEO (Authorised Economic Operator) is a ZATCA certification that gives trusted traders faster customs clearance 🏅:\n\n• **Benefits**: Priority inspection lanes, reduced documentation, lower bond requirements\n• **Eligibility**: Companies with clean compliance record, secure supply chain, financial solvency\n• Bejoice holds AEO status — your shipments automatically benefit from our fast-track lanes!\n\nTypical clearance with AEO: **2–4 hours** vs 24–48 hours standard.`;
+    if (q.includes('jeddah') || q.includes('dammam') || q.includes('riyadh') || q.includes('jubail') || q.includes('saudi port'))
+      return `Saudi Arabia's key logistics gateways 🇸🇦:\n\n• **Jeddah Islamic Port** — largest Red Sea port, handles 65% of Saudi imports\n• **King Abdulaziz Port (Dammam)** — main eastern gateway, serves Aramco supply chain\n• **Jubail Industrial Port** — petrochemicals & project cargo\n• **King Khalid Airport (RUH)** — main air cargo hub\n• **Riyadh Dry Port** — inland container depot, 24/7 operations\n\nBejoice has bonded warehouse space at all major gateways!`;
+
+    // ── Tracking ───────────────────────────────────────────────────
+    if (q.includes('track') || q.includes('where is') || q.includes('status') || q.includes('bl number') || q.includes('awb') || q.includes('تتبع'))
+      return `To track your shipment 📍, enter your BL (Bill of Lading) or AWB (Air Waybill) number in the **Tracking widget** in our Tools section below. You'll get:\n\n• Real-time vessel/flight position\n• Port event timeline (loaded, departed, arrived, cleared)\n• Estimated delivery date\n• Delay alerts\n\nDon't have your BL/AWB? Contact us on WhatsApp and we'll pull it for you instantly!`;
+
+    // ── Pricing / quote ────────────────────────────────────────────
+    if (q.includes('price') || q.includes('cost') || q.includes('rate') || q.includes('quote') || q.includes('how much') || q.includes('سعر'))
+      return `Freight rates vary by mode, route, volume and season 💰. Here's a rough guide:\n\n• **LCL Sea**: $30–80 per CBM (Asia–Saudi)\n• **FCL 20ft**: $800–2,500 (Asia–Saudi, market dependent)\n• **Air freight**: $2–6 per kg (varies hugely by lane & urgency)\n• **Customs brokerage**: Fixed fee per shipment\n\nFor an exact rate, use our **Quick Quote form** — we compare 200+ carriers and respond within the hour! 🚀`;
+
+    // ── About Bejoice ──────────────────────────────────────────────
+    if (q.includes('who') || q.includes('bejoice') || q.includes('about') || q.includes('company') || q.includes('services'))
+      return `Bejoice Group is a Saudi-based freight forwarder & logistics partner 🌍:\n\n• 🚢 Sea Freight (FCL/LCL)\n• ✈️ Air Freight\n• 🚛 Land Freight (GCC-wide)\n• 🏛️ Customs Clearance (ZATCA-certified)\n• 📦 Warehousing & Distribution\n• ⚙️ Project & Heavy Cargo\n\nCertified: ZATCA · ISO 9001 · FIATA · IATA · AEO · SASO\nHeadquartered in Saudi Arabia with global reach. How can we help you today?`;
+
+    // ── Saudi Vision 2030 / NEOM / Logistics Cities ───────────────
+    if (q.includes('vision 2030') || q.includes('neom') || q.includes('saudi vision'))
+      return `Saudi Vision 2030 is transforming the Kingdom into a global logistics powerhouse 🇸🇦:\n\n• **NEOM** — $500B mega-city, creating demand for project & specialised cargo\n• **King Salman Energy Park (SPARK)** — industrial hub near Dammam\n• **Riyadh Logistics Hub** — targeting 50M tons throughput by 2030\n• **Saudi Landbridge** — Jeddah to Dammam rail, cutting transit time to 18hrs\n• **Ras Al-Khair Port** — mining & minerals export gateway\n\nBejoice is positioned at the heart of this transformation — your Vision 2030 logistics partner!`;
+
+    // ── Supply chain / general ────────────────────────────────────
+    if (q.includes('supply chain') || q.includes('3pl') || q.includes('4pl') || q.includes('logistics management'))
+      return `Supply chain management is the backbone of global trade 🔗:\n\n• **3PL** (Third-Party Logistics) — outsource warehousing, transport & distribution\n• **4PL** (Fourth-Party) — we manage your entire supply chain + technology layer\n• **Just-in-Time (JIT)** — inventory arrives exactly when needed, reducing storage cost\n• **Safety stock** — buffer inventory to absorb demand spikes\n• **Lead time** — total time from order to delivery\n\nBejoice offers end-to-end 3PL/4PL solutions across Saudi Arabia & GCC — from port to last mile!`;
+
+    // ── Dangerous goods / IMDG ────────────────────────────────────
+    if (q.includes('dangerous') || q.includes('hazardous') || q.includes('dg') || q.includes('imdg') || q.includes('iata dg') || q.includes('un number'))
+      return `Dangerous Goods (DG) require special handling & documentation ⚠️:\n\n• **IMDG Code** — sea freight DG regulations (9 hazard classes)\n• **IATA DGR** — air freight dangerous goods rules\n• **Key documents**: Dangerous Goods Declaration, MSDS/SDS, emergency contact\n• **UN Numbers** identify each hazardous substance (e.g. UN1263 = Paint)\n• **Packaging**: UN-approved packaging required for all DG shipments\n\nClass 1 (explosives) & Class 7 (radioactive) require special Saudi CUSTOMS approval. Bejoice has certified DG handlers for all 9 classes!`;
+
+    // ── Cold chain / reefer ───────────────────────────────────────
+    if (q.includes('cold chain') || q.includes('reefer') || q.includes('temperature') || q.includes('perishable') || q.includes('pharma'))
+      return `Cold chain logistics maintains product integrity from origin to destination ❄️:\n\n• **Reefer containers**: -30°C to +30°C range, GPS-monitored\n• **Pharma (GDP)**: +2°C to +8°C for vaccines & biologics\n• **Food (SFDA)**: Saudi Food & Drug Authority compliance required for food imports\n• **Flowers/Produce**: 0°C to +4°C, time-critical air freight\n• **Dry ice & gel packs**: for smaller pharmaceutical shipments\n\nBejoice operates SFDA-approved cold storage in Jeddah & Riyadh, with reefer capacity on all major sea lanes!`;
+
+    // ── Insurance ─────────────────────────────────────────────────
+    if (q.includes('insurance') || q.includes('cargo insurance') || q.includes('marine insurance') || q.includes('claim'))
+      return `Cargo insurance protects your shipment against loss or damage 🛡️:\n\n• **All Risk (Institute Cargo Clauses A)** — broadest cover, recommended\n• **Free from Particular Average (FPA/ICC C)** — basic cover, total loss only\n• **Premium**: typically 0.1%–0.5% of cargo value\n• **What's covered**: theft, water damage, fire, collision, general average\n• **What's NOT covered**: inherent vice, improper packing, delay\n\nAlways insure at **CIF value + 10%**. Bejoice arranges cargo insurance for every shipment — ask us for a quote!`;
+
+    // ── Documents ─────────────────────────────────────────────────
+    if (q.includes('bill of lading') || q.includes('bl ') || q.includes('awb') || q.includes('documents') || q.includes('commercial invoice') || q.includes('packing list') || q.includes('certificate of origin') || q.includes('coo'))
+      return `Key shipping documents you need 📄:\n\n• **Bill of Lading (BL)** — sea freight title document & contract of carriage\n• **Air Waybill (AWB)** — air freight equivalent of BL (non-negotiable)\n• **Commercial Invoice** — value, description, HS code, buyer/seller\n• **Packing List** — item count, weights, dimensions per carton\n• **Certificate of Origin (CoO)** — required for preferential duty rates (GCC FTA)\n• **SASO CoC** — mandatory for regulated product categories\n• **SFDA License** — for food, pharma, medical devices\n\nMissing any? Bejoice prepares all customs documentation for Saudi imports!`;
+
+    // ── Warehousing ───────────────────────────────────────────────
+    if (q.includes('warehouse') || q.includes('storage') || q.includes('fulfillment') || q.includes('pick and pack') || q.includes('last mile'))
+      return `Bejoice warehousing & distribution across Saudi Arabia 🏭:\n\n• **Locations**: Jeddah, Riyadh, Dammam bonded & commercial warehouses\n• **Services**: Bonded storage, pick & pack, cross-docking, kitting, labelling\n• **Cold storage**: SFDA-approved cold rooms in Jeddah & Riyadh\n• **Last-mile delivery**: Same-day in Riyadh & Jeddah, 2-day nationwide\n• **WMS integration**: Real-time stock visibility via our portal\n• **E-commerce**: Fulfillment for Saudi Aramco, Noon, Salla merchants\n\nNeed storage or distribution in KSA? Let's talk!`;
+
+    // ── GCC trade / FTAs ──────────────────────────────────────────
+    if (q.includes('gcc') || q.includes('free trade') || q.includes('fta') || q.includes('uae') || q.includes('dubai') || q.includes('kuwait') || q.includes('bahrain') || q.includes('oman') || q.includes('qatar'))
+      return `GCC trade is seamless with the right partner 🌙:\n\n• **GCC Customs Union**: Zero duty between Saudi, UAE, Kuwait, Bahrain, Oman, Qatar\n• **Saudi–UAE land corridor**: 12hr truck transit, daily departures from Dammam\n• **Dubai (Jebel Ali)** — major transshipment hub, 2-day feeder to Jeddah\n• **MENA FTAs**: Saudi has bilateral agreements with Egypt, Jordan, Morocco, Turkey\n• **ATA Carnet**: Duty-free temporary import for exhibitions & samples\n\nBejoice runs daily cross-border lanes to all GCC states with pre-cleared documentation!`;
+
+    // ── Project cargo / heavy lift ────────────────────────────────
+    if (q.includes('project cargo') || q.includes('heavy lift') || q.includes('oog') || q.includes('out of gauge') || q.includes('oversized') || q.includes('breakbulk'))
+      return `Project & heavy cargo is our specialty for Saudi mega-projects 🏗️:\n\n• **OOG (Out of Gauge)**: cargo exceeding standard container dimensions\n• **Breakbulk**: non-containerised cargo loaded directly in vessel hold\n• **Heavy lift**: single lifts up to 1,000+ tons via floating cranes\n• **SPMT (Self-Propelled Modular Transporter)**: for ultra-heavy industrial modules\n• **Escort & permits**: Saudi MOMRA road permits, police escort arrangement\n\nBejoice handles project cargo for ARAMCO, SABIC, NEOM & Saudi Vision 2030 infrastructure — full door-to-site service!`;
+
+    // ── Greetings ──────────────────────────────────────────────────
+    if (q.match(/^(hi|hello|hey|مرحبا|السلام|good morning|good afternoon|howdy|greetings)/))
+      return `${ar ? 'أهلاً بك! أنا ليلى، مستشارتك الذكية في بيجويس.' : 'Hello! I am Layla, your Intelligent Logistics Advisor at Bejoice.'} ✨\n\n${ar ? 'أنا هنا لمساعدتك في التغلب على تعقيدات الشحن العالمي، خاصة في أوقات الأزمات. يمكنني مساعدتك في:' : 'I am here to help you navigate the complexities of global shipping, especially during uncertain times. I can assist with:'}\n• 🌍 ${ar ? 'تخطيط مسارات مقاومة للأزمات' : 'Crisis-Proof Route Engineering'}\n• 🏛️ ${ar ? 'الامتثال لهيئة الزكاة والضريبة والجمارك' : 'ZATCA & Saudi Customs Compliance'}\n• 🚢 ${ar ? 'تحسين الشحن البحري والجوي والبري' : 'Sea, Air & Land Optimization'}\n• 🏗️ ${ar ? 'لوجستيات المشاريع الضخمة' : 'Mega-Project Logistics support'}\n\n${ar ? 'كيف يمكنني تأمين شحنتك اليوم؟' : 'How can I secure your shipment today?'}`;
+
+    // ── Default ────────────────────────────────────────────────────
+    return `${ar ? 'سؤال مثير للاهتمام!' : 'That is an interesting question!'} 🤔 ${ar ? 'أنا ليلى، أعمل بذكاء BJS Omni-Mind. جرب سؤالي عن:' : 'I am Layla, powered by the BJS Omni-Mind AI. Try asking me about:'}\n\n• "${ar ? 'أفضل مسار من الصين إلى الرياض حالياً؟' : 'Safest route from China to Riyadh right now?'}"\n• "${ar ? 'كيف أتجنب تأخيرات البحر الأحمر؟' : 'How can I avoid Red Sea delays?'}"\n• "${ar ? 'ما هي متطلبات زاتكا لعام 2024؟' : 'What are the 2024 ZATCA requirements?'}"\n• "${ar ? 'هل شحنتي مؤمنة ضد مخاطر النزاعات؟' : 'Is my cargo insured against conflict risks?'}"\n\n${ar ? 'أنا هنا لخدمتك دائماً.' : 'I am always here to guide you.'} 😊`;
+  };
+
+  const handleSend = (text) => {
+    const msg = text || input;
+    if (!msg.trim()) return;
+    setMessages(prev => [...prev, { role: 'user', content: msg }]);
+    setInput('');
+
+    // ── Onboarding Logic ───────────────────────────────────────────
+    if (onboardingStep < 3) {
+      setIsTyping(true);
+      setTimeout(() => {
+        let reply = '';
+        const low = msg.toLowerCase();
+        
+        if (onboardingStep === 0) {
+          if (low.includes('yes') || low.includes('نعم') || low.includes('ready')) {
+            reply = ar 
+              ? "رائع! ✨ في بيجويس، نقوم بتأمين مساراتك رغم كل الظروف. ما هو نوع الشحن الذي ترغب في تحسينه اليوم؟"
+              : "Excellent! ✨ At Bejoice, we secure your routes regardless of global conditions. What kind of freight would you like to optimize today?";
+            setOnboardingStep(1);
+          } else if (low.includes('not ready') || low.includes('لا')) {
+            reply = ar 
+              ? "لا تقلق، أنا هنا دائماً لحماية سلاسل التوريد الخاصة بك. هل لديك أي أسئلة عامة حول كيفية تجاوزنا للأزمات العالمية؟"
+              : "No worries, I am always here to safeguard your supply chains. Do you have any general questions about how we navigate global crises?";
+            setOnboardingStep(3);
+            setShowChips(false);
+          } else if (low.includes('connect')) {
+            reply = ar 
+              ? "يسعدنا جداً ربطك مع خبراء الأزمات واللوجستيات لدينا! يمكنك استخدام زر واتساب بالأسفل للاتصال الفوري. كيف يمكنني خدمتك حتى ذلك الحين؟"
+              : "I'd be happy to bridge you to our crisis and logistics experts! You can reach them instantly via the WhatsApp button below. How can I assist you until then?";
+            setOnboardingStep(3);
+            setShowChips(false);
+          } else {
+            reply = getReply(msg);
+            setOnboardingStep(3);
+            setShowChips(false);
+          }
+        } else if (onboardingStep === 1) {
+          reply = ar 
+            ? "اختيار حكيم. وما هو الهدف الأهم الذي تريد من ذكائنا الاصطناعي تحقيقه لشحنتك؟ (مثل: أقل تكلفة، أسرع وصول، أو موثوقية عالية في وقت الأزمات)"
+            : "A wise choice. What is the most critical goal you'd like our AI to achieve for your shipment? (e.g., lowest cost, fastest transit, or peak reliability during crisis)";
+          setOnboardingStep(2);
+        } else if (onboardingStep === 2) {
+          reply = ar 
+            ? "تم التسجيل! ✅ لقد قمت بمزامنة أهدافك مع نظام BJS Omni-Mind. سأحرص على أن يكون مقترحنا هو الأكثر أماناً وفعالية. كيف يمكنني مساعدتك في شحنتك الأولى؟"
+            : "Noted! ✅ I've synchronized your goals with the BJS Omni-Mind system. I'll ensure our proposal is the safest and most efficient possible. How can I help you with your first shipment?";
+          setOnboardingStep(3);
+          setShowChips(false);
+        }
+
+        setMessages(prev => [...prev, { role: 'ai', content: reply }]);
+        setIsTyping(false);
+      }, 800);
+      return;
+    }
+
+    setShowChips(false);
+
+    // ── Language switch detection ──────────────────────────────────
+    const q = msg.toLowerCase();
+    const switchToAr = q.match(/arabic|عربي|عربية|تكلم عربي|بالعربي|change.*arabic|switch.*arabic|speak arabic|تحدث.*عربي|اللغة العربية/);
+    const switchToEn = q.match(/english|انجليزي|إنجليزي|change.*english|switch.*english|speak english|تحدث.*انجليزي/);
+
+    if (switchToAr) {
+      setChatLang('ar');
+      setMessages(prev => [...prev, { role: 'ai', content: 'بكل سرور! تم تفعيل النواة الذكية باللغة العربية. ⚡\n\nأنا نظام **BJS OMNI-MIND** — المركز المتطور لإدارة العمليات اللوجستية.\n\nكيف يمكنني مساعدتك اليوم؟ 🇸🇦' }]);
+      return;
+    }
+    if (switchToEn) {
+      setChatLang('en');
+      setMessages(prev => [...prev, { role: 'ai', content: 'Switching to English interface... Done. ⚡\n\nI am **BJS OMNI-MIND** — your logistics intelligence core.\n\nHow can I help you? 🚀' }]);
+      return;
+    }
+
+    setIsTyping(true);
+    setTimeout(() => {
+      setMessages(prev => [...prev, { role: 'ai', content: getReply(msg) }]);
+      setIsTyping(false);
+    }, 1200);
+  };
+
+  return (
+    <div style={{ position: 'fixed', bottom: 24, left: 24, zIndex: 9000, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 12 }}>
+
+      {/* ── Chat panel ── */}
+      {isOpen && (
+        <div style={{
+          width: 320,
+          background: 'linear-gradient(160deg,#0d1b2e 0%,#0a1220 100%)',
+          border: '1px solid rgba(200,168,78,.25)',
+          borderRadius: 20,
+          overflow: 'hidden',
+          boxShadow: '0 24px 60px rgba(0,0,0,.65),0 0 0 1px rgba(200,168,78,.1)',
+          animation: 'bjs-panel .3s cubic-bezier(.34,1.56,.64,1) forwards',
+        }}>
+          {/* Header */}
+          <div style={{ 
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', 
+            padding: '16px 18px', 
+            display: 'flex', alignItems: 'center', gap: 12, 
+            borderBottom: '1px solid rgba(200,168,78,.2)',
+            position: 'relative'
+          }}>
+            <div style={{ position: 'relative' }}>
+              <AssistantAvatar size={48} />
+              <div style={{ position: 'absolute', bottom: 2, right: 2, width: 11, height: 11, borderRadius: '50%', background: '#22c55e', border: '2px solid #0f172a', boxShadow: '0 0 10px rgba(34,197,94,0.5)' }} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ color: '#fff', fontWeight: 800, fontSize: 14, fontFamily: 'Outfit,Inter,sans-serif', letterSpacing: '0.02em', textTransform: 'uppercase' }}>{ar ? 'لايلى — خبيرة اللوجستيات' : 'Layla — AI Logistics Expert'}</div>
+              <div style={{ color: '#7dd3fc', fontSize: 10, fontFamily: 'Inter,sans-serif', fontWeight: 600, opacity: 1 }}>{ar ? 'نظام مفعّل · معتمد من ZATCA' : 'ILLUMINATED CORE · ZATCA CERTIFIED'}</div>
+              <div style={{ color: '#38bdf8', fontSize: 9, fontFamily: 'Inter,sans-serif', marginTop: 2, display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4ade80', boxShadow: '0 0 5px #4ade80' }} />
+                SYSTEM ACTIVE
+              </div>
+            </div>
+            <button onClick={() => setIsOpen(false)} style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: 'rgba(255,255,255,.6)', cursor: 'pointer', width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }}>✕</button>
+          </div>
+
+          {/* Messages */}
+          <div ref={scrollRef} onWheel={e => e.stopPropagation()} style={{ height: 230, overflowY: 'scroll', padding: '14px 14px 8px', display: 'flex', flexDirection: 'column', gap: 10, scrollbarWidth: 'thin', scrollbarColor: 'rgba(200,168,78,.3) transparent', WebkitOverflowScrolling: 'touch' }}>
+            {messages.map((m, i) => (
+              <div key={i} style={{ animation: 'bjs-msg-in .3s ease forwards', display: 'flex', alignItems: 'flex-end', gap: 7, flexDirection: m.role === 'ai' ? 'row' : 'row-reverse' }}>
+                {m.role === 'ai' && <AssistantAvatar size={26} blink={false} />}
+                <div style={{
+                  maxWidth: '78%',
+                  background: m.role === 'ai' ? 'rgba(255,255,255,.07)' : 'linear-gradient(135deg,#c8a84e,#a8843e)',
+                  color: '#fff',
+                  borderRadius: m.role === 'ai' ? '4px 14px 14px 14px' : '14px 4px 14px 14px',
+                  padding: '9px 12px',
+                  fontSize: 13,
+                  fontFamily: 'Inter,sans-serif',
+                  lineHeight: 1.5,
+                  border: m.role === 'ai' ? '1px solid rgba(255,255,255,.08)' : 'none',
+                }}>
+                  {m.content.split('\n').map((line, li) => {
+                    const parts = line.split(/\*\*(.*?)\*\*/g);
+                    return (
+                      <span key={li} style={{ display: 'block', marginBottom: li < m.content.split('\n').length - 1 ? '3px' : 0 }}>
+                        {parts.map((p, pi) => pi % 2 === 1
+                          ? <strong key={pi} style={{ color: '#ffd97a', fontWeight: 700 }}>{p}</strong>
+                          : p
+                        )}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+            {isTyping && (
+              <div style={{ display: 'flex', alignItems: 'flex-end', gap: 7 }}>
+                <AssistantAvatar size={26} blink={false} />
+                <div style={{ display: 'flex', gap: 5, padding: '10px 14px', background: 'rgba(255,255,255,.07)', borderRadius: '4px 14px 14px 14px', border: '1px solid rgba(255,255,255,.08)' }}>
+                  {[0,1,2].map(i => <div key={i} style={{ width: 7, height: 7, borderRadius: '50%', background: '#c8a84e', animation: `bjs-dot 1.2s ease ${i*.2}s infinite` }} />)}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Quick chips — hidden once user sends first message */}
+          {showChips && <div style={{ padding: '8px 12px', display: 'flex', flexWrap: 'wrap', gap: 6, borderTop: '1px solid rgba(255,255,255,.06)' }}>
+            {onboardingStep === 0 && [
+              { label: "Yes, I'm ready", key: 'yes' },
+              { label: "No", key: 'no' },
+              { label: "I'm not ready", key: 'not' },
+              { label: "I'd like to connect on that line", key: 'connect' }
+            ].map(c => (
+              <button key={c.key} onClick={() => handleSend(c.label)} style={{ background: 'rgba(0,153,255,0.1)', color: '#7dd3fc', border: '1px solid rgba(0,153,255,0.3)', borderRadius: 20, padding: '5px 11px', fontSize: 11.5, fontWeight: 600, cursor: 'pointer', transition: 'all .2s' }}>{c.label}</button>
+            ))}
+            {onboardingStep === 1 && [
+              { label: "🚢 Sea Freight", key: 'sea' },
+              { label: "✈️ Air Freight", key: 'air' },
+              { label: "🚛 Land Freight", key: 'land' }
+            ].map(c => (
+              <button key={c.key} onClick={() => handleSend(c.label)} style={{ background: 'rgba(0,153,255,0.1)', color: '#7dd3fc', border: '1px solid rgba(0,153,255,0.3)', borderRadius: 20, padding: '5px 11px', fontSize: 11.5, fontWeight: 600, cursor: 'pointer', transition: 'all .2s' }}>{c.label}</button>
+            ))}
+            {onboardingStep === 2 && [
+              { label: "💰 Lower Costs", key: 'cost' },
+              { label: "⚡ Faster Transit", key: 'speed' },
+              { label: "🛡️ Better Reliability", key: 'trust' },
+              { label: "🏛️ Zero-Delay Customs", key: 'zatca' }
+            ].map(c => (
+              <button key={c.key} onClick={() => handleSend(c.label)} style={{ background: 'rgba(0,153,255,0.1)', color: '#7dd3fc', border: '1px solid rgba(0,153,255,0.3)', borderRadius: 20, padding: '5px 11px', fontSize: 11.5, fontWeight: 600, cursor: 'pointer', transition: 'all .2s' }}>{c.label}</button>
+            ))}
+          </div>}
+
+          {/* Input */}
+          <div style={{ padding: '10px 12px 14px', display: 'flex', gap: 8 }}>
+            <input
+              type="text"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleSend()}
+              placeholder={ar ? 'اسأل أي شيء...' : 'Ask anything about shipping...'}
+              style={{
+                flex: 1, background: 'rgba(255,255,255,.07)', border: '1px solid rgba(255,255,255,.12)',
+                borderRadius: 20, padding: '9px 14px', color: '#fff', fontSize: 13,
+                fontFamily: 'Inter,sans-serif', outline: 'none',
+              }}
+            />
+            <button onClick={() => handleSend()} disabled={isTyping} style={{
+              width: 36, height: 36, borderRadius: '50%', border: 'none', flexShrink: 0,
+              background: 'linear-gradient(135deg,#c8a84e,#a8843e)', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              opacity: isTyping ? .5 : 1,
+            }}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Speech bubble (closed state) ── */}
+      {!isOpen && showBubble && (
+        <div onClick={() => setIsOpen(true)} style={{
+          background: 'linear-gradient(135deg,#0f2340,#1a3a60)',
+          color: '#f0e6c8', border: '1px solid rgba(200,168,78,.35)',
+          borderRadius: '16px 16px 16px 4px',
+          padding: '10px 15px', fontSize: 13, fontWeight: 500,
+          fontFamily: 'Inter,sans-serif', maxWidth: 210,
+          boxShadow: '0 8px 24px rgba(0,0,0,.4)',
+          animation: 'bjs-bubble-in .4s ease forwards',
+          lineHeight: 1.45, cursor: 'pointer',
+        }}>
+          {ASSISTANT_BUBBLES[bubbleIdx]}
+        </div>
+      )}
+
+      {/* ── Avatar FAB ── */}
+      <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => setIsOpen(o => !o)}>
+        {/* Pulse ring */}
+        {!isOpen && (
+          <div style={{
+            position: 'absolute', inset: -6, borderRadius: 20,
+            border: '2px solid rgba(200,168,78,.5)',
+            animation: 'bjs-ring 2s ease-out infinite',
+            pointerEvents: 'none',
+          }} />
+        )}
+        {/* Floating full-body avatar */}
+        <div style={{ animation: isOpen ? 'none' : 'bjs-float 3s ease-in-out infinite', position: 'relative' }}>
+          <AssistantAvatar fullBody={true} />
+          {/* Online dot */}
+          <div style={{
+            position: 'absolute', top: 6, right: 6,
+            width: 13, height: 13, borderRadius: '50%',
+            background: '#22c55e', border: '2.5px solid #0a0a0f',
+            boxShadow: '0 0 7px rgba(34,197,94,.7)',
+          }} />
+        </div>
+      </div>
+
     </div>
   );
 }
@@ -1114,8 +1726,8 @@ function FloatingCTA({ onQuoteClick, lang = 'en' }) {
     <div className={`floating-cta${visible ? ' floating-cta--visible' : ''}`} role="complementary" aria-label="Get a quote">
       <div className="floating-cta-inner">
         <div className="floating-cta-text">
-          <span className="floating-cta-headline">{ar ? 'شحن أذكى.' : 'Move Cargo Smarter.'}</span>
-          <span className="floating-cta-sub">{ar ? 'بحري · جوي · بري · متخصصون في السعودية' : 'Sea · Air · Land · KSA Specialists'}</span>
+          <span className="floating-cta-headline">{ar ? 'لوجستيات المستقبل.' : 'AI-Optimized Shipping.'}</span>
+          <span className="floating-cta-sub">{ar ? 'شحن مدعوم بالذكاء الاصطناعي في السعودية' : 'Intelligent Sea, Air & Land Freight'}</span>
         </div>
         <div className="floating-cta-actions">
           <button className="floating-cta-btn" onClick={onQuoteClick}>
@@ -1188,24 +1800,34 @@ function ChapterSection({ chapter, lang = 'en', onBook, compact = false }) {
         id={`section-${chapter.id}`}
         className="chapter-section chapter-section-hero-row relative z-10"
       >
-        <div ref={blockRef} className="chapter-hero-row-inner" style={{ opacity: 1 }}>
-          {/* LEFT — text content */}
-          <div className="chapter-hero-left">
-            <h2 className="section-title" style={{ whiteSpace: 'pre-line' }}>
-              {titleLines.map((line, i) => (
-                <span key={i} style={{ display: 'block' }}>
-                  {i === (chapter.titleAccentLine ?? -1)
-                    ? <span className="title-accent">{line}</span>
-                    : line}
-                </span>
-              ))}
-            </h2>
-            <p className="section-body">{body}</p>
+        <div ref={blockRef} className="chapter-hero-layout-wrapper" style={{ opacity: 1, width: '100%', position: 'relative' }}>
+          <div className="chapter-hero-grid">
+            {/* COLUMN 1: IMPACT WORDING */}
+            <div className="chapter-hero-col chapter-hero-col--left">
+              <h2 className="section-title-hero">
+                {titleLines.map((line, i) => (
+                  <span key={i} style={{ display: 'block' }}>
+                    {line}
+                  </span>
+                ))}
+              </h2>
+              <p className="section-body-hero">{body}</p>
+            </div>
+
+            {/* COLUMN 2: VISUAL FOCUS (SPACER FOR BG SHIP) */}
+            <div className="chapter-hero-col chapter-hero-col--center" />
+
+            {/* COLUMN 3: REALITY FORM */}
+            <div className="chapter-hero-col chapter-hero-col--right">
+              <div className="hero-form-anchor">
+                <HeroQuoteForm lang={lang} onBook={onBook} />
+              </div>
+            </div>
           </div>
 
-          {/* RIGHT — CTA form */}
-          <div className="chapter-hero-right">
-            <HeroQuoteForm lang={lang} onBook={onBook} />
+          {/* BOTTOM: UNIFIED REALITY STATS */}
+          <div className="chapter-hero-stats-row">
+            <HeroTrustBar lang={lang} />
           </div>
         </div>
       </section>
@@ -1554,7 +2176,7 @@ function AirWeightCalculator({ lang = 'en' }) {
 // ============================================
 // TOOLS SECTION
 // ============================================
-function ToolsSection({ sectionRef, lang = 'en' }) {
+function ToolsSection({ sectionRef, lang = 'en', onCalcOpen }) {
   const ar = lang === 'ar';
   return (
     <div ref={sectionRef} id="tools-section" className="tools-section">
@@ -1573,13 +2195,75 @@ function ToolsSection({ sectionRef, lang = 'en' }) {
           </h2>
           <p className="tools-subtitle">
             {ar
-              ? 'حسابات شحن فورية — بدون تسجيل، بدون تخمين. بحراً أو جواً، احصل على الأرقام قبل الحجز.'
-              : 'Instant freight calculations — no signup, no guesswork. Sea or air, get the numbers you need before you book.'}
+              ? 'تكنولوجيا بيجويس تمنحك الوضوح الكامل. اختر أداة للبدء.'
+              : 'Bejoice technology gives you total clarity. Choose a tool to begin.'}
           </p>
         </div>
 
-        {/* Calculator grid */}
-        <div className="tools-grid">
+        {/* AI Highlight Card — Featured Path to Load Analyzer */}
+        <div 
+          onClick={onCalcOpen}
+          style={{ 
+            background: 'linear-gradient(135deg, rgba(200,168,78,0.15), rgba(5,5,8,0.4))',
+            border: '1px solid rgba(200,168,78,0.3)',
+            borderRadius: '1.5rem',
+            padding: '2.5rem',
+            marginBottom: '2rem',
+            cursor: 'pointer',
+            textAlign: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+          }}
+          className="ai-tool-highlight"
+          onMouseEnter={e => {
+            e.currentTarget.style.transform = 'translateY(-8px)';
+            e.currentTarget.style.borderColor = 'rgba(200,168,78,0.6)';
+            e.currentTarget.style.boxShadow = '0 20px 50px rgba(0,0,0,0.4), 0 0 20px rgba(200,168,78,0.2)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.transform = '';
+            e.currentTarget.style.borderColor = 'rgba(200,168,78,0.3)';
+            e.currentTarget.style.boxShadow = '';
+          }}
+        >
+          <div style={{ position:'absolute', top:'-20%', right:'-10%', width:'40%', height:'140%', background:'radial-gradient(circle, rgba(200,168,78,0.1) 0%, transparent 70%)', pointerEvents:'none' }} />
+          
+          <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'1rem' }}>
+            <div style={{ padding:'1rem', background:'rgba(200,168,78,0.1)', borderRadius:'50%', border:'1px solid rgba(200,168,78,0.2)' }}>
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            </div>
+            
+            <div>
+              <span style={{ fontSize:'0.7rem', fontWeight:800, color:'#c8a84e', letterSpacing:'0.25em', textTransform:'uppercase', display:'block', marginBottom:'0.5rem' }}>
+                {ar ? 'أداة ذكية جديدة' : 'NEW INTELLIGENT TOOL'}
+              </span>
+              <h3 style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'2.8rem', color:'#fff', letterSpacing:'0.05em', marginBottom:'0.5rem' }}>
+                {ar ? 'محلل الحمولة بالذكاء الاصطناعي' : 'AI LOAD ANALYSER'}
+              </h3>
+              <p style={{ color:'rgba(255,255,255,0.6)', fontSize:'1rem', maxWidth:'500px', margin:'0 auto 1.5rem', lineHeight:1.6 }}>
+                {ar 
+                  ? 'قم بتحسين مساحة الحاوية الخاصة بك على الفور. خوارزمياتنا المتقدمة تحسب أفضل طريقة لتعبئة شحنتك.' 
+                  : 'Optimize your container space instantly. Our advanced algorithms calculate the most efficient way to pack your cargo.'}
+              </p>
+              
+              <div 
+                style={{ 
+                  display:'inline-flex', alignItems:'center', gap:'0.75rem', 
+                  background:'#c8a84e', color:'#0a0a0f', 
+                  padding:'0.9rem 2rem', borderRadius:'3rem',
+                  fontFamily:"'Inter',sans-serif", fontWeight:800, fontSize:'0.85rem'
+                }}
+              >
+                {ar ? 'ابدأ التحليل الآن' : 'START ANALYSIS NOW'}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Existing calculators in smaller grid */}
+        <div className="tools-grid" style={{ gridTemplateColumns:'1fr 1fr', opacity:0.8 }}>
           <CBMCalculator lang={lang} />
           <AirWeightCalculator lang={lang} />
         </div>
@@ -1590,8 +2274,8 @@ function ToolsSection({ sectionRef, lang = 'en' }) {
         {/* Footer note */}
         <p className="tools-footnote">
           {ar
-            ? 'الحسابات تقديرية بناءً على معادلات الناقلين القياسية (المقسوم الحجمي 5000 للشحن الجوي). تُؤكَّد الأسعار النهائية عند الحجز.'
-            : 'Calculations are estimates based on standard carrier formulas (volumetric divisor 5000 for air). Final rates confirmed at booking.'}
+            ? 'الحسابات تقديرية بناءً على معادلات الناقلين القياسية. تُؤكَّد الأسعار النهائية عند الحجز.'
+            : 'Calculations are estimates based on standard carrier formulas. Final rates confirmed at booking.'}
         </p>
       </div>
     </div>
@@ -2433,6 +3117,8 @@ export default function App() {
   const [showLoader, setShowLoader]     = useState(false);
   const [currentAct, setCurrentAct]     = useState(1);
   const [lang, setLang]                 = useState('en');
+  const [airOpen,  setAirOpen]  = useState(false);
+  const [calcOpen, setCalcOpen] = useState(false);
   const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
 
   const { openCalPopup } = useCalBooking('sudeshna-pal-ruww5f/freight-consultation');
@@ -2757,7 +3443,7 @@ export default function App() {
         <canvas ref={canvasRef} />
       </div>
 
-<Header onToolsClick={scrollToTools} onQuoteClick={openBooking} lang={lang} toggleLang={toggleLang} />
+<Header onToolsClick={scrollToTools} onQuoteClick={openBooking} lang={lang} toggleLang={toggleLang} airOpen={airOpen} setAirOpen={setAirOpen} calcOpen={calcOpen} setCalcOpen={setCalcOpen} />
       <ActIndicator currentAct={currentAct} />
 
       <div id="scroll-container" className="relative z-10">
@@ -2778,9 +3464,11 @@ export default function App() {
       <HowItWorks lang={lang} />
       <CaseStudies lang={lang} />
       <ClientLogos lang={lang} />
-      <ToolsSection sectionRef={toolsSectionRef} lang={lang} />
+      <ToolsSection sectionRef={toolsSectionRef} lang={lang} onCalcOpen={() => setCalcOpen(true)} />
 
       <SiteFooter lang={lang} />
+
+      <AIAssistant lang={lang} />
       <WhatsAppButton />
       <ProgressBar />
 

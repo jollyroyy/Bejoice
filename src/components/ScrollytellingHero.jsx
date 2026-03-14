@@ -60,9 +60,9 @@ function getActiveChapter(progress) {
 
 export function ScrollytellingHero() {
   const { canvasRef, containerRef, isReady, progress } = useVideoScrubber({ scrollMultiplier: 5 });
-  const chapter = getActiveChapter(progress);
+  const chapter    = getActiveChapter(progress);
   const prevKeyRef = useRef(chapter.id);
-  const isNew = prevKeyRef.current !== chapter.id;
+  const isNew      = prevKeyRef.current !== chapter.id;
   if (isNew) prevKeyRef.current = chapter.id;
 
   const textClass = `scrolly-text scrolly-text--${chapter.align}`;
