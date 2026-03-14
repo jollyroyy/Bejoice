@@ -25,6 +25,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
@@ -51,13 +52,13 @@ body {
   display: block;
   width: 100%;
   height: 100%;
-  /* 2× buffer downscaled to CSS size → browser applies high-quality bicubic */
+  /* High-DPR buffer downscaled to CSS size → browser applies high-quality bicubic */
   image-rendering: -webkit-optimize-contrast;
-  image-rendering: high-quality;
-  image-rendering: auto;
+  image-rendering: smooth;
   /* Pin to own GPU layer — no sub-pixel compositor blur */
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
+  isolation: isolate; 
 }
 
 /* Vignette handled entirely by canvas drawFrame — no CSS overlay needed */
