@@ -2929,8 +2929,6 @@ function ClientLogos({ lang = 'en' }) {
         <MarqueeRow items={row3} reverse={false} speed={40} />
       </div>
 
-      {/* Bottom stat bar — animated counters */}
-      <HcStatBar lang={lang} />
     </section>
   );
 }
