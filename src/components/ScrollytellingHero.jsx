@@ -118,7 +118,7 @@ export function ScrollytellingHero() {
                 document.getElementById('quick-quote-section')?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              Start Your AI-Powered Shipment →
+              Activate AI Optimized Shipping →
             </a>
           )}
         </div>

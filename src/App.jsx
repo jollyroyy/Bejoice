@@ -210,7 +210,7 @@ const TRANSLATIONS = {
     },
 
     // CTA
-    ctaButton: 'Start Your AI-Powered Shipment',
+    ctaButton: 'Activate AI Optimized Shipping',
     ctaSub: 'Sea · Air · Land · Customs — All AI-Powered · Free Quote in 15 Min',
   },
 
