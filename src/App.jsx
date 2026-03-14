@@ -2263,9 +2263,6 @@ function ToolsSection({ sectionRef, lang = 'en', onCalcOpen }) {
           <AirWeightCalculator lang={lang} />
         </div>
 
-        {/* Shipment Tracking */}
-        <ShipmentTracking lang={lang} />
-
         {/* Footer note */}
         <p className="tools-footnote">
           {ar
@@ -2372,6 +2369,92 @@ function ShipmentTracking({ lang = 'en' }) {
           </span>
         </div>
       )}
+    </div>
+  );
+}
+
+// ============================================
+// STICKY TRACKER BAR — fixed below header on scroll
+// ============================================
+function StickyTracker({ lang = 'en' }) {
+  const t = TRANSLATIONS[lang];
+  const ar = lang === 'ar';
+  const [visible, setVisible] = useState(false);
+  const [blNum, setBlNum] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+  const [inputErr, setInputErr] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 80);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const handleTrack = () => {
+    if (!blNum.trim()) { setInputErr(true); return; }
+    setInputErr(false);
+    setLoading(true);
+    setDone(false);
+    setTimeout(() => {
+      setLoading(false);
+      setDone(true);
+      const msg = ar
+        ? `مرحباً، أرغب في تتبع الشحنة: ${blNum.trim()}`
+        : `Hi, I'd like to track shipment: ${blNum.trim()}`;
+      window.open(`https://wa.me/966550000000?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+      setTimeout(() => setDone(false), 4000);
+    }, 1200);
+  };
+
+  return (
+    <div className={`sticky-tracker${visible ? ' sticky-tracker--visible' : ''}`} dir={ar ? 'rtl' : 'ltr'}>
+      <div className="sticky-tracker-inner">
+        {/* Label */}
+        <div className="sticky-tracker-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <span>{ar ? 'تتبع الشحنة' : 'Track Shipment'}</span>
+        </div>
+
+        {/* Input + Button */}
+        <div className="sticky-tracker-form">
+          <input
+            type="text"
+            className={`sticky-tracker-input${inputErr ? ' sticky-tracker-input--err' : ''}`}
+            placeholder={ar ? 'رقم البوليصة / AWB' : 'BL No. or AWB (e.g. MSKU1234567)'}
+            value={blNum}
+            onChange={e => { setBlNum(e.target.value); setInputErr(false); setDone(false); }}
+            onKeyDown={e => e.key === 'Enter' && handleTrack()}
+          />
+          <button
+            className="sticky-tracker-btn"
+            onClick={handleTrack}
+            disabled={loading}
+          >
+            {loading ? (
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" style={{ animation: 'spin 0.8s linear infinite' }}>
+                <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+              </svg>
+            ) : done ? (
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+            ) : (ar ? 'تتبع' : t.trackBtn)}
+          </button>
+        </div>
+
+        {/* Status */}
+        {done && (
+          <span className="sticky-tracker-toast">
+            {ar ? '✓ جارٍ التتبع عبر واتساب' : '✓ Tracking via WhatsApp'}
+          </span>
+        )}
+        {inputErr && (
+          <span className="sticky-tracker-toast sticky-tracker-toast--err">
+            {ar ? 'أدخل رقم الشحنة' : 'Enter a BL or AWB number'}
+          </span>
+        )}
+      </div>
     </div>
   );
 }
@@ -3470,6 +3553,7 @@ export default function App() {
 
       <SiteFooter lang={lang} />
 
+      <StickyTracker lang={lang} />
       <AIAssistant lang={lang} />
       <WhatsAppButton />
       <ProgressBar />
